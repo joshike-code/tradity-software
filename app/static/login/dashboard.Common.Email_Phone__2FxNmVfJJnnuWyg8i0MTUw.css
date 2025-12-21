@@ -1,0 +1,27 @@
+.email-input .osui-bottom-sheet__content {
+    scrollbar-width: none;         /* Firefox */
+    -ms-overflow-style: none;      /* IE and Edge */
+    padding-bottom: 16px !important;
+    padding-top: unset !important;
+    max-height: 65vh !important;
+    min-height: 65vh;
+    text-align: start;
+}
+
+.email-input .osui-bottom-sheet__header::after {
+    display: none !important;
+}
+
+.email-input .osui-bottom-sheet__content::-webkit-scrollbar {
+    display: none;                 /* Webkit browsers */
+}
+
+input.form-control {
+  margin-bottom: 0 !important;
+}
+.input-with-icon-content-icon {
+    padding-bottom: 0 !important;
+}
+.input-with-icon.input-with-icon-right .input-with-icon-content-icon:not(:empty) + .input-with-icon-input input {
+    padding-inline-end: 24px !important;
+}

@@ -1,0 +1,127 @@
+.header-container-progress-bar > div {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 9;
+    background: white;
+}
+
+.header-container-progress-bar {
+    height: 63px;
+}
+
+.form-control[data-input]:focus:not(.not-valid), 
+.form-control[data-textarea]:focus:not(.not-valid),
+.dropdown-container > div.dropdown-display:focus:not(.not-valid), 
+.dropdown-container > select.dropdown-display:focus:not(.not-valid),
+.dropdown-container:focus(.not-valid)  {
+    border: var(--border-size-s) solid #818488 !important;
+}
+
+.desktop .real-account-signup-layout__main-content {
+    padding: 48px 24px 24px 24px;
+    overflow: auto;
+    max-height: 100vh;
+}
+
+.real-account-signup-layout__main-content {
+    width: 100%;
+    display:flex;
+    justify-content: center;
+}
+
+.phone .real-account-signup-layout__main-content {
+    width: 100%;
+}
+
+.real-account-signup-layout__content {
+    width: 600px;
+    height: fit-content;
+}
+
+.phone .real-account-signup-layout__placeholder {
+    padding: 16px;
+}
+
+.tablet .real-account-signup-layout__placeholder {
+    padding: 16px;
+}
+
+.real-account-signup-layout__placeholder:has(.rac-mobile-footer) {
+    padding-bottom: calc(81px + 16px);
+}
+
+.real-account-signup-layout__sidebar {
+    background-color: #F2F3F4;
+    height: 100vh;
+    min-width: 256px;
+    width: fit-content;
+    padding: 48px 24px;
+}
+
+.is-rtl .real-account-creation-layout-back-button {
+    transform: rotate(180deg);
+}
+
+.phone .real-account-signup-layout__sidebar {
+    display: none;
+}
+
+.tablet .real-account-signup-layout__sidebar {
+    display: none;
+}
+
+.real-account-signup-layout__header-desktop {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.tablet .real-account-signup-layout__header-desktop {
+    display: none;
+}
+
+.phone .real-account-signup-layout__header-desktop {
+    display: none;
+}
+
+.desktop .real-account-signup-layout__header-mobile {
+    display: none;
+}
+
+.desktop .real-account-signup-layout__footer-mobile {
+    display: none;
+}
+
+.wizard-wrapper.wizard-vertical [data-block*=WizardItem] .wizard-wrapper-item {
+    margin: 0 !important;
+}
+
+.wizard-vertical .wizard-item-icon-wrapper {
+    margin: 0 !important;
+}
+
+.wizard-item-icon {
+    width: 16px !important;
+    height: 16px !important;
+    border-width: 2px !important;
+}
+
+.wizard-item-label {
+    padding: 10px 16px !important;
+    cursor: default !important;
+}
+
+.wizard-vertical .wizard-wrapper-item .wizard-item-icon-wrapper:before {
+    transform: translateY(25%) translateX(-50%) !important;
+}
+
+.wizard-wrapper-item.active .wizard-item-icon {
+    border-width: 2px !important;
+}
+
+.popup-dialog {
+    max-width: 328px !important;
+}

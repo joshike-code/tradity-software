@@ -1,0 +1,4306 @@
+.add-options-account {
+    align-items: center;
+    background: var(--general-section-1);
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    margin: 2rem auto 0;
+    padding: .7rem 1.1rem;
+    width: 100%
+}
+
+@media(min-width:320px)and (max-width:767px) {
+    .add-options-account {
+        flex-direction: column;
+        padding-bottom: 1.5rem;
+        width: 100%
+    }
+}
+
+.add-options-account__title {
+    margin-right: .5rem;
+    padding: 1.5rem
+}
+
+@media(min-width:320px)and (max-width:767px) {
+    .add-options-account__title {
+        margin-bottom: 1rem;
+        padding: .3rem 1.1rem;
+        text-align: center
+    }
+}
+
+.product-linked-banner {
+    align-items: center;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    padding: 1.5rem;
+    transition: box-shadow .3s ease;
+    width: 373px
+}
+
+@media screen and (max-width:768px) {
+    .product-linked-banner {
+        width: 100%
+    }
+}
+
+.product-linked-banner:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .08)
+}
+
+.product-linked-banner__content {
+    align-items: center;
+    display: flex;
+    gap: 1.2rem
+}
+
+.product-linked-banner__icon {
+    align-items: center;
+    display: flex;
+    height: 32px;
+    justify-content: center;
+    width: 32px
+}
+
+.cfd-accounts__compare-table-title {
+    cursor: pointer
+}
+
+[dir=ltr] .currency-switcher__currency--icon {
+    margin-right: 1rem
+}
+
+[dir=rtl] .currency-switcher__currency--icon {
+    margin-left: 1rem
+}
+
+@media(min-width:1280px) {
+    [dir=ltr] .currency-switcher__button {
+        margin-right: 1rem
+    }
+
+    [dir=rtl] .currency-switcher__button {
+        margin-left: 1rem
+    }
+}
+
+[dir=ltr] .currency-switcher-container {
+    margin-left: auto
+}
+
+[dir=rtl] .currency-switcher-container {
+    margin-right: auto
+}
+
+.currency-switcher-container {
+    align-items: center;
+    border: 1px solid var(--general-hover);
+    border-radius: 8px;
+    cursor: pointer;
+    display: inline-flex;
+    flex-shrink: 0;
+    gap: 1.6rem;
+    height: 72px;
+    justify-content: space-between;
+    padding: 2rem 1.6rem;
+    transition: all .3s ease-in-out
+}
+
+.currency-switcher-container--has-interaction:hover {
+    box-shadow: 0 12px 16px -4px var(--shadow-menu), 0 4px 6px -2px var(--shadow-menu)
+}
+
+@media(max-width:1279px) {
+    .currency-switcher-container {
+        width: 100%
+    }
+}
+
+.currency-switcher-container__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 1rem
+}
+
+.currency-switcher-container__content--text {
+    font-size: var(--text-size-xs);
+    padding-bottom: .5rem
+}
+
+@media(max-width:1279px) {
+    [dir=ltr] .currency-switcher-container__arrow {
+        margin-left: 1.5rem
+    }
+
+    [dir=rtl] .currency-switcher-container__arrow {
+        margin-right: 1.5rem
+    }
+}
+
+[dir=ltr] .currency-switcher-container__arrow--onboarding {
+    padding-left: 1rem
+}
+
+[dir=rtl] .currency-switcher-container__arrow--onboarding {
+    padding-right: 1rem
+}
+
+.currency-switcher-container--left,
+.currency-switcher-container--right {
+    align-items: center;
+    display: inline-flex
+}
+
+@media(max-width:1279px) {
+    .currency-switcher-container--right .currency-switcher__button {
+        height: 4rem;
+        white-space: inherit
+    }
+}
+
+.balance-text__container {
+    display: inline-flex
+}
+
+.balance-text__text--demo {
+    color: var(--status-info);
+    padding-right: .5rem
+}
+
+.balance-text__text--real {
+    color: var(--status-success);
+    padding-right: .5rem
+}
+
+.balance-text--dotted {
+    border-bottom: 4px dotted var(--border-normal-3)
+}
+
+.demo-account-card__type {
+    text-transform: capitalize
+}
+
+.real-account-switcher__container {
+    align-items: center;
+    border: 1px solid var(--general-hover);
+    border-radius: 8px;
+    display: inline-flex;
+    height: 7.2rem;
+    margin-left: auto;
+    padding: 1.6rem 2rem
+}
+
+.real-account-switcher__container.content-loader {
+    padding: 0;
+    width: 33.1rem
+}
+
+.listing-container {
+    border: 1px solid var(--general-hover);
+    border-radius: 2.4rem;
+    display: flex;
+    flex-direction: column;
+    padding: 2.4rem
+}
+
+@media(max-width:1279px) {
+    .listing-container {
+        border: none;
+        padding: 2.4rem 0
+    }
+}
+
+.listing-container__top-container {
+    display: inline-flex;
+    width: 100%
+}
+
+@media(max-width:1279px) {
+    .listing-container__top-container {
+        display: block;
+        width: 100%
+    }
+}
+
+[dir=rtl] .listing-container__top-container>svg {
+    transform: scaleX(-1)
+}
+
+[dir=ltr] .listing-container__title {
+    margin-right: 4.8rem
+}
+
+[dir=rtl] .listing-container__title {
+    margin-left: 4.8rem
+}
+
+.listing-container__title {
+    display: flex;
+    flex-direction: column
+}
+
+.listing-container__title .cfd-accounts__title {
+    align-items: center;
+    display: flex;
+    justify-content: flex-start
+}
+
+@media(max-width:1279px) {
+    [dir=ltr] .listing-container__title {
+        margin-right: 0
+    }
+
+    [dir=rtl] .listing-container__title {
+        margin-left: 0
+    }
+
+    .listing-container__title {
+        display: flex;
+        flex-direction: row;
+        padding-bottom: 2rem
+    }
+}
+
+.listing-container__content {
+    grid-gap: 1.6rem 4.8rem;
+    display: grid;
+    gap: 1.6rem 4.8rem;
+    grid-template-columns: repeat(3, 1fr);
+    padding-top: 2rem;
+    width: 100%
+}
+
+@media(max-width:1279px) {
+    .listing-container__content {
+        display: flex;
+        flex-direction: column
+    }
+}
+
+[dir=rtl] .listing-container__content>svg {
+    transform: scaleX(-1)
+}
+
+.full-row {
+    grid-gap: 1.6rem 4.8rem;
+    display: grid;
+    gap: 1.6rem 4.8rem;
+    grid-column: 1/span 3;
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%
+}
+
+@media(max-width:1279px) {
+    .full-row {
+        display: block;
+        width: 100%
+    }
+}
+
+.cfd-full-row {
+    display: grid;
+    grid-column: 1/span 3;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    width: 100%
+}
+
+.cfd-full-row .divider {
+    background-color: var(--general-hover);
+    border: none;
+    height: 1px;
+    width: 100%
+}
+
+.options {
+    color: var(--text-red);
+    text-decoration: underline
+}
+
+.trade-button {
+    display: flex;
+    margin: .5rem 0;
+    padding: 0;
+    width: 100%
+}
+
+.multi-action-button-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between
+}
+
+.open-positions-svg__modal-title {
+    margin-bottom: 2.4rem
+}
+
+.open-positions-svg__modal-footer {
+    padding: 0 2.4rem 2.4rem
+}
+
+.trading-app-card,
+.trading-app-card__icon--container {
+    align-items: center;
+    display: inline-flex
+}
+
+.trading-app-card__icon--container {
+    height: 100%;
+    justify-content: center;
+    padding: 0 0 2rem
+}
+
+.trading-app-card__icon--container__clickable {
+    cursor: pointer
+}
+
+[dir=ltr] .trading-app-card__container {
+    margin-left: 1.6rem
+}
+
+[dir=rtl] .trading-app-card__container {
+    margin-right: 1.6rem
+}
+
+.trading-app-card__container {
+    align-items: center;
+    display: inline-flex;
+    height: 100%;
+    justify-content: space-between;
+    padding: 0 0 2rem;
+    width: 100%
+}
+
+[dir=ltr] .trading-app-card__details {
+    padding-right: 2rem
+}
+
+[dir=rtl] .trading-app-card__details {
+    padding-left: 2rem
+}
+
+[dir=ltr] .trading-app-card__details {
+    padding-left: 0
+}
+
+[dir=rtl] .trading-app-card__details {
+    padding-right: 0
+}
+
+.trading-app-card__details {
+    display: inline-flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    width: 100%
+}
+
+.trading-app-card__details__short-code {
+    background-color: var(--icon-grey-background);
+    border-radius: 4px;
+    height: -moz-fit-content;
+    height: fit-content;
+    margin-left: 1rem;
+    padding: .4rem;
+    width: -moz-fit-content;
+    width: fit-content
+}
+
+[dir=ltr] .trading-app-card__details__new {
+    margin-left: 1rem
+}
+
+[dir=rtl] .trading-app-card__details__new {
+    margin-right: 1rem
+}
+
+.trading-app-card__details__new {
+    background-color: #fff7e6;
+    border-radius: 4px;
+    color: #6a4800;
+    height: -moz-fit-content;
+    height: fit-content;
+    padding: .1rem .6rem;
+    width: -moz-fit-content;
+    width: fit-content
+}
+
+[dir=ltr] .trading-app-card__actions {
+    margin-left: auto
+}
+
+[dir=rtl] .trading-app-card__actions {
+    margin-right: auto
+}
+
+.trading-app-card__actions {
+    align-items: center;
+    display: flex;
+    height: 100%
+}
+
+.trading-app-card__actions a {
+    text-decoration: none
+}
+
+.trading-app-card--divider {
+    border-bottom: 1px solid var(--general-hover)
+}
+
+.trading-app-card__acc_status_badge {
+    cursor: pointer;
+    margin-top: 1rem;
+    max-width: -moz-fit-content;
+    max-width: fit-content
+}
+
+.trading-app-card__title {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none
+}
+
+.jurisdiction-modal__header~.dc-mobile-dialog__content {
+    height: 100%
+}
+
+.jurisdiction-modal__title {
+    align-items: center;
+    display: flex;
+    gap: 1.6rem;
+    margin: 0 1rem
+}
+
+.jurisdiction-modal__title-back {
+    align-items: center;
+    cursor: pointer;
+    display: flex
+}
+
+.jurisdiction-modal__content-wrapper {
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: absolute;
+    transform: rotateY(0deg);
+    transition: transform .6s ease;
+    width: 100%
+}
+
+@media(max-width:1279px) {
+    .jurisdiction-modal__content-wrapper {
+        height: 100%
+    }
+}
+
+.jurisdiction-modal__footer-content {
+    background-color: var(--general-main-1)
+}
+
+@media(max-width:1279px) {
+    .jurisdiction-modal__footer-content {
+        bottom: 0;
+        position: sticky
+    }
+}
+
+.jurisdiction-modal__footer-button {
+    background-color: var(--general-main-1);
+    display: flex;
+    width: 100%
+}
+
+.jurisdiction-modal__footer-button button {
+    height: 4rem
+}
+
+@media(max-width:1279px) {
+    .jurisdiction-modal__footer-button button {
+        max-width: 60rem;
+        width: 100%
+    }
+
+    .jurisdiction-modal__footer-button {
+        bottom: 0;
+        justify-content: center;
+        padding: 1rem;
+        position: sticky
+    }
+}
+
+.jurisdiction-modal__wrapper--all,
+.jurisdiction-modal__wrapper--financial,
+.jurisdiction-modal__wrapper--synthetic {
+    bottom: 0;
+    height: 100%;
+    overflow-y: scroll;
+    perspective: 100rem;
+    position: relative
+}
+
+@media(max-width:1279px) {
+
+    .jurisdiction-modal__wrapper--all,
+    .jurisdiction-modal__wrapper--financial,
+    .jurisdiction-modal__wrapper--synthetic {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between
+    }
+}
+
+@media(min-width:1280px) {
+    .jurisdiction-modal__flipped {
+        height: 70rem;
+        overflow: scroll
+    }
+}
+
+.jurisdiction-modal__flipped .jurisdiction-modal__content-wrapper {
+    height: 100%;
+    transform: rotateY(-180deg);
+    transition: transform 1.5s ease;
+    visibility: hidden
+}
+
+@media(max-width:1279px) {
+    .jurisdiction-modal__flipped .jurisdiction-modal__content-wrapper {
+        height: 100%
+    }
+}
+
+.jurisdiction-modal__flipped .dynamic-leverage-modal {
+    animation: show 1s ease forwards
+}
+
+@keyframes show {
+    0% {
+        transform: rotateY(180deg)
+    }
+
+    to {
+        transform: rotateY(0deg)
+    }
+}
+
+.cfd-jurisdiction-card--all,
+.cfd-jurisdiction-card--financial,
+.cfd-jurisdiction-card--synthetic {
+    border: 2px solid var(--border-normal);
+    border-radius: 16px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+    transition: all .1s ease-in;
+    width: 100%
+}
+
+.cfd-jurisdiction-card--all:not(.selected-card):not(.cfd-card-disabled):not(.cfd-card-disabled-flat):hover,
+.cfd-jurisdiction-card--financial:not(.selected-card):not(.cfd-card-disabled):not(.cfd-card-disabled-flat):hover,
+.cfd-jurisdiction-card--synthetic:not(.selected-card):not(.cfd-card-disabled):not(.cfd-card-disabled-flat):hover {
+    box-shadow: 0 2px 8px 0 var(--shadow-menu)
+}
+
+.cfd-jurisdiction-card--all--disabled,
+.cfd-jurisdiction-card--financial--disabled,
+.cfd-jurisdiction-card--synthetic--disabled {
+    border: 1px solid var(--border-disabled)
+}
+
+.cfd-jurisdiction-card--all__wrapper,
+.cfd-jurisdiction-card--financial__wrapper,
+.cfd-jurisdiction-card--synthetic__wrapper {
+    display: flex;
+    gap: 1.6rem;
+    margin: 3rem 5rem 1rem
+}
+
+@media(min-width:1280px) {
+
+    .cfd-jurisdiction-card--all__wrapper,
+    .cfd-jurisdiction-card--financial__wrapper,
+    .cfd-jurisdiction-card--synthetic__wrapper {
+        justify-content: center
+    }
+}
+
+@media(max-width:1279px) {
+
+    .cfd-jurisdiction-card--all__wrapper,
+    .cfd-jurisdiction-card--financial__wrapper,
+    .cfd-jurisdiction-card--synthetic__wrapper {
+        align-items: center;
+        flex-direction: column;
+        gap: 4rem;
+        height: 100%;
+        margin: 0;
+        overflow-y: scroll;
+        padding: 4rem
+    }
+}
+
+.cfd-jurisdiction-card--all--selected,
+.cfd-jurisdiction-card--financial--selected,
+.cfd-jurisdiction-card--synthetic--selected {
+    border: 2px solid #85acb0;
+    box-shadow: 0 1.2rem 1.8rem .8rem var(--shadow-menu)
+}
+
+.cfd-jurisdiction-card--all__card-content-container,
+.cfd-jurisdiction-card--financial__card-content-container,
+.cfd-jurisdiction-card--synthetic__card-content-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%
+}
+
+.cfd-jurisdiction-card--all__card-content-over-header,
+.cfd-jurisdiction-card--financial__card-content-over-header,
+.cfd-jurisdiction-card--synthetic__card-content-over-header {
+    background: var(--text-info-blue-background);
+    border-radius: 1.4rem 1.4rem 0 0;
+    height: 4rem;
+    padding: .5rem;
+    width: 100%
+}
+
+.cfd-jurisdiction-card--all__card-content-over-header-blank,
+.cfd-jurisdiction-card--financial__card-content-over-header-blank,
+.cfd-jurisdiction-card--synthetic__card-content-over-header-blank {
+    border-radius: 1.4rem;
+    height: 4rem
+}
+
+@media(max-width:1279px) {
+
+    .cfd-jurisdiction-card--all__card-content-over-header-blank,
+    .cfd-jurisdiction-card--financial__card-content-over-header-blank,
+    .cfd-jurisdiction-card--synthetic__card-content-over-header-blank {
+        height: 2rem
+    }
+}
+
+.cfd-jurisdiction-card--all__card-content-footer,
+.cfd-jurisdiction-card--financial__card-content-footer,
+.cfd-jurisdiction-card--synthetic__card-content-footer {
+    bottom: 0;
+    position: absolute;
+    width: 100%
+}
+
+.cfd-jurisdiction-card--all__card-content-footer-text,
+.cfd-jurisdiction-card--financial__card-content-footer-text,
+.cfd-jurisdiction-card--synthetic__card-content-footer-text {
+    background: var(--brand-secondary);
+    border-radius: 0 0 1.4rem 1.4rem;
+    height: 4rem;
+    padding: 1rem
+}
+
+.cfd-jurisdiction-card--all__card-flipped-container,
+.cfd-jurisdiction-card--financial__card-flipped-container,
+.cfd-jurisdiction-card--synthetic__card-flipped-container {
+    gap: 2rem;
+    padding: 4rem 1.6rem
+}
+
+.cfd-jurisdiction-card--all__card-section-container,
+.cfd-jurisdiction-card--financial__card-section-container,
+.cfd-jurisdiction-card--synthetic__card-section-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    height: 100%;
+    margin: 0 1.6rem
+}
+
+.cfd-jurisdiction-card--all__h2-header,
+.cfd-jurisdiction-card--financial__h2-header,
+.cfd-jurisdiction-card--synthetic__h2-header {
+    margin: 1rem 2rem;
+    min-height: 5rem
+}
+
+@media(max-width:1279px) {
+
+    .cfd-jurisdiction-card--all__h2-header,
+    .cfd-jurisdiction-card--financial__h2-header,
+    .cfd-jurisdiction-card--synthetic__h2-header {
+        margin-bottom: 2rem;
+        min-height: auto
+    }
+}
+
+.cfd-jurisdiction-card--all__footer-wrapper,
+.cfd-jurisdiction-card--financial__footer-wrapper,
+.cfd-jurisdiction-card--synthetic__footer-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between
+}
+
+@media(max-width:1279px) {
+
+    .cfd-jurisdiction-card--all__footer-wrapper,
+    .cfd-jurisdiction-card--financial__footer-wrapper,
+    .cfd-jurisdiction-card--synthetic__footer-wrapper {
+        min-height: auto;
+        width: 100%
+    }
+}
+
+.cfd-jurisdiction-card--all__footnotes-container,
+.cfd-jurisdiction-card--financial__footnotes-container,
+.cfd-jurisdiction-card--synthetic__footnotes-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 1rem
+}
+
+@media(min-width:1280px) {
+
+    .cfd-jurisdiction-card--all__footnotes-container,
+    .cfd-jurisdiction-card--financial__footnotes-container,
+    .cfd-jurisdiction-card--synthetic__footnotes-container {
+        min-height: 7.6rem
+    }
+}
+
+@media(max-width:1279px) {
+
+    .cfd-jurisdiction-card--all__footnotes-container,
+    .cfd-jurisdiction-card--financial__footnotes-container,
+    .cfd-jurisdiction-card--synthetic__footnotes-container {
+        gap: 0;
+        margin: 0
+    }
+}
+
+.cfd-jurisdiction-card--all__footnote,
+.cfd-jurisdiction-card--financial__footnote,
+.cfd-jurisdiction-card--synthetic__footnote {
+    display: flex;
+    justify-content: center
+}
+
+@media(max-width:1279px) {
+
+    .cfd-jurisdiction-card--all__footnote,
+    .cfd-jurisdiction-card--financial__footnote,
+    .cfd-jurisdiction-card--synthetic__footnote {
+        box-shadow: 0 -4px 4px rgba(0, 0, 0, .08);
+        margin: initial;
+        padding: 1.6rem .8rem
+    }
+
+    .cfd-jurisdiction-card--all__footnote--text,
+    .cfd-jurisdiction-card--financial__footnote--text,
+    .cfd-jurisdiction-card--synthetic__footnote--text {
+        max-width: 60rem
+    }
+}
+
+.cfd-jurisdiction-card--all__footnote--pending,
+.cfd-jurisdiction-card--financial__footnote--pending,
+.cfd-jurisdiction-card--synthetic__footnote--pending {
+    color: #ffad3a
+}
+
+.cfd-jurisdiction-card--all__jurisdiction-checkbox,
+.cfd-jurisdiction-card--financial__jurisdiction-checkbox,
+.cfd-jurisdiction-card--synthetic__jurisdiction-checkbox {
+    display: flex;
+    justify-content: center
+}
+
+@media(max-width:1279px) {
+
+    .cfd-jurisdiction-card--all__jurisdiction-checkbox,
+    .cfd-jurisdiction-card--financial__jurisdiction-checkbox,
+    .cfd-jurisdiction-card--synthetic__jurisdiction-checkbox {
+        margin-bottom: 1rem;
+        padding: .8rem
+    }
+}
+
+.cfd-jurisdiction-card--all__over-header,
+.cfd-jurisdiction-card--financial__over-header,
+.cfd-jurisdiction-card--synthetic__over-header {
+    background-color: #dfeaff;
+    border: 1px solid var(--text-info-blue);
+    border-radius: 8px;
+    height: 4rem;
+    left: 1.4rem;
+    margin-bottom: 1rem;
+    position: absolute;
+    top: -2rem;
+    width: 90%;
+    z-index: 10
+}
+
+.cfd-jurisdiction-card--all__over-header>p,
+.cfd-jurisdiction-card--financial__over-header>p,
+.cfd-jurisdiction-card--synthetic__over-header>p {
+    font-size: 16px;
+    text-align: center
+}
+
+@media(min-width:1280px) {
+    .cfd-jurisdiction-card--financial__footnotes-container {
+        gap: 1rem;
+        margin: 1rem;
+        min-height: 7.6rem
+    }
+}
+
+@media(min-width:1024px) {
+    .cfd-jurisdiction-card--synthetic__footnotes-container {
+        min-height: 11rem
+    }
+}
+
+.cfd-card-perspective {
+    perspective: 100rem
+}
+
+@media(max-width:1279px) {
+    .cfd-card-perspective {
+        max-width: 60rem;
+        width: 100%
+    }
+}
+
+.cfd-card-container {
+    transform-style: preserve-3d;
+    transition: all .25s ease-in;
+    width: 28rem
+}
+
+.cfd-card-container.all,
+.cfd-card-container.synthetic {
+    min-height: 48rem
+}
+
+.cfd-card-container.financial {
+    min-height: 55rem
+}
+
+@media(max-width:1279px) {
+    .cfd-card-container {
+        height: 48rem;
+        width: 100%
+    }
+}
+
+.cfd-card-flipped {
+    transform: rotateY(180deg)
+}
+
+.cfd-card-back,
+.cfd-card-front {
+    backface-visibility: hidden;
+    left: 0;
+    position: absolute;
+    top: 0;
+    transform-style: preserve-3d
+}
+
+.cfd-card-front {
+    transform: rotateY(0deg);
+    z-index: 2
+}
+
+.cfd-card-back {
+    transform: rotateY(-180deg)
+}
+
+.cfd-card-section {
+    display: flex;
+    flex-direction: column;
+    gap: .8rem;
+    width: 100%
+}
+
+.cfd-card-section-divider {
+    border-bottom: 2px solid var(--border-divider);
+    width: 100%
+}
+
+.cfd-card-section-title-indicator {
+    border-radius: 4px;
+    padding: .6rem 1.2rem
+}
+
+.cfd-card-section-title-indicator-icon-container {
+    display: flex;
+    gap: .5rem
+}
+
+.cfd-card-section-title-indicator__red-darker {
+    background: #661b20
+}
+
+.cfd-card-section-title-indicator__red-dark {
+    background: #b33037
+}
+
+.cfd-card-section-title-indicator__red-light {
+    background: var(--theme-color-main)
+}
+
+.cfd-card-section-title-indicator__yellow-dark {
+    background: #b3760d
+}
+
+.cfd-card-section-title-indicator__yellow-light {
+    background: #ffa912
+}
+
+.cfd-card-section-title-indicator__violet-dark {
+    background: #4a3871
+}
+
+.cfd-card-section-title-indicator__brown-dark {
+    background: #664407
+}
+
+@media(min-width:1280px) {
+    .cfd-card-section-description-height-assets {
+        min-height: 3.4rem
+    }
+
+    .cfd-card-section-description-height-regulator,
+    .cfd-card-section-description-height-verifications {
+        min-height: 5rem
+    }
+}
+
+.cfd-card-back-section-items-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem
+}
+
+.cfd-card-back-section-items-sub-container {
+    align-items: flex-start;
+    display: flex;
+    gap: 1rem
+}
+
+.cfd-card-back-section-back-button {
+    transition: transform .25s linear
+}
+
+.cfd-card-back-section-text-icon-aligned {
+    margin-top: -.3rem
+}
+
+.cfd-card-clickable-description-link {
+    color: var(--text-red)
+}
+
+.cfd-card-clickable-description-link:hover {
+    text-decoration: underline
+}
+
+.cfd-card-title-container {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    min-height: 2.55rem;
+    width: 100%
+}
+
+.cfd-card-disabled-flat {
+    border: 1px solid var(--border-normal)
+}
+
+.cfd-modal--custom-exit {
+    display: none
+}
+
+.cfd-trade-modal-container {
+    overflow-y: scroll;
+    padding-left: .5rem;
+    width: inherit
+}
+
+.cfd-trade-modal {
+    align-items: center;
+    display: flex;
+    gap: .8rem;
+    margin: 1.2rem 2.4rem
+}
+
+.cfd-trade-modal__balance {
+    display: flex;
+    flex-direction: column
+}
+
+.cfd-trade-modal__list-of-accounts {
+    display: flex;
+    justify-content: space-between;
+    margin: .8rem 0
+}
+
+.cfd-trade-modal__list-of-accounts:first-child {
+    border-top: .2rem solid var(--general-section-1);
+    padding-top: 1rem
+}
+
+.cfd-trade-modal__acc_status {
+    align-items: flex-end;
+    display: flex;
+    flex-direction: column
+}
+
+.cfd-trade-modal__expansion-panel {
+    background-color: var(--general-section-5);
+    border-radius: 8px;
+    margin-top: .8rem;
+    max-width: 65rem;
+    padding: 1.6rem 2.4rem
+}
+
+.cfd-trade-modal__expansion-panel--ordered-list {
+    list-style-type: decimal;
+    padding-left: .8rem
+}
+
+.cfd-trade-modal__expansion-panel--unordered-list {
+    list-style-type: disc;
+    padding-left: 1.6rem
+}
+
+.cfd-trade-modal__expansion-panel--content {
+    padding: .4rem 0
+}
+
+.cfd-trade-modal__expansion-panel--content-bold {
+    font-weight: 700
+}
+
+.cfd-trade-modal__expansion-panel--divider {
+    border-bottom: .2rem solid var(--general-hover);
+    margin-bottom: 1rem;
+    margin-top: .4rem;
+    width: 100%
+}
+
+.cfd-trade-modal__get-more-accounts {
+    align-items: center;
+    border: 2px dashed var(--general-hover);
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    margin: 1.6rem 0;
+    padding: .3rem 0
+}
+
+.cfd-trade-modal__get-more-accounts--icon {
+    margin-right: 1.5rem
+}
+
+.cfd-trade-modal__get-more-accounts--details {
+    margin-top: .2rem
+}
+
+[dir=ltr] .cfd-trade-modal--paragraph {
+    text-align: left
+}
+
+[dir=rtl] .cfd-trade-modal--paragraph {
+    text-align: right
+}
+
+.cfd-trade-modal--paragraph {
+    color: var(--text-general);
+    color: var(--text-less-prominent);
+    font-size: 1.4rem;
+    font-weight: 400;
+    line-height: 1.5;
+    line-height: 1.45;
+    text-transform: none
+}
+
+.cfd-trade-modal__mobile-title {
+    padding-left: 2.5rem;
+    text-align: left
+}
+
+.cfd-trade-modal__desc {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1
+}
+
+.cfd-trade-modal__desc-heading--real {
+    background-color: var(--icon-grey-background);
+    border-radius: 4px;
+    margin-left: .3rem;
+    padding: .2rem .4rem
+}
+
+.cfd-trade-modal__desc-heading--demo {
+    background-color: #e6f5ff;
+    border-radius: 4px;
+    color: #00426a;
+    margin-left: .3rem;
+    padding: .2rem .4rem
+}
+
+.cfd-trade-modal__desc-balance {
+    margin-left: 1.5rem
+}
+
+.cfd-trade-modal__password-box {
+    align-items: center;
+    display: flex;
+    gap: .8rem
+}
+
+.cfd-trade-modal__password-box .dc-btn:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--text-general);
+    -webkit-text-decoration: underline var(--text-general);
+    -webkit-text-decoration-color: var(--text-general)
+}
+
+.cfd-trade-modal__password-action {
+    height: 2.1rem;
+    padding-right: 0;
+    text-decoration: underline var(--text-general);
+    text-decoration-color: var(--text-general);
+    -webkit-text-decoration: underline var(--text-general);
+    -webkit-text-decoration-color: var(--text-general)
+}
+
+.cfd-trade-modal__maintenance {
+    align-items: center;
+    display: flex;
+    padding-top: 1rem
+}
+
+.cfd-trade-modal__maintenance-icon {
+    padding-right: .5rem
+}
+
+.cfd-trade-modal__maintenance-text {
+    color: var(--text-less-prominent)
+}
+
+.cfd-trade-modal__dxtrade-button,
+.cfd-trade-modal__platform-button {
+    align-items: center;
+    border: 1px solid var(--border-normal-2);
+    border-radius: 4px;
+    display: flex;
+    padding: 0 1.6rem;
+    text-decoration: none
+}
+
+.cfd-trade-modal__dxtrade-button-icon,
+.cfd-trade-modal__platform-button-icon {
+    margin-left: .6rem;
+    margin-top: .1rem
+}
+
+.cfd-trade-modal__specs {
+    padding: 1.6rem;
+    width: 100%
+}
+
+.cfd-trade-modal__specs-table {
+    width: 100%
+}
+
+.cfd-trade-modal__specs-table-attribute .cfd-trade-modal--paragraph {
+    color: var(--text-general);
+    margin-right: 2.4rem
+}
+
+[dir=ltr] .cfd-trade-modal__specs-table-data .cfd-trade-modal--paragraph {
+    text-align: left
+}
+
+[dir=rtl] .cfd-trade-modal__specs-table-data .cfd-trade-modal--paragraph {
+    text-align: right
+}
+
+.cfd-trade-modal__specs-table-data .cfd-trade-modal--paragraph {
+    color: var(--text-general);
+    font-size: 1.4rem;
+    font-weight: 700;
+    line-height: 1.5;
+    line-height: 1.45;
+    text-transform: none
+}
+
+.cfd-trade-modal__login-specs {
+    display: flex;
+    flex-direction: column;
+    gap: .1rem;
+    margin: 0 2.4rem
+}
+
+.cfd-trade-modal__login-specs-item {
+    align-items: center;
+    background: #f2f3f4;
+    background: var(--general-section-2, #f2f3f4);
+    display: flex;
+    justify-content: space-between;
+    padding: .5rem .8rem
+}
+
+.cfd-trade-modal__spec-box {
+    align-items: center;
+    display: flex;
+    gap: 1rem
+}
+
+.cfd-trade-modal__spec-text {
+    font-family: Courier, monospace;
+    overflow: hidden
+}
+
+.cfd-trade-modal__spec-text-broker {
+    text-align: right
+}
+
+.cfd-trade-modal__download-center {
+    border-top: 2px solid var(--general-section-1);
+    padding-bottom: 5.8rem;
+    padding-top: 2rem
+}
+
+.cfd-trade-modal__download-center-description {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.4rem
+}
+
+.cfd-trade-modal__download-center-app {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1.6rem
+}
+
+.cfd-trade-modal__download-center-app--option {
+    align-items: center;
+    border-top: 1px solid var(--border-disabled);
+    display: flex;
+    gap: 1.6rem;
+    padding: 1.6rem 2.4rem
+}
+
+.cfd-trade-modal__download-center-app--option:last-child {
+    border-bottom: 1px solid var(--border-disabled)
+}
+
+.cfd-trade-modal__download-center-app--option-item {
+    flex-grow: 1
+}
+
+.cfd-trade-modal__download-center-app--option-link {
+    align-items: center;
+    background-color: transparent;
+    border: 1px solid var(--border-normal-2);
+    border-radius: .5rem;
+    color: var(--text-general);
+    color: var(--text-less-prominent);
+    display: flex;
+    font-size: 1.4rem;
+    font-weight: 700;
+    justify-content: center;
+    line-height: 1.5;
+    padding: .6rem 1.6rem;
+    text-align: center;
+    text-decoration: none;
+    text-transform: none
+}
+
+.cfd-trade-modal__download-center-app--option-link:hover {
+    background-color: var(--button-secondary-hover)
+}
+
+.cfd-trade-modal__download-center-app-ctrader-container {
+    display: flex;
+    flex-direction: column;
+    margin: 4rem 1.6rem 6rem
+}
+
+@media(max-width:1279px) {
+    .cfd-trade-modal__download-center-app-ctrader-container {
+        margin-bottom: 0;
+        margin-top: 5rem
+    }
+}
+
+.cfd-trade-modal__download-center-app-ctrader__banner-text {
+    display: flex;
+    flex-direction: column
+}
+
+.cfd-trade-modal__download-center-app--macos,
+.cfd-trade-modal__download-center-app--windows {
+    align-items: center;
+    border-bottom: 1px solid var(--border-disabled);
+    display: flex;
+    gap: 1.6rem;
+    padding: 1.6rem 2.4rem
+}
+
+.cfd-trade-modal__download-center-app--macos-item,
+.cfd-trade-modal__download-center-app--windows-item {
+    flex-grow: 1
+}
+
+.cfd-trade-modal__download-center-app--macos-link,
+.cfd-trade-modal__download-center-app--windows-link {
+    align-items: center;
+    background-color: transparent;
+    border: 1px solid var(--border-normal-2);
+    color: var(--text-general);
+    color: var(--text-less-prominent);
+    display: flex;
+    font-size: 1.4rem;
+    font-weight: 700;
+    justify-content: center;
+    line-height: 1.5;
+    text-align: center;
+    text-decoration: none;
+    text-transform: none
+}
+
+.cfd-trade-modal__download-center-app--macos-link:hover,
+.cfd-trade-modal__download-center-app--windows-link:hover {
+    background-color: var(--button-secondary-hover)
+}
+
+.cfd-trade-modal__download-center-options {
+    align-items: center;
+    display: flex;
+    gap: 1.6rem;
+    justify-content: center;
+    margin: 1.6rem
+}
+
+.cfd-trade-modal__download-center-options--mobile {
+    align-items: center;
+    display: flex;
+    flex-flow: column nowrap;
+    margin-left: 4.7rem
+}
+
+.cfd-trade-modal__download-center-options--mobile-devices {
+    margin-bottom: 1.6em
+}
+
+.cfd-trade-modal__download-center-options--mobile-devices svg:first-child {
+    margin-right: .8em
+}
+
+.cfd-trade-modal__download-center-options--mobile-link:not(:first-child) {
+    margin-left: 1.6rem
+}
+
+.cfd-trade-modal__download-center-options--mobile-links {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: .8rem
+}
+
+@media(max-width:1279px) {
+    .cfd-trade-modal__download-center-options--mobile {
+        margin-left: 0;
+        margin-right: 0
+    }
+}
+
+.cfd-trade-modal__download-center-options--qrcode {
+    align-items: center;
+    border: 1px solid var(--border-disabled);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    padding: .8rem;
+    width: 13.6rem
+}
+
+.cfd-trade-modal__download-center-text {
+    margin: 1.6rem
+}
+
+.cfd-trade-modal__download-center--heading {
+    color: var(--text-general);
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1.75;
+    line-height: 1.5;
+    margin-bottom: 4.2rem;
+    margin-left: 2.1rem;
+    text-align: center;
+    text-transform: none
+}
+
+@media(min-width:1280px) {
+    .cfd-trade-modal__download-center--heading {
+        margin-left: 0;
+        text-align: center
+    }
+}
+
+.cfd-trade-modal__download-center--hint {
+    margin-top: 1.6rem
+}
+
+@media(max-width:1279px) {
+    .cfd-trade-modal__download-center {
+        margin-bottom: 1.6rem
+    }
+}
+
+.cfd-trade-modal__mobile-view .dc-page-overlay__content {
+    flex-direction: column
+}
+
+.cfd-trade-modal__mobile-view-wrapper {
+    overflow: scroll
+}
+
+.ctrader-transfer-modal__accounts-list {
+    background: none;
+    border: none;
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem;
+    padding: 1rem 1.6rem;
+    width: 95%
+}
+
+.ctrader-transfer-modal__accounts-list--balance {
+    align-items: center;
+    display: flex
+}
+
+.ctrader-transfer-modal__accounts-list:hover {
+    background-color: var(--general-hover);
+    border-radius: 4px;
+    cursor: pointer
+}
+
+.cfd-password-manager {
+    height: 100%;
+    margin: 5.6rem auto 3.2rem;
+    width: 100%
+}
+
+@media only screen and (max-height:645px) {
+    .cfd-password-manager {
+        margin-top: 1.5rem;
+        overflow: auto
+    }
+}
+
+.cfd-password-manager--paragraph {
+    margin-bottom: 3.2rem
+}
+
+.cfd-password-manager--error-message {
+    margin-bottom: 1em
+}
+
+.cfd-password-manager__investor-wrapper {
+    margin: 3.2rem .5rem 0
+}
+
+.cfd-password-manager__investor-wrapper .cfd-password-manager--paragraph:first-child {
+    margin-bottom: .8rem
+}
+
+.cfd-password-manager__investor-wrapper .dc-input__label {
+    top: .9rem
+}
+
+@media(max-width:1279px) {
+    .cfd-password-manager__investor-wrapper {
+        padding-bottom: 12rem
+    }
+}
+
+.cfd-password-manager .dc-password-input,
+.cfd-password-manager .dc-password-meter__container {
+    margin: auto;
+    width: 30rem
+}
+
+.cfd-password-manager__investor-form {
+    margin: 2.4em auto 0;
+    max-width: 300px;
+    width: 100%
+}
+
+@media(max-width:1279px) {
+    .cfd-password-manager__investor-form {
+        max-width: none
+    }
+}
+
+.cfd-password-manager__new-password {
+    margin-bottom: 8.6rem
+}
+
+.cfd-password-manager__new-password .dc-input__hint {
+    margin: 0 0 -5.3rem 1.3rem
+}
+
+.cfd-password-manager__actions {
+    align-items: center;
+    display: flex;
+    flex-flow: column nowrap
+}
+
+.cfd-password-manager--button {
+    margin-top: 1.6rem
+}
+
+@media(max-width:1279px) {
+    .cfd-password-manager--button {
+        margin-top: .8rem;
+        max-width: 30rem;
+        white-space: normal;
+        width: 100%
+    }
+}
+
+.cfd-password-manager__success {
+    margin-top: 3.2rem;
+    text-align: center
+}
+
+.cfd-password-manager__success-header {
+    color: var(--text-general);
+    font-size: 1.4rem;
+    font-weight: 700;
+    line-height: 1.5;
+    margin: 1.6rem 0 .8rem;
+    text-align: center;
+    text-transform: none
+}
+
+.cfd-password-manager__success-btn {
+    margin-top: 3.2rem;
+    width: 6.4rem
+}
+
+@media(max-width:1279px) {
+    .cfd-password-manager__success-btn {
+        max-width: 30rem;
+        width: 100%
+    }
+}
+
+.cfd-password-manager .multi-step__header {
+    margin: 0 0 2.4rem
+}
+
+.cfd-password-manager .multi-step__component {
+    text-align: center
+}
+
+@media(min-width:1280px) {
+    .cfd-password-manager {
+        max-width: calc(450px + 1rem)
+    }
+}
+
+@media(max-width:1279px) {
+    .cfd-password-manager {
+        margin-top: 2.4rem;
+        max-width: 60rem;
+        padding: 0 1.6rem
+    }
+
+    .cfd-password-manager__scroll-wrapper {
+        overflow-x: hidden;
+        overflow-y: auto
+    }
+}
+
+@media only screen and (max-width:1279px)and (max-width:320px) {
+    .cfd-password-manager {
+        padding: 0
+    }
+}
+
+.dynamic-leverage-modal {
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 2.4rem;
+    margin: 1.5rem 12.8rem 10rem;
+    position: absolute;
+    transition: transform .6s ease
+}
+
+@media(max-width:1279px) {
+    .dynamic-leverage-modal {
+        margin: 1.5rem 2.4rem 2.4rem
+    }
+}
+
+.dynamic-leverage-modal__content {
+    grid-gap: 2.4rem;
+    display: grid;
+    gap: 2.4rem;
+    grid-template-columns: 1fr 1fr;
+    margin: 0 10rem
+}
+
+@media(max-width:1279px) {
+    .dynamic-leverage-modal__content {
+        grid-template-columns: 1fr;
+        margin: 0 auto 3rem;
+        min-width: 20rem
+    }
+}
+
+.dynamic-leverage-modal__market {
+    background-color: var(--general-hover);
+    border: .5px solid var(--border-hover);
+    border-radius: 8px;
+    height: 24.8rem;
+    overflow: hidden
+}
+
+.dynamic-leverage-modal__market-description {
+    font-style: italic
+}
+
+.dynamic-leverage-modal__market-table {
+    padding-bottom: 1rem
+}
+
+.dynamic-leverage-modal__market-table-header-cell {
+    display: flex;
+    flex-direction: column
+}
+
+.dynamic-leverage-modal__market-table-header-row {
+    background-color: var(--general-hover)
+}
+
+.dynamic-leverage-modal__market-table-header-row,
+.dynamic-leverage-modal__market-table-row {
+    border-bottom: 0;
+    grid-template-columns: 1fr 1fr 1.4fr;
+    justify-items: center;
+    padding: .4rem
+}
+
+.dynamic-leverage-modal__market-table-row:nth-child(2n) {
+    background-color: var(--general-hover)
+}
+
+.dynamic-leverage-modal__market-table-row:nth-child(odd),
+.dynamic-leverage-modal__market-title {
+    background-color: var(--general-section-1)
+}
+
+.dynamic-leverage-modal__market-title {
+    display: flex;
+    flex-direction: column;
+    height: 7rem;
+    padding-top: 1rem
+}
+
+.cfd-financial-stp-modal {
+    display: flex;
+    height: 100%;
+    position: relative;
+    width: 100%
+}
+
+.cfd-financial-stp-modal .poi-form-on-signup__fields .dc-autocomplete {
+    margin-bottom: 0
+}
+
+@media(min-width:1280px) {
+    .cfd-financial-stp-modal .upload-layout {
+        height: 100%
+    }
+}
+
+.cfd-financial-stp-modal .account-form__poi-confirm-example {
+    gap: 1.6rem
+}
+
+@media(max-width:1279px) {
+    .cfd-financial-stp-modal .account-form__poi-confirm-example {
+        gap: 0
+    }
+}
+
+.cfd-financial-stp-modal__body {
+    width: 100%
+}
+
+.cfd-financial-stp-modal__body .poi-form-on-signup {
+    display: grid;
+    grid-template-rows: minmax(20rem, 1fr)
+}
+
+.cfd-financial-stp-modal__body .manual-poi {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
+    margin: auto;
+    max-width: 68rem
+}
+
+.cfd-financial-stp-modal__body .manual-poi .dc-card__wrapper {
+    margin-bottom: 0
+}
+
+.cfd-financial-stp-modal__body .manual-poi-details {
+    margin: auto;
+    max-width: 68rem
+}
+
+@media(max-width:1279px) {
+    .cfd-financial-stp-modal__body .manual-poi-details {
+        overflow-y: scroll
+    }
+}
+
+.cfd-financial-stp-modal__body .manual-poi-details__form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between
+}
+
+.cfd-financial-stp-modal__body .manual-poi-details__form .account-form__footer {
+    max-width: 100%
+}
+
+.cfd-financial-stp-modal__body .manual-poi-details__field {
+    margin-bottom: 3.5rem
+}
+
+.cfd-financial-stp-modal__body .manual-poi-details__fields-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center
+}
+
+.cfd-financial-stp-modal__body .account-management__message-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center
+}
+
+.cfd-financial-stp-modal__body .account-management__message-wrapper .upload_error_btn {
+    margin-top: 3.2rem
+}
+
+@media(min-width:1280px) {
+    .cfd-financial-stp-modal__body .onfido-container {
+        padding-top: 1.6rem
+    }
+}
+
+.cfd-financial-stp-modal__body .proof-of-identity__mismatch-container {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 70.2rem
+}
+
+.cfd-financial-stp-modal__body .proof-of-identity__mismatch-container .proof-of-identity__footer {
+    max-width: 100%
+}
+
+.cfd-financial-stp-modal__body .proof-of-identity__mismatch-container .account__scrollbars_container {
+    padding-top: 2.4rem
+}
+
+.cfd-financial-stp-modal__body .proof-of-identity__mismatch-container .dc-themed-scrollbars {
+    padding-left: 1.6rem;
+    padding-right: 1.6rem
+}
+
+.cfd-financial-stp-modal__form {
+    display: flex;
+    flex-direction: column;
+    height: 100%
+}
+
+.cfd-financial-stp-modal__form .details-form {
+    flex: 1
+}
+
+@media(min-width:1280px) {
+    .cfd-financial-stp-modal {
+        overflow: hidden
+    }
+
+    .cfd-financial-stp-modal .details-form__description {
+        width: 100%
+    }
+}
+
+@media(max-width:1279px) {
+    .cfd-financial-stp-modal {
+        grid-template-rows: 7rem minmax(10rem, 1fr);
+        overflow: visible;
+        overflow: initial
+    }
+
+    .cfd-financial-stp-modal__heading {
+        padding: initial
+    }
+
+    .cfd-financial-stp-modal .dc-form-submit-button {
+        background-color: var(--color-white)
+    }
+}
+
+.cfd-financial-stp-modal .account-management__message-icon {
+    align-items: center;
+    display: flex;
+    justify-content: center
+}
+
+.cfd-financial-stp-modal .account-management__message-content {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    justify-content: space-around;
+    padding: 0 3rem 7rem
+}
+
+@media(max-width:1279px) {
+    .cfd-financial-stp-modal .account-management__message-content {
+        overflow-y: auto
+    }
+}
+
+.cfd-financial-stp-modal .account-management__message {
+    color: var(--text-general);
+    color: var(--text-prominent);
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1.75;
+    margin-bottom: 1rem;
+    text-align: center;
+    text-transform: none
+}
+
+.cfd-financial-stp-modal .account-management__text {
+    color: var(--text-general);
+    color: var(--text-prominent);
+    font-size: 1.4rem;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+    text-transform: none
+}
+
+.cfd-financial-stp-modal .account-management__continue {
+    margin-top: 3rem
+}
+
+.cfd-financial-stp-modal .account-management__list-message {
+    display: flex
+}
+
+.cfd-financial-stp-modal .account-management__list-icon {
+    margin-right: 1.2rem
+}
+
+.dc-modal__container {
+    min-width: 0;
+    min-width: auto
+}
+
+[dir=ltr] .dc-modal__container_cfd-password-modal__description {
+    text-align: left
+}
+
+[dir=rtl] .dc-modal__container_cfd-password-modal__description {
+    text-align: right
+}
+
+.dc-modal__container_cfd-password-modal__description {
+    color: var(--text-general);
+    color: var(--text-less-prominent);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.4;
+    line-height: 1.5;
+    margin: -2.7rem 0 2.4rem;
+    max-width: min(100vw, 349px);
+    text-transform: none
+}
+
+.dc-modal__container_cfd-password-modal__account-title {
+    margin-bottom: 1.6rem
+}
+
+.dc-modal__container_cfd-dashboard__compare-accounts {
+    width: 904px
+}
+
+.dc-modal__container_cfd-password-manager__modal {
+    height: 100% !important;
+    max-height: calc(100vh - 84px) !important;
+    min-height: calc(100vh - 22rem);
+    width: 904px
+}
+
+.cfd-change-password__description {
+    margin-bottom: 2.4rem
+}
+
+.cfd-change-password__icon {
+    flex: none;
+    margin-bottom: 1.4rem;
+    margin-left: 2.3rem
+}
+
+.cfd-change-password-confirmation__description {
+    margin-bottom: 2.4rem;
+    margin-top: .8rem
+}
+
+.cfd-trading-password {
+    margin-top: 3.2rem
+}
+
+.dc-modal__container_cfd-financial-stp-signup-modal {
+    max-height: calc(100vh - 102px) !important
+}
+
+@media(min-width:1280px) {
+    .dc-modal__container_cfd-financial-stp-signup-modal {
+        display: grid;
+        grid-template-rows: 6rem minmax(20rem, 1fr)
+    }
+}
+
+.dc-modal__container_cfd-pending-dialog .dc-modal-header__title--cfd-pending-dialog,
+.dc-modal__container_cfd-success-dialog .dc-modal-header__title--cfd-pending-dialog {
+    margin: auto;
+    padding: 2.4rem;
+    text-align: center;
+    width: -moz-fit-content;
+    width: fit-content
+}
+
+.dc-modal__container_cfd-pending-dialog .dc-modal-body,
+.dc-modal__container_cfd-success-dialog .dc-modal-body {
+    text-align: center
+}
+
+.dc-modal__container_cfd-pending-dialog .dc-modal-footer,
+.dc-modal__container_cfd-success-dialog .dc-modal-footer {
+    justify-content: center;
+    padding: .8rem 2rem 2.4rem
+}
+
+.dc-modal__container_cfd-pending-dialog .dc-modal-footer .dc-btn,
+.dc-modal__container_cfd-success-dialog .dc-modal-footer .dc-btn {
+    min-width: 90px
+}
+
+.dc-modal__container_cfd-pending-dialog .dc-modal-footer .dc-btn:only-child,
+.dc-modal__container_cfd-success-dialog .dc-modal-footer .dc-btn:only-child {
+    margin: 0
+}
+
+[dir=ltr] .dc-modal__container_cfd-pending-dialog .dc-modal-footer .dc-btn:first-child,
+[dir=ltr] .dc-modal__container_cfd-success-dialog .dc-modal-footer .dc-btn:first-child {
+    margin-left: 0
+}
+
+[dir=rtl] .dc-modal__container_cfd-pending-dialog .dc-modal-footer .dc-btn:first-child,
+[dir=rtl] .dc-modal__container_cfd-success-dialog .dc-modal-footer .dc-btn:first-child {
+    margin-right: 0
+}
+
+@media(max-width:1279px) {
+
+    .dc-modal__container_cfd-pending-dialog .dc-modal-footer,
+    .dc-modal__container_cfd-success-dialog .dc-modal-footer {
+        grid-gap: .6rem;
+        display: flex;
+        padding: .8rem 1.6rem 1.6rem
+    }
+
+    .dc-modal__container_cfd-pending-dialog .dc-modal-footer .dc-btn:only-child,
+    .dc-modal__container_cfd-success-dialog .dc-modal-footer .dc-btn:only-child {
+        max-width: 14rem;
+        min-width: 9rem;
+        width: auto
+    }
+}
+
+.cfd-success-dialog-migration {
+    justify-content: center;
+    margin: auto;
+    padding: 2.4rem;
+    text-align: center;
+    width: -moz-fit-content;
+    width: fit-content
+}
+
+.cfd-success-dialog-migration .dc-modal-footer {
+    padding: .8rem 2rem 2.4rem
+}
+
+.cfd-success-dialog-migration__body {
+    padding: 5.2rem 2.4rem
+}
+
+[dir=ltr] .cfd-success-dialog-migration__body-bullets--list {
+    margin-left: 2rem
+}
+
+[dir=rtl] .cfd-success-dialog-migration__body-bullets--list {
+    margin-right: 2rem
+}
+
+.cfd-success-dialog-migration__body-bullets--list {
+    list-style: disc;
+    margin-top: 1rem
+}
+
+.cfd-success-dialog-migration__title {
+    display: flex;
+    justify-content: center
+}
+
+.cfd-success-dialog-migration__inline-msg {
+    margin: 2.4rem 2.4rem 0
+}
+
+@media(max-width:1279px) {
+    .cfd-success-dialog-migration__inline-msg {
+        margin: 2.4rem 0
+    }
+}
+
+.cfd-success-dialog-migration__icon-area {
+    margin: 0 auto;
+    position: relative;
+    width: 12.8rem
+}
+
+.cfd-success-dialog-migration__content-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2.4rem;
+    margin: .8rem auto
+}
+
+@media(max-width:1279px) {
+    .cfd-success-dialog-migration__content-wrapper__desc {
+        padding: 0 3.8rem
+    }
+
+    .cfd-success-dialog-migration-footer {
+        bottom: 1rem;
+        position: absolute;
+        width: 100%
+    }
+
+    .cfd-success-dialog-migration-footer .dc-btn {
+        width: 100%
+    }
+}
+
+@media(max-width:600px) {
+    .cfd-success-dialog-migration-footer {
+        bottom: 4rem
+    }
+}
+
+.dc-modal__container_cfd-success-dialog .success-change__icon-area {
+    margin: 0 auto;
+    position: relative;
+    width: 12.8rem
+}
+
+.dc-modal__container_cfd-success-dialog .success-change__icon-area--large .bottom-right-overlay {
+    left: 7.6rem;
+    position: absolute;
+    top: 7.6rem
+}
+
+@media(max-width:1279px) {
+    .dc-modal__container_cfd-success-dialog .success-change__icon-area--large .bottom-right-overlay {
+        left: 7.8rem;
+        top: 5.8rem
+    }
+}
+
+.dc-modal__container_cfd-success-dialog .success-change__icon-area--xlarge .bottom-right-overlay {
+    bottom: .8rem;
+    height: 5.2rem;
+    position: absolute;
+    right: -2.8rem;
+    width: 5.2rem
+}
+
+.dc-modal__container_cfd-success-dialog .success-migrated--text-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem
+}
+
+@media(max-width:1279px) {
+    .dc-modal__container_cfd-success-dialog .success-migrated--text-wrapper {
+        gap: .8rem
+    }
+}
+
+.dc-modal__container_cfd-success-dialog .dc-modal-body .dc-modal-header__title {
+    margin: auto;
+    padding: 1.6rem 0 .8rem;
+    text-align: center;
+    width: -moz-fit-content;
+    width: fit-content
+}
+
+@media(max-width:1279px) {
+    .dc-modal__container_cfd-success-dialog .dc-modal-body {
+        font-size: 1.4rem
+    }
+}
+
+.dc-modal__container_cfd-success-dialog .cfd-account__platform {
+    font-style: italic;
+    white-space: nowrap
+}
+
+.cfd-accounts-compare-modal {
+    background: inherit;
+    display: flex;
+    flex-flow: column nowrap;
+    flex-grow: 1;
+    height: 100%;
+    position: relative
+}
+
+.cfd-accounts-compare-modal-row-eu {
+    grid-template-columns: .67fr 1fr
+}
+
+.cfd-accounts-compare-modal-row-demo {
+    grid-template-columns: 1.5fr 1fr 1fr 1fr
+}
+
+.cfd-accounts-compare-modal-row-demo--restricted {
+    grid-template-columns: 1fr 2fr 1fr
+}
+
+@media(max-width:1279px) {
+    .cfd-accounts-compare-modal-row-demo {
+        height: auto;
+        width: 116vw
+    }
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__row-with-columns-count-1 {
+    grid-template-columns: repeat(1, 1fr)
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__row-with-columns-count-2 {
+    grid-template-columns: repeat(2, 1fr)
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__row-with-columns-count-3 {
+    grid-template-columns: repeat(3, 1fr)
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__row-with-columns-count-4,
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__row-with-columns-count-5 {
+    grid-template-columns: repeat(4, 1fr)
+}
+
+@media(max-width:1279px) {
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__row-with-columns-count-5 {
+        grid-template-columns: repeat(5, 1fr)
+    }
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__row-with-columns-count-6 {
+    grid-template-columns: repeat(6, 1fr)
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__row-with-columns-count-7 {
+    grid-template-columns: repeat(7, 1fr)
+}
+
+.cfd-accounts-compare-modal__table-header {
+    grid-template-columns: 1fr 2fr
+}
+
+.cfd-accounts-compare-modal__table-header__pre-appstore {
+    grid-template-columns: 11rem 36rem 46rem 13.5rem
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-0-financial-0 {
+    grid-template-columns: 1fr
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-0-financial-0__pre-appstore {
+    grid-template-columns: 1fr 1fr
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-1-financial-0__pre-appstore,
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-2-financial-0__pre-appstore {
+    grid-template-columns: 2fr 1fr
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-0-financial-1 {
+    grid-template-columns: 1fr 1fr
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-0-financial-1__pre-appstore,
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-1-financial-1 {
+    grid-template-columns: 1fr 1fr 1fr
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-1-financial-1__pre-appstore {
+    grid-template-columns: 1fr 1fr 1fr 1fr
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-2-financial-1 {
+    grid-template-columns: 1fr 2fr 1fr
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-2-financial-1__pre-appstore {
+    grid-template-columns: 1fr 2fr 1fr 1fr
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-0-financial-2 {
+    grid-template-columns: 1fr 2fr
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-0-financial-2__pre-appstore {
+    grid-template-columns: 1fr 2fr 1fr
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-1-financial-2 {
+    grid-template-columns: 1fr 1fr 2fr
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-1-financial-2__pre-appstore {
+    grid-template-columns: 1fr 1fr 2fr 1fr
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-2-financial-2 {
+    grid-template-columns: 1fr 2fr 2fr
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-2-financial-2__pre-appstore {
+    grid-template-columns: 1fr 2fr 2fr 1fr
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-0-financial-3 {
+    grid-template-columns: 1fr 3fr
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-0-financial-3__pre-appstore {
+    grid-template-columns: 1fr 3fr 1fr
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-1-financial-3 {
+    grid-template-columns: 1fr 1fr 3fr
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-1-financial-3__pre-appstore {
+    grid-template-columns: 1fr 1fr 3fr 1fr
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-2-financial-3 {
+    grid-template-columns: 1fr 2fr 3fr
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-2-financial-3__pre-appstore {
+    grid-template-columns: 1fr 2fr 3fr 1fr
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-0-financial-4 {
+    grid-template-columns: 1fr 4fr
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-0-financial-4__pre-appstore {
+    grid-template-columns: 1fr 4fr 1fr
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-1-financial-4 {
+    grid-template-columns: 1fr 1fr 4fr
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-1-financial-4__pre-appstore {
+    grid-template-columns: 1fr 1fr 4fr 1fr
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-2-financial-4 {
+    grid-template-columns: 1fr 2fr 4fr
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-2-financial-4__pre-appstore {
+    grid-template-columns: 1fr 2fr 4fr 1fr
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-0-financial-5 {
+    grid-template-columns: 1fr 5fr
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-0-financial-5__pre-appstore {
+    grid-template-columns: 1fr 5fr 1fr
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-1-financial-5 {
+    grid-template-columns: 1fr 1fr 5fr
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-1-financial-5__pre-appstore {
+    grid-template-columns: 1fr 1fr 5fr 1fr
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-2-financial-5 {
+    grid-template-columns: 1fr 2fr 5fr
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-2-financial-5__pre-appstore {
+    grid-template-columns: 1fr 2fr 5fr 1fr
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-0-financial-6 {
+    grid-template-columns: 1fr 6fr
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-0-financial-6__pre-appstore {
+    grid-template-columns: 1fr 6fr 1fr
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-0__pre-appstore {
+    grid-template-columns: 1fr 2fr 1fr
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-1-financial-6 {
+    grid-template-columns: 1fr 1fr 6fr
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-1-financial-6__pre-appstore {
+    grid-template-columns: 1fr 1fr 6fr 1fr
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-1__pre-appstore {
+    grid-template-columns: 1fr 2fr 1fr
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-2-financial-6 {
+    grid-template-columns: 1fr 2fr 6fr
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-2-financial-6__pre-appstore {
+    grid-template-columns: 1fr 2fr 6fr 1fr
+}
+
+.cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-2__pre-appstore {
+    grid-template-columns: 1fr 2fr 1fr
+}
+
+.cfd-accounts-compare-modal__table-header-item {
+    justify-content: center
+}
+
+.cfd-accounts-compare-modal__table-row {
+    grid-template-columns: 11rem 13.4rem 12.6rem 12rem 13.4rem 12.6rem 10rem 10rem
+}
+
+.cfd-accounts-compare-modal__table-row__pre-appstore {
+    grid-template-columns: 11rem 13.4rem 12.6rem 10rem 13.4rem 12.6rem 10rem 10rem 13.5rem
+}
+
+.cfd-accounts-compare-modal__table-row--other-country {
+    grid-template-columns: 11rem 23.4rem 12.6rem 20rem 13.4rem 12.6rem 13.4rem 20rem 17.5rem
+}
+
+.cfd-accounts-compare-modal__table-row--leverage {
+    grid-template-columns: 11rem 38rem 36rem 10rem
+}
+
+.cfd-accounts-compare-modal__table-row--leverage__pre-appstore {
+    grid-template-columns: 11rem 36rem 36rem 10rem 13.5rem
+}
+
+.cfd-accounts-compare-modal__table-row--leverage__af {
+    grid-template-columns: 11rem 36rem 33.4rem 12.6rem 13.5rem
+}
+
+.cfd-accounts-compare-modal__table-row--leverage__pk {
+    grid-template-columns: 11rem 36rem 46rem 13.4rem 17.5rem
+}
+
+.cfd-accounts-compare-modal__table-row--leverage__mg {
+    grid-template-columns: 11rem 36rem 33.4rem 12.6rem 13.4rem
+}
+
+.cfd-accounts-compare-modal__table-row--platform__pre-appstore {
+    grid-template-columns: 1fr 4.25fr .9fr;
+    grid-template-columns: 11rem 82rem 13.5rem
+}
+
+.cfd-accounts-compare-modal__table-row--platform__pre-appstore--restricted {
+    grid-template-columns: 1fr 2fr 1fr
+}
+
+.cfd-accounts-compare-modal__table-row--instruments {
+    grid-template-columns: 11rem 38rem 26rem 10rem 10rem
+}
+
+.cfd-accounts-compare-modal__table-row--instruments__pre-appstore {
+    grid-template-columns: 11rem 36rem 26rem 10rem 10rem 13.5rem
+}
+
+.cfd-accounts-compare-modal__table-row--instruments__af {
+    grid-template-columns: 11rem 36rem 20rem 13.4rem 12.6rem 13.5rem
+}
+
+.cfd-accounts-compare-modal__table-row--instruments__pk {
+    grid-template-columns: 11rem 36rem 33rem 13rem 13.4rem
+}
+
+.cfd-accounts-compare-modal__table-row--instruments__mg {
+    grid-template-columns: 11rem 36rem 20rem 13.4rem 12.6rem 13.4rem
+}
+
+.cfd-accounts-compare-modal__table-row-item {
+    flex-direction: column;
+    justify-content: center
+}
+
+.cfd-accounts-compare-modal__table-row-item--tooltip {
+    flex-direction: row
+}
+
+.cfd-accounts-compare-modal__table-footer {
+    grid-template-columns: 11rem 13.4rem 12.6rem 12rem 13.4rem 12.6rem 10rem 10rem;
+    height: 4.8rem
+}
+
+.cfd-accounts-compare-modal__table-footer__pre-appstore {
+    grid-template-columns: 11rem 13.4rem 12.6rem 10rem 13.4rem 12.6rem 10rem 10rem 13.5rem
+}
+
+.cfd-accounts-compare-modal__table-footer__pk {
+    grid-template-columns: 11rem 23.2rem 12.8rem 17.62rem 15.4rem 13rem 13.4rem 20rem 17.5rem
+}
+
+.cfd-accounts-compare-modal__table-footer__af {
+    grid-template-columns: 11rem 23.2rem 12.8rem 20rem 13.4rem 12.6rem 13.5rem 20rem 17.5rem
+}
+
+.cfd-accounts-compare-modal__table-footer__mg {
+    grid-template-columns: 11rem 23.4rem 12.6rem 20rem 13.4rem 12.6rem 13.4rem 10rem 13.5rem
+}
+
+.cfd-accounts-compare-modal__table-footer__item {
+    height: 4.8rem;
+    justify-content: center
+}
+
+.cfd-accounts-compare-modal__table-footer__item--eu-pre-appstore {
+    height: 4.8rem
+}
+
+.cfd-accounts-compare-modal__table-footer__item--verification-pending {
+    align-items: center;
+    background: rgba(255, 68, 79, .16);
+    border-radius: 4px;
+    cursor: not-allowed;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    opacity: .32;
+    padding: 3px 8px;
+    width: 100%
+}
+
+.cfd-accounts-compare-modal__table-footer__item--verification-pending .dc-text {
+    color: var(--brand-red-coral);
+    font-style: normal;
+    font-weight: 700
+}
+
+.cfd-accounts-compare-modal__table-footer__button {
+    width: 100%
+}
+
+.cfd-accounts-compare-modal .dc-table {
+    margin: 0 25px
+}
+
+.cfd-accounts-compare-modal .dc-table__header {
+    border: none;
+    height: 4rem;
+    top: 0;
+    z-index: 10
+}
+
+.cfd-accounts-compare-modal .dc-table__cell:not(.cfd-accounts-compare-modal__table-empty-cell),
+.cfd-accounts-compare-modal .dc-table__head:not(.cfd-accounts-compare-modal__table-empty-cell) {
+    border: 1px solid var(--general-active);
+    margin-bottom: -1px;
+    margin-left: -1px
+}
+
+.cfd-accounts-compare-modal .dc-table__cell {
+    padding: 1rem .8rem
+}
+
+.cfd-accounts-compare-modal .dc-table__row {
+    border-bottom: none;
+    min-height: 4rem
+}
+
+.cfd-accounts-compare-modal .dc-table--scrollbar {
+    display: block
+}
+
+.cfd-accounts-compare-modal-modal__wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 2.4rem
+}
+
+@media(max-width:1279px) {
+    .cfd-accounts-compare-modal {
+        font-size: 1.2rem;
+        height: 100%
+    }
+
+    .cfd-accounts-compare-modal .dc-table {
+        height: 100%;
+        margin: 25px;
+        overflow-x: auto
+    }
+
+    .cfd-accounts-compare-modal .dc-table__cell--fixed {
+        background-color: var(--general-main-1)
+    }
+
+    .cfd-accounts-compare-modal .dc-table__cell--fixed .dc-text {
+        font-size: var(--text-size-xxxs);
+        text-align: left
+    }
+
+    .cfd-accounts-compare-modal__table-footer,
+    .cfd-accounts-compare-modal__table-footer__pre-appstore,
+    .cfd-accounts-compare-modal__table-header,
+    .cfd-accounts-compare-modal__table-header__pre-appstore,
+    .cfd-accounts-compare-modal__table-row,
+    .cfd-accounts-compare-modal__table-row--instruments,
+    .cfd-accounts-compare-modal__table-row--instruments__pre-appstore,
+    .cfd-accounts-compare-modal__table-row--leverage,
+    .cfd-accounts-compare-modal__table-row--leverage__pre-appstore,
+    .cfd-accounts-compare-modal__table-row__pre-appstore {
+        width: 250vw
+    }
+
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-empty-cell.dc-table__cell--fixed {
+        border-width: 1px;
+        border-bottom: 0 solid var(--general-active);
+        border-left: 0 solid var(--general-active);
+        border-right: 1px solid var(--general-active);
+        border-top: 1px solid var(--general-active);
+        margin-left: -1px
+    }
+
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-empty-cell.dc-table__head {
+        border-top: none
+    }
+
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal-row-eu {
+        height: auto;
+        width: auto
+    }
+
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header {
+        width: 107.1428571429vw
+    }
+
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__row-with-columns-count-1 {
+        width: 35.71429vw
+    }
+
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__row-with-columns-count-1__pre-appstore,
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__row-with-columns-count-2 {
+        width: 71.42857vw
+    }
+
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__row-with-columns-count-2__pre-appstore,
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__row-with-columns-count-3 {
+        width: 107.14286vw
+    }
+
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__row-with-columns-count-3__pre-appstore,
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__row-with-columns-count-4 {
+        width: 142.85714vw
+    }
+
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__row-with-columns-count-4__pre-appstore,
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__row-with-columns-count-5 {
+        width: 178.57143vw
+    }
+
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__row-with-columns-count-5__pre-appstore,
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__row-with-columns-count-6 {
+        width: 214.28571vw
+    }
+
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__row-with-columns-count-6__pre-appstore,
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__row-with-columns-count-7 {
+        width: 250vw
+    }
+
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__row-with-columns-count-7__pre-appstore {
+        width: 285.71429vw
+    }
+
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-0-financial-0 {
+        width: 35.71429vw
+    }
+
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-0-financial-0__pre-appstore,
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-1-financial-0 {
+        width: 71.42857vw
+    }
+
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-1-financial-0__pre-appstore,
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-2-financial-0 {
+        width: 107.14286vw
+    }
+
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-2-financial-0__pre-appstore {
+        width: 142.85714vw
+    }
+
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-0-financial-1 {
+        width: 71.42857vw
+    }
+
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-0-financial-1__pre-appstore,
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-1-financial-1 {
+        width: 107.14286vw
+    }
+
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-1-financial-1__pre-appstore,
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-2-financial-1 {
+        width: 142.85714vw
+    }
+
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-2-financial-1__pre-appstore {
+        width: 178.57143vw
+    }
+
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-0-financial-2 {
+        width: 107.14286vw
+    }
+
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-0-financial-2__pre-appstore,
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-1-financial-2 {
+        width: 142.85714vw
+    }
+
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-1-financial-2__pre-appstore,
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-2-financial-2 {
+        width: 178.57143vw
+    }
+
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-2-financial-2__pre-appstore {
+        width: 214.28571vw
+    }
+
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-0-financial-3 {
+        width: 142.85714vw
+    }
+
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-0-financial-3__pre-appstore,
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-1-financial-3 {
+        width: 178.57143vw
+    }
+
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-1-financial-3__pre-appstore,
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-2-financial-3 {
+        width: 214.28571vw
+    }
+
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-2-financial-3__pre-appstore {
+        width: 250vw
+    }
+
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-0-financial-4 {
+        width: 178.57143vw
+    }
+
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-0-financial-4__pre-appstore,
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-1-financial-4 {
+        width: 214.28571vw
+    }
+
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-1-financial-4__pre-appstore,
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-2-financial-4 {
+        width: 250vw
+    }
+
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-2-financial-4__pre-appstore {
+        width: 285.71429vw
+    }
+
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-0-financial-5 {
+        width: 214.28571vw
+    }
+
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-0-financial-5__pre-appstore,
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-1-financial-5 {
+        width: 250vw
+    }
+
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-1-financial-5__pre-appstore,
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-2-financial-5 {
+        width: 285.71429vw
+    }
+
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-2-financial-5__pre-appstore {
+        width: 321.42857vw
+    }
+
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-0-financial-6 {
+        width: 250vw
+    }
+
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-0-financial-6__pre-appstore,
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-1-financial-6 {
+        width: 285.71429vw
+    }
+
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-1-financial-6__pre-appstore,
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-2-financial-6 {
+        width: 321.42857vw
+    }
+
+    .cfd-accounts-compare-modal .cfd-accounts-compare-modal__table-header-for-synthetic-2-financial-6__pre-appstore {
+        width: 357.14286vw
+    }
+}
+
+.dc-modal-header__title--cfd-accounts-compare-modal {
+    font-size: var(--text-size-sm);
+    line-height: 3rem
+}
+
+.cfd-accounts-compare-modal-mobile-header {
+    border-bottom: none;
+    height: -moz-fit-content;
+    height: fit-content
+}
+
+.cfd-accounts-compare-modal-mobile-header .dc-text {
+    font-size: var(--text-size-s)
+}
+
+.cfd-compare-accounts-tooltip {
+    margin-left: .8rem
+}
+
+.cfd-compare-accounts-tooltip--msg {
+    align-items: flex-start;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    font-size: var(--text-size-xxs);
+    padding: 8px;
+    width: 276px
+}
+
+@media(max-width:1279px) {
+    .dc-mobile-dialog__content.dc-mobile-dialog__content--is-full-height[\:has\(\.dc-mobile-dialog__cfd-password-modal\)] {
+        display: flex;
+        justify-content: center
+    }
+
+    .dc-mobile-dialog__content.dc-mobile-dialog__content--is-full-height:has(.dc-mobile-dialog__cfd-password-modal) {
+        display: flex;
+        justify-content: center
+    }
+}
+
+.dc-mobile-dialog__cfd-password-modal,
+.dc-modal__container_cfd-password-modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    max-width: 424px
+}
+
+.dc-mobile-dialog__cfd-password-modal form,
+.dc-modal__container_cfd-password-modal form {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: space-between;
+    padding: 0 2.4rem 1.2rem
+}
+
+@media(max-width:1279px) {
+
+    .dc-mobile-dialog__cfd-password-modal form,
+    .dc-modal__container_cfd-password-modal form {
+        padding: 0
+    }
+}
+
+.dc-mobile-dialog__cfd-password-modal__description,
+.dc-modal__container_cfd-password-modal__description {
+    color: var(--text-general);
+    color: var(--text-prominent);
+    font-size: 1.2rem;
+    font-weight: 400;
+    line-height: 1.25;
+    margin-top: 1rem;
+    padding: 1.3rem;
+    position: relative;
+    text-align: center;
+    text-transform: none;
+    top: 2rem
+}
+
+.dc-mobile-dialog__cfd-password-modal__hint,
+.dc-modal__container_cfd-password-modal__hint {
+    max-width: 40rem
+}
+
+.dc-mobile-dialog__cfd-password-modal__body,
+.dc-modal__container_cfd-password-modal__body {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: flex-start
+}
+
+@media(max-width:1279px) {
+
+    .dc-mobile-dialog__cfd-password-modal__body,
+    .dc-modal__container_cfd-password-modal__body {
+        padding: .8rem 1.6rem
+    }
+}
+
+.dc-mobile-dialog__cfd-password-modal .dc-input__label,
+.dc-modal__container_cfd-password-modal .dc-input__label {
+    top: 1.2rem
+}
+
+@media(max-width:1279px) {
+
+    .dc-mobile-dialog__cfd-password-modal .dc-input__label,
+    .dc-modal__container_cfd-password-modal .dc-input__label {
+        background-color: var(--fill-normal);
+        top: .9rem
+    }
+}
+
+.dc-mobile-dialog__cfd-password-modal .dc-password-meter__bg,
+.dc-modal__container_cfd-password-modal .dc-password-meter__bg {
+    background: var(--general-section-2)
+}
+
+@media(max-width:1279px) {
+
+    .dc-mobile-dialog__cfd-password-modal .dc-password-meter__bg,
+    .dc-modal__container_cfd-password-modal .dc-password-meter__bg {
+        background: var(--fill-disabled)
+    }
+}
+
+.dc-mobile-dialog__cfd-password-modal .status-dialog,
+.dc-modal__container_cfd-password-modal .status-dialog {
+    margin-top: 3em
+}
+
+@media(max-width:1279px) {
+
+    .dc-mobile-dialog__cfd-password-modal .cfd-password-reset,
+    .dc-modal__container_cfd-password-modal .cfd-password-reset {
+        flex: 1
+    }
+}
+
+.dc-mobile-dialog__cfd-password-modal .mt5-password-field,
+.dc-modal__container_cfd-password-modal .mt5-password-field {
+    margin-bottom: 1em;
+    width: 80%
+}
+
+.dc-mobile-dialog__cfd-password-modal .input-element,
+.dc-modal__container_cfd-password-modal .input-element {
+    width: 100%
+}
+
+@media(max-width:1279px) {
+
+    .dc-mobile-dialog__cfd-password-modal .cfd-password-modal__content,
+    .dc-modal__container_cfd-password-modal .cfd-password-modal__content {
+        height: 100%;
+        max-height: calc(100% - 6.4rem);
+        overflow-x: hidden;
+        overflow-y: auto;
+        padding: 1rem
+    }
+}
+
+@media(min-width:768px) {
+
+    .dc-mobile-dialog__cfd-password-modal .cfd-password-modal__content,
+    .dc-modal__container_cfd-password-modal .cfd-password-modal__content {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 2rem;
+        width: 100%
+    }
+
+    .dc-mobile-dialog__cfd-password-modal .cfd-password-modal__content--password-reset,
+    .dc-modal__container_cfd-password-modal .cfd-password-modal__content--password-reset {
+        padding: 0 2.5rem
+    }
+}
+
+.dc-mobile-dialog__mt5-email-sent {
+    padding-bottom: 1rem
+}
+
+.cfd-password-modal__warning {
+    align-self: center;
+    max-width: 50rem;
+    padding: 2.5rem
+}
+
+.cfd-password-modal__warning-text {
+    background-color: var(--status-warning);
+    border-radius: .8rem;
+    padding: .8rem
+}
+
+.cfd-password-modal__message {
+    line-height: 1.43;
+    margin: auto;
+    max-width: 32rem
+}
+
+.cfd-password-modal__radio.dc-radio-group {
+    grid-gap: 2rem;
+    display: grid;
+    margin-top: 0;
+    padding-bottom: 2.4rem
+}
+
+.cfd-password-modal__radio.dc-radio-group__item {
+    display: flex;
+    flex-direction: row
+}
+
+.cfd-password-modal__create-password {
+    padding: 0 1.2rem
+}
+
+.cfd-password-modal__create-password-content {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    margin-top: -2.5rem;
+    width: 100%
+}
+
+.cfd-password-modal__create-password-content .dc-icon {
+    flex: none;
+    margin-left: 1.1rem
+}
+
+.cfd-password-modal__create-password-title {
+    margin-bottom: .8rem;
+    margin-top: 2.4rem
+}
+
+.cfd-password-modal__create-password-description {
+    margin-bottom: 1.6rem;
+    max-width: 30rem
+}
+
+.cfd-password-modal__change-password-confirmation {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    max-width: 30rem
+}
+
+@media(min-width:1280px) {
+    .cfd-password-modal__change-password-confirmation {
+        margin-top: -2.5rem
+    }
+}
+
+.cfd-password-modal__change-password-confirmation-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%
+}
+
+.cfd-password-modal__change-password-confirmation .dc-form-submit-button {
+    margin-bottom: 2.2rem
+}
+
+.dc-modal__container_top-up-virtual {
+    display: flex;
+    flex-direction: column;
+    min-height: 367px;
+    width: 384px
+}
+
+.dc-modal__container_top-up-virtual__body {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: space-around;
+    padding: 4.8rem 4.2rem
+}
+
+.dc-modal__container_top-up-virtual__description {
+    text-transform: none
+}
+
+.dc-modal__container_top-up-virtual--h4 {
+    color: var(--text-general);
+    color: var(--text-prominent);
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: 1.25;
+    text-align: center;
+    text-transform: none
+}
+
+.dc-modal__container_top-up-virtual--balance {
+    color: var(--text-general);
+    color: var(--text-profit-success);
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1.75;
+    line-height: 1.5;
+    text-align: center;
+    text-transform: none
+}
+
+.cfd-success-topup__heading {
+    font-size: 1.4rem;
+    font-weight: 700;
+    line-height: 1.5;
+    margin: 1.6rem 1.8rem
+}
+
+.cfd-success-topup__description p,
+.cfd-success-topup__heading {
+    color: var(--text-general);
+    text-align: center;
+    text-transform: none
+}
+
+.cfd-success-topup__description p {
+    font-size: 1.2rem;
+    font-weight: 400;
+    line-height: 1.25
+}
+
+.cfd-dashboard__container .dc-popover__target {
+    display: flex
+}
+
+.cfd-verification-email-sent {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center
+}
+
+.cfd-verification-email-sent__title {
+    color: var(--text-general);
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1.75;
+    margin: .8rem 0;
+    text-align: center;
+    text-transform: none
+}
+
+.cfd-verification-email-sent__title--sub {
+    margin-bottom: .8rem;
+    margin-top: 3rem
+}
+
+.cfd-verification-email-sent__resend-button {
+    color: var(--text-general);
+    color: var(--brand-red-coral);
+    display: block;
+    font-size: 1.4rem;
+    font-weight: 700;
+    line-height: 1.5;
+    margin: 3.2rem 0 0;
+    text-align: center;
+    text-decoration: none;
+    text-transform: none
+}
+
+.cfd-verification-email-sent .countdown {
+    margin: 0 .4rem
+}
+
+[dir=ltr] .cfd-reset-password {
+    text-align: left
+}
+
+[dir=rtl] .cfd-reset-password {
+    text-align: right
+}
+
+.cfd-reset-password {
+    color: var(--text-general);
+    color: var(--text-prominent);
+    font-size: 1.4rem;
+    font-weight: 400;
+    justify-content: center;
+    line-height: 1.5;
+    text-transform: none
+}
+
+.cfd-reset-password,
+.cfd-reset-password__container {
+    align-items: center;
+    display: flex;
+    height: 100%;
+    width: 100%
+}
+
+.cfd-reset-password__container {
+    flex-direction: column;
+    flex-grow: 1;
+    gap: 4rem;
+    justify-items: center;
+    padding: 2.4rem 0
+}
+
+@media(max-width:1279px) {
+    .cfd-reset-password__container {
+        min-height: 24rem;
+        width: calc(100vw - 3.2rem)
+    }
+}
+
+.cfd-reset-password__heading {
+    color: var(--text-general);
+    font-size: 1.4rem;
+    font-weight: 700;
+    line-height: 1.5;
+    margin: 1.6rem 0 0;
+    text-align: center;
+    text-transform: none
+}
+
+[dir=ltr] .cfd-reset-password__hint {
+    text-align: left
+}
+
+[dir=rtl] .cfd-reset-password__hint {
+    text-align: right
+}
+
+.cfd-reset-password__hint {
+    color: var(--text-general);
+    color: var(--text-less-prominent);
+    font-size: 1.2rem;
+    font-weight: 400;
+    line-height: 1.25;
+    margin-left: 1.2rem;
+    text-transform: none
+}
+
+.cfd-reset-password__password-field {
+    margin-bottom: .5rem
+}
+
+.cfd-reset-password__password-field .dc-input__label {
+    top: .9rem
+}
+
+@media(min-width:1280px) {
+    .cfd-reset-password__password-area {
+        width: min(34rem, 100vw)
+    }
+}
+
+@media(max-width:1279px) {
+    .cfd-reset-password__password-area {
+        max-width: calc(100% - 2.4rem);
+        width: 100%
+    }
+}
+
+.cfd-reset-password__error {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    max-width: 38.4rem;
+    min-height: 28.4rem;
+    padding: 2rem 0
+}
+
+[dir=ltr] .cfd-reset-password__description {
+    text-align: left
+}
+
+[dir=rtl] .cfd-reset-password__description {
+    text-align: right
+}
+
+.cfd-reset-password__description {
+    color: var(--text-general);
+    color: var(--text-prominent);
+    font-size: 1.4rem;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-bottom: 2.4rem;
+    text-transform: none
+}
+
+.cfd-reset-password__description--is-centered {
+    margin-bottom: 2.4rem;
+    max-width: 70%
+}
+
+.cfd-reset-password__confirm-button {
+    margin-top: 2.4rem
+}
+
+.cfd-reset-password__success {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: 28.4rem;
+    justify-content: space-around;
+    min-width: 38.4rem;
+    padding: 2.4rem 0 2rem
+}
+
+@media(max-width:1279px) {
+    .cfd-reset-password__success {
+        height: 100%;
+        width: calc(100vw - 3.2rem)
+    }
+
+    .cfd-reset-password .dc-form-submit-button {
+        all: unset
+    }
+}
+
+.poi-icon-row {
+    display: flex;
+    margin-bottom: 16px
+}
+
+.poi-icon-row__icon-container {
+    align-items: center;
+    color: var(--text-less-prominent);
+    display: flex;
+    flex-direction: column
+}
+
+.poi-icon-row__icon-container:not(:first-child):not(:last-child) {
+    margin: 0 40px
+}
+
+.poi-icon-row__icon-container p {
+    font-size: var(--text-size-xxs)
+}
+
+.poi-icon-row__icon-container p:first-of-type {
+    font-weight: 700;
+    line-height: 1.5;
+    margin-top: 8px
+}
+
+@media(max-width:1279px) {
+    .poi-icon-row__icon-container:not(:first-child):not(:last-child) {
+        margin: 0
+    }
+
+    .poi-icon-row__icon-container .dc-icon {
+        height: auto;
+        width: 8.8rem
+    }
+}
+
+@media only screen and (max-width:1279px)and (max-width:340px) {
+    .poi-icon-row__icon-container .dc-icon {
+        width: 7rem
+    }
+}
+
+@media(max-width:1279px) {
+    .poi-icon-row__icon-container p {
+        line-height: 20px
+    }
+
+    .poi-icon-row {
+        grid-gap: 2.4rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        margin-top: 4rem
+    }
+}
+
+.dc-modal__container_cfd-financial-stp-modal .dc-modal-header {
+    border-bottom: 1px solid var(--general-section-1)
+}
+
+.dc-modal__container_jurisdiction-modal {
+    overflow-y: scroll
+}
+
+.dc-modal__container_jurisdiction-modal .dc-modal-header {
+    border-bottom: 2px solid var(--general-section-1)
+}
+
+.poi-poa-submitted__message-content {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    justify-content: center;
+    line-height: 5rem;
+    padding: 10rem 3rem 7rem
+}
+
+.poi-poa-submitted__message-content .dc-btn {
+    margin-top: 2rem
+}
+
+.poi-poa-submitted__text {
+    padding-top: 1.6rem
+}
+
+.poi-poa-submitted__svg-footer {
+    display: flex;
+    margin: 1.6rem 0
+}
+
+.poi-poa-submitted__svg-footer .dc-btn {
+    margin: .5rem
+}
+
+.cfd-password-change-list {
+    list-style: disc;
+    margin-top: .4rem
+}
+
+.cfd-password-change-list-container {
+    color: var(--text-general);
+    font-size: 1.6rem;
+    margin-bottom: 1.3rem;
+    padding-left: 2.5rem
+}
+
+.cfd-password-change-modal-description {
+    margin: 1.5rem 0 2rem
+}
+
+@media(max-width:1279px) {
+    .cfd-password-change-modal-description {
+        margin: 1rem 1rem 2rem
+    }
+
+    .cfd-password-change-modal-description--button {
+        display: flex;
+        width: 100%
+    }
+
+    .cfd-password-change-modal-description--footer {
+        border-top: 1px solid var(--general-hover);
+        padding: 1rem 1.6rem
+    }
+}
+
+@media(min-width:601px)and (max-width:1279px)and (orientation:portrait) {
+    .cfd-password-change-modal-description {
+        margin-left: 0;
+        margin-right: 0
+    }
+}
+
+.cfd-password-change__content {
+    border-top: 1px solid var(--general-hover);
+    padding: 0 !important
+}
+
+.cfd-password-change__content-center {
+    justify-content: center
+}
+
+@media(max-width:1279px) {
+    .cfd-password-change__content {
+        border-top: none
+    }
+}
+
+.cfd-password-change__password-success {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center
+}
+
+@media(max-width:1279px) {
+    .cfd-password-change__password-success {
+        padding: 1.4rem 1.6rem 2.4rem
+    }
+}
+
+.cfd-password-change__icon {
+    margin: 0 0 2rem 2.4rem
+}
+
+@media(max-width:1279px) {
+    .cfd-password-change__icon {
+        margin: 0 0 2.4rem 2.4rem
+    }
+}
+
+.cfd-password-change__heading {
+    margin-bottom: .8rem
+}
+
+.cfd-password-change__subtext {
+    margin-bottom: 1.6rem
+}
+
+@media(min-width:1280px) {
+    .cfd-password-change__footer-button {
+        align-self: self-end;
+        padding: 0 1rem 1rem 0
+    }
+
+    .cfd-password-change__container {
+        border-bottom: 1px solid var(--general-hover);
+        padding: 0 1.3rem
+    }
+}
+
+@media(max-width:1279px) {
+    .cfd-password-change__footer-button {
+        padding: 1rem
+    }
+}
+
+@media(min-width:601px)and (max-width:1279px)and (orientation:portrait) {
+    .cfd-password-change__footer-button {
+        margin-bottom: auto;
+        width: 100%
+    }
+
+    .cfd-password-change__footer-button .dc-form-submit-button {
+        gap: .8rem
+    }
+
+    .cfd-password-change__footer-button .dc-form-submit-button .dc-btn {
+        flex: 1 0 auto;
+        margin: 0
+    }
+
+    .cfd-password-change__header .dc-mobile-dialog__title {
+        font-size: var(--text-size-s);
+        margin-left: auto;
+        margin-right: auto
+    }
+
+    .cfd-password-change__wrapper.dc-mobile-dialog__cfd-password-modal {
+        max-width: 60rem
+    }
+
+    .cfd-password-change__container.cfd-password-modal__content.dc-modal__container_cfd-password-modal__body {
+        flex-grow: 0;
+        height: auto;
+        margin-bottom: 0
+    }
+}
+
+.account-type-dropdown {
+    border: 2px solid;
+    font-size: 1.4rem;
+    font-weight: 700;
+    height: 1.8em;
+    line-height: 2rem;
+    text-transform: capitalize
+}
+
+.account-type-dropdown--parent {
+    border: none;
+    padding: 0
+}
+
+.account-type-dropdown--parent>div.dc-dropdown-container {
+    margin-top: 0;
+    min-width: 7.1rem;
+    width: auto
+}
+
+.account-type-dropdown--parent--demo {
+    width: 90%
+}
+
+.account-type-dropdown:focus,
+.account-type-dropdown:hover {
+    outline: none
+}
+
+.account-type-dropdown--demo>.dc-text,
+.account-type-dropdown--real>.dc-text {
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: 20px;
+    padding-left: .4em;
+    text-align: left
+}
+
+.account-type-dropdown--demo>.dc-dropdown__display-text,
+.account-type-dropdown--real>.dc-dropdown__display-text {
+    padding-right: 2.3em
+}
+
+.account-type-dropdown--real,
+.account-type-dropdown--real:focus,
+.account-type-dropdown--real:hover {
+    border: 1px solid var(--status-success);
+    min-width: 87%
+}
+
+.account-type-dropdown--real:focus>.dc-text,
+.account-type-dropdown--real:hover>.dc-text,
+.account-type-dropdown--real>.dc-text {
+    color: var(--status-success)
+}
+
+.account-type-dropdown--demo,
+.account-type-dropdown--demo:focus,
+.account-type-dropdown--demo:hover {
+    border: 1px solid var(--status-info);
+    width: 90%
+}
+
+.account-type-dropdown--demo:focus>.dc-text,
+.account-type-dropdown--demo:hover>.dc-text,
+.account-type-dropdown--demo>.dc-text {
+    color: var(--status-info);
+    padding-left: .65em
+}
+
+.account-type-dropdown__icon {
+    transform: none
+}
+
+.account-type-dropdown__icon--real {
+    --fill-color1: var(--status-success);
+    right: .7rem
+}
+
+.account-type-dropdown__icon--demo {
+    --fill-color1: var(--status-info);
+    right: 1.4rem
+}
+
+[dir=ltr] .asset-summary {
+    margin-left: auto
+}
+
+[dir=rtl] .asset-summary {
+    margin-right: auto
+}
+
+.asset-summary {
+    display: flex;
+    flex-direction: column
+}
+
+@media(max-width:1279px) {
+    .asset-summary {
+        align-items: center
+    }
+}
+
+[dir=ltr] .asset-summary__container.content-loader {
+    margin-left: auto
+}
+
+[dir=rtl] .asset-summary__container.content-loader {
+    margin-right: auto
+}
+
+.asset-summary__container.content-loader {
+    cursor: not-allowed;
+    width: 12rem
+}
+
+[dir=rtl] .asset-summary__container.content-loader {
+    width: auto
+}
+
+@media(max-width:1279px) {
+    .asset-summary__container.content-loader {
+        margin-left: auto;
+        margin-right: auto;
+        width: 10rem
+    }
+}
+
+.asset-summary--total {
+    border-bottom: 4px dotted var(--checkbox-disabled-grey);
+    display: flex
+}
+
+@media(max-width:1279px) {
+    .asset-summary--total {
+        margin-top: 3rem
+    }
+}
+
+.regulators-switcher__container {
+    align-items: center;
+    display: inline-flex;
+    margin: 0 auto;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none
+}
+
+.regulators-switcher__container.content-loader {
+    cursor: not-allowed;
+    width: 20rem
+}
+
+.regulators-switcher--text {
+    align-items: center;
+    display: flex
+}
+
+[dir=ltr] .regulators-switcher--icon {
+    padding-left: .5rem
+}
+
+[dir=rtl] .regulators-switcher--icon {
+    padding-right: .5rem
+}
+
+.regulators-switcher--icon {
+    cursor: pointer
+}
+
+[dir=ltr] .regulators-switcher__switch {
+    margin-left: .8rem
+}
+
+[dir=rtl] .regulators-switcher__switch {
+    margin-right: .8rem
+}
+
+.regulators-switcher__switch {
+    background-color: var(--icon-grey-background);
+    border-radius: 6px;
+    display: inline-flex;
+    padding: .4rem
+}
+
+.regulators-switcher__switch .item {
+    align-items: center;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    height: 3.2rem;
+    justify-content: center;
+    text-transform: capitalize;
+    width: 9.6rem
+}
+
+.regulators-switcher__switch .is-selected {
+    background-color: var(--general-main-1)
+}
+
+.main-title-bar {
+    align-items: center;
+    display: inline-flex;
+    margin-bottom: 2.4rem;
+    min-height: 6rem;
+    width: 100%
+}
+
+.main-title-bar__text {
+    font-size: 1.9rem
+}
+
+.main-title-bar__right {
+    align-items: center;
+    display: inline-flex;
+    gap: 1.2rem
+}
+
+.main-title-bar-mobile {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 2rem
+}
+
+.main-title-bar-mobile--regulator {
+    align-items: center;
+    display: flex;
+    justify-content: flex-end;
+    width: 14rem
+}
+
+.main-title-bar-mobile--regulator__container.content-loader {
+    cursor: not-allowed;
+    height: 100%;
+    padding: 0;
+    width: 100%
+}
+
+.main-title-bar-mobile--regulator--compare-modal {
+    padding-right: 1rem
+}
+
+.main-title-bar-mobile--account-type-dropdown {
+    padding-top: .5rem
+}
+
+.disclaimer {
+    align-items: center;
+    backface-visibility: hidden;
+    background: var(--icon-grey-background);
+    bottom: 3.6rem;
+    display: flex;
+    min-height: 5rem;
+    position: fixed;
+    width: 100%;
+    z-index: 3
+}
+
+@media(max-width:1279px) {
+    .disclaimer {
+        border: 1px solid var(--icon-grey-background);
+        min-height: 8rem
+    }
+}
+
+.disclaimer-text {
+    padding: 0 3rem
+}
+
+@media(max-width:1279px) {
+    .disclaimer-text {
+        padding: 0 1.5rem
+    }
+}
+
+.disclaimer__bottom-plug {
+    backface-visibility: hidden;
+    background: var(--general-main-1);
+    bottom: 0;
+    height: 3.6rem;
+    position: fixed;
+    width: 100%;
+    z-index: 3
+}
+
+.book-banner-template {
+    background: rgba(0, 136, 50, .08);
+    border-radius: .8rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 2.4rem;
+    padding: 1.6rem
+}
+
+.book-banner-template__cancel {
+    cursor: pointer
+}
+
+.book-banner-template__content,
+.book-banner-template__left {
+    display: flex;
+    flex-direction: row
+}
+
+.book-banner-template__content {
+    font-size: 1.4rem;
+    line-height: 2.2rem
+}
+
+.book-banner-template__content label {
+    color: var(--text-prominent);
+    padding-left: .8rem;
+    padding-right: .8rem
+}
+
+.book-banner-template__content a {
+    color: var(--text-prominent);
+    font-weight: 700;
+    text-decoration-line: underline
+}
+
+@media(min-width:320px)and (max-width:767px) {
+    .book-banner-template__content {
+        align-content: start;
+        flex-direction: column;
+        font-size: 1.2rem;
+        line-height: 1.8rem
+    }
+
+    .book-banner-template__content label {
+        margin-bottom: 1.6rem
+    }
+}
+
+[dir=ltr] .wallets-banner {
+    padding-left: 2.4rem
+}
+
+[dir=rtl] .wallets-banner {
+    padding-right: 2.4rem
+}
+
+.wallets-banner {
+    align-items: center;
+    background-color: var(--general-section-1);
+    border: 1px solid var(--wallets-banner-border-color);
+    border-radius: 16px;
+    display: flex;
+    gap: .2rem;
+    height: 18rem;
+    justify-content: space-between;
+    margin-bottom: 2.4rem;
+    margin-top: 2.4rem;
+    overflow: hidden;
+    padding-bottom: 2.4rem;
+    padding-top: 2.4rem;
+    position: relative
+}
+
+@media(max-width:1279px) {
+    [dir=ltr] .wallets-banner {
+        padding-left: 1.6rem
+    }
+
+    [dir=rtl] .wallets-banner {
+        padding-right: 1.6rem
+    }
+
+    .wallets-banner {
+        border-radius: 8px;
+        height: 14.2rem;
+        padding-bottom: 1.6rem;
+        padding-top: 1.6rem
+    }
+}
+
+.wallets-banner__content {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    height: 100%
+}
+
+.wallets-banner-upgrade__content {
+    gap: 1.6rem;
+    justify-content: center;
+    min-width: 55.7rem;
+    width: 55.7rem
+}
+
+@media(max-width:600px) {
+    .wallets-banner-upgrade__content {
+        min-width: 19rem;
+        width: 19rem
+    }
+}
+
+@media(min-width:601px)and (max-width:1279px) {
+    .wallets-banner-upgrade__content {
+        min-width: 25.6rem;
+        width: 25.6rem
+    }
+}
+
+.wallets-banner-upgrade__button {
+    padding-left: 6.7rem;
+    padding-right: 6.7rem
+}
+
+@media(max-width:1279px) {
+    .wallets-banner-upgrade__button {
+        padding: .6rem 1.6rem
+    }
+}
+
+.wallets-banner-upgrading__content {
+    gap: .8rem;
+    justify-content: space-between;
+    min-width: 48.6rem;
+    width: 48.6rem
+}
+
+@media(max-width:600px) {
+    .wallets-banner-upgrading__content {
+        min-width: 20rem;
+        width: 20rem
+    }
+}
+
+@media(min-width:601px)and (max-width:1279px) {
+    .wallets-banner-upgrading__content {
+        min-width: 27.3rem;
+        width: 27.3rem
+    }
+}
+
+@media(max-width:600px) {
+    .wallets-banner-upgrading__description {
+        min-width: 15.1rem;
+        width: 15.1rem
+    }
+}
+
+@media(min-width:601px)and (max-width:1279px) {
+    .wallets-banner-upgrading__description {
+        min-width: 27.3rem;
+        width: 27.3rem
+    }
+}
+
+.wallets-banner-upgrading__loading {
+    align-items: center;
+    display: flex;
+    gap: .6rem;
+    height: 4.8rem;
+    justify-content: center;
+    width: 4.8rem
+}
+
+@media(max-width:600px) {
+    .wallets-banner-upgrading__loading {
+        height: 3.2rem;
+        width: 3.2rem
+    }
+}
+
+.wallets-banner-upgrading__loading span {
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+    animation-name: loading;
+    animation-timing-function: cubic-bezier(1, 0, 0, 1)
+}
+
+.wallets-banner-upgrading__loading span:nth-child(2) {
+    animation-delay: .5s
+}
+
+.wallets-banner-upgrading__loading span:nth-child(3) {
+    animation-delay: 1s
+}
+
+.wallets-banner-upgrading__dot {
+    background-color: var(--wallets-banner-dot-color);
+    border-radius: 50%;
+    display: inline-block;
+    height: .8rem;
+    width: .8rem
+}
+
+@media(max-width:600px) {
+    .wallets-banner-upgrading__dot {
+        height: .5rem;
+        width: .5rem
+    }
+}
+
+.wallets-banner-unsuccessful__content {
+    gap: .8rem;
+    justify-content: center;
+    min-width: 48.6rem;
+    width: 48.6rem;
+    z-index: 1
+}
+
+@media(max-width:600px) {
+    .wallets-banner-unsuccessful__content {
+        min-width: 17rem;
+        width: 17rem
+    }
+}
+
+@media(min-width:601px)and (max-width:1279px) {
+    .wallets-banner-unsuccessful__content {
+        min-width: 29.5rem;
+        width: 29.5rem
+    }
+}
+
+.wallets-banner-unsuccessful__clickable-text {
+    cursor: pointer
+}
+
+[dir=ltr] .wallets-banner-unsuccessful__image {
+    margin-right: 8rem
+}
+
+[dir=rtl] .wallets-banner-unsuccessful__image {
+    margin-left: 8rem
+}
+
+.wallets-banner-unsuccessful__image {
+    min-width: 24.2rem;
+    overflow: hidden;
+    width: -moz-fit-content;
+    width: fit-content
+}
+
+@media(max-width:1279px) {
+    [dir=ltr] .wallets-banner-unsuccessful__image {
+        margin-right: 2.4rem
+    }
+
+    [dir=rtl] .wallets-banner-unsuccessful__image {
+        margin-left: 2.4rem
+    }
+
+    .wallets-banner-unsuccessful__image {
+        min-width: 19.2rem
+    }
+}
+
+[dir=rtl] .wallets-banner-unsuccessful__image {
+    transform: scaleX(-1)
+}
+
+[dir=ltr] .wallets-banner-upgrade__image,
+[dir=ltr] .wallets-banner-upgrading__image {
+    margin-right: 8rem
+}
+
+[dir=rtl] .wallets-banner-upgrade__image,
+[dir=rtl] .wallets-banner-upgrading__image {
+    margin-left: 8rem
+}
+
+.wallets-banner-upgrade__image,
+.wallets-banner-upgrading__image {
+    min-width: 36.8rem;
+    overflow: hidden;
+    width: -moz-fit-content;
+    width: fit-content
+}
+
+@media(max-width:600px) {
+
+    [dir=ltr] .wallets-banner-upgrade__image,
+    [dir=ltr] .wallets-banner-upgrading__image {
+        margin-right: 0
+    }
+
+    [dir=rtl] .wallets-banner-upgrade__image,
+    [dir=rtl] .wallets-banner-upgrading__image {
+        margin-left: 0
+    }
+
+    .wallets-banner-upgrade__image,
+    .wallets-banner-upgrading__image {
+        margin-top: .4rem;
+        min-width: 15.6rem
+    }
+
+    .wallets-banner-upgrade__image--eu,
+    .wallets-banner-upgrading__image--eu {
+        min-width: 10.8rem
+    }
+}
+
+@media(min-width:601px)and (max-width:1279px) {
+
+    [dir=ltr] .wallets-banner-upgrade__image,
+    [dir=ltr] .wallets-banner-upgrading__image {
+        margin-right: 2.4rem
+    }
+
+    [dir=rtl] .wallets-banner-upgrade__image,
+    [dir=rtl] .wallets-banner-upgrading__image {
+        margin-left: 2.4rem
+    }
+
+    .wallets-banner-upgrade__image,
+    .wallets-banner-upgrading__image {
+        min-width: 23.4rem
+    }
+}
+
+@keyframes loading {
+    0% {
+        background-color: var(--wallets-banner-active-dot-color)
+    }
+
+    to {
+        opacity: var(--wallets-banner-dot-color)
+    }
+}
+
+.business-closure-banner {
+    padding-left: 1.6rem;
+    padding-right: 1.6rem
+}
+
+@media(min-width:1280px) {
+    .business-closure-banner {
+        position: sticky;
+        top: 0;
+        z-index: 2
+    }
+
+    .business-closure-banner+div {
+        height: calc(100vh - 84px - 3.4rem)
+    }
+}
+
+.traders-hub {
+    margin: auto;
+    max-width: 128rem;
+    padding: 4rem
+}
+
+.traders-hub[\:has\(\.wallets-banner__container\)] {
+    padding-top: 0
+}
+
+.traders-hub:has(.wallets-banner__container) {
+    padding-top: 0
+}
+
+@media(max-width:1279px) {
+    .traders-hub {
+        max-width: 60rem;
+        padding: 1.6rem;
+        width: 100%
+    }
+}
+
+.traders-hub__main-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2.4rem
+}
+
+.traders-hub__main-container-reversed {
+    flex-direction: column-reverse
+}
+
+@media(max-width:1279px) {
+    .traders-hub--eu-user {
+        min-height: 650px
+    }
+
+    .traders-hub--eu-user-without-mt5 {
+        min-height: 540px
+    }
+}
+
+.traders-hub__button-toggle {
+    background-color: transparent;
+    margin-top: 3rem;
+    padding: .4rem
+}
+
+.traders-hub--mobile {
+    overflow: scroll !important
+}
+
+.traders-hub--mobile::-webkit-scrollbar {
+    display: none
+}
+
+.traders-hub--mt5-not-allowed {
+    margin-top: 2rem
+}
+
+.dc-button-menu__toggle {
+    background-color: transparent;
+    border-bottom: 1px solid var(--general-section-1);
+    border-radius: 0
+}
+
+.dc-button-menu__toggle span {
+    color: var(--text-prominent)
+}
+
+.dc-button-menu__toggle--active {
+    background-color: transparent;
+    border-bottom: 1px solid var(--button-primary-default);
+    border-radius: 0
+}
+
+.get-started-trading-banner-ct[*|\:has\(] {
+    margin-bottom: 3.2rem
+}
+
+.get-started-trading-banner-ct:has(*) {
+    margin-bottom: 3.2rem
+}
+
+@media(min-width:1280px) {
+    .get-started-trading-banner-ct[*|\:has\(] {
+        margin-bottom: 6.4rem
+    }
+
+    .get-started-trading-banner-ct:has(*) {
+        margin-bottom: 6.4rem
+    }
+}

@@ -1,0 +1,64 @@
+.header-align{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  opacity: 1;
+  background-color: #FFFFFF;
+}
+.desktop .header-align{
+  display: flex;
+  align-items: center;
+  height: 56px;
+  opacity: 1;
+  padding-top: 48px;
+  padding-inline-end: 24px;
+  padding-bottom: 4px;
+  padding-inline-start: 24px;
+  background-color: #FFFFFF;
+  justify-content: flex-end;
+
+}
+.lang-switch {
+  background: #f6f6f6;
+  padding: 10px 22px 10px 16px;
+  display: flex;
+  align-items: center;
+  min-width: 78px;
+  height: 32px;
+  border-radius: 16px;
+  opacity: 1;
+  gap: 8px;
+  padding-inline-end: 16px;
+  padding-inline-start: 16px;
+}
+
+.lang-switch .globe {
+  display: flex;
+  align-items: center;
+}
+
+.lang {
+  width: 22px;
+  height: 24px;
+  font-family: 'Arial', 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 400px;      
+  font-style: normal;      
+  font-size: 16px;         
+  line-height: 1.5px;       
+  letter-spacing: 0;        
+}
+
+.language-search-input {
+    margin-bottom: 24px;
+}
+
+.phone .language-search-input .language-search[data-input] {
+    height: 32px !important;
+    background-color: rgba(0, 0, 0, 0.04) !important;
+    border: unset !important;
+    font-size: 14px !important;
+}
+
+.language-list .OSBlockWidget{
+    position: unset !important;
+}

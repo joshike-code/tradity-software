@@ -1,0 +1,386 @@
+/* ===================================================================== */
+
+/*  The following CSS was created using Theme Editor.                    */
+
+/*  To modify this CSS, click "Open Theme Editor".                       */
+
+/* ===================================================================== */
+
+
+
+/* ===================================================================== */
+
+/*  Root - CSS Variables                                                 */
+
+/* ===================================================================== */
+
+
+
+:root {
+
+	
+
+    /* Typography - Size */
+
+    --font-size-display: 36px;
+
+    --font-size-h1: 32px;
+
+    --font-size-h2: 28px;
+
+    --font-size-h3: 26px;
+
+    --font-size-h4: 22px;
+
+    --font-size-h5: 20px;
+
+    --font-size-h6: 18px;
+
+
+
+    --font-size-base: 16px;
+
+    --font-size-s: 14px;
+
+    --font-size-xs: 12px;	
+
+	
+
+    /* Color - Brand */
+
+    --color-primary: var(--theme-color-main);
+
+    --color-secondary: var(--theme-color-main);
+
+
+
+    --color-primary-hover: #bf333b;
+
+    --color-primary-selected: rgba(255, 68, 79, .12);
+
+	
+
+    /* App Settings */
+
+    --color-background-body: #ffffff;
+
+    --color-background-login: #ffffff;
+
+    --header-color: #ffffff;
+
+	
+
+    /* Dark Theme */
+
+    --background-dark-theme: rgba(255, 255, 255, .1);
+
+    --background-dark-theme-hover: rgba(255, 255, 255, .2);
+
+}
+
+
+
+/* Typography - Sizes Tablet */
+
+.tablet .font-size-display { --font-size-display: 34px; }
+
+.tablet .heading1 { --font-size-h1: 30px; }
+
+.tablet .heading2 { --font-size-h2: 26px; }
+
+.tablet .heading3 { --font-size-h3: 24px; }
+
+.tablet .heading4 { --font-size-h4: 21px; }
+
+.tablet .heading5 { --font-size-h5: 19px; }
+
+.tablet .heading6 { --font-size-h6: 17px; }
+
+
+
+
+
+/* Typography - Sizes Tablet */
+
+.phone .font-size-display { --font-size-display: 32px; }
+
+.phone .heading1 { --font-size-h1: 28px; }
+
+.phone .heading2 { --font-size-h2: 24px; }
+
+.phone .heading3 { --font-size-h3: 22px; }
+
+.phone .heading4 { --font-size-h4: 20px; }
+
+.phone .heading5 { --font-size-h5: 18px; }
+
+.phone .heading6 { --font-size-h6: 16px; }
+
+
+
+/* Login and Splash Color */
+
+
+
+.login-screen,
+
+.layout-native .login-screen {
+
+    background-color: var(--color-background-login);
+
+}
+
+
+
+html {
+    overflow-y: auto !important;
+}
+
+.dropdown-popup-row{
+    cursor: pointer;
+}
+
+.drowpdown-empty-value-row{
+    display: none !important;
+}
+
+.form-control[data-input]:focus:not(.not-valid), .form-control[data-textarea]:focus:not(.not-valid) {
+    border-color: #818488 !important;
+}
+
+/* Your CSS styles here */
+body {
+    font-family: 'IBM Plex Sans', sans-serif;
+}
+
+.desktop .deriv-app-logo {
+    height: 96px;
+}
+
+.phone .deriv-app-logo, 
+.tablet .deriv-app-logo {
+    height: 72px;
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+.background-neutral {
+    background-color: #F8F9FA;
+}
+
+.form-control[data-input]:focus:not(.not-valid), 
+.form-control[data-textarea]:focus:not(.not-valid),
+.dropdown-container > div.dropdown-display:focus:not(.not-valid), 
+.dropdown-container > select.dropdown-display:focus:not(.not-valid),
+.dropdown-container:focus(.not-valid)  {
+    border: var(--border-size-s) solid #818488 !important;
+    border-color: #818488;
+}
+
+.form .form-btn-container {
+    text-align: end;
+    width: 100%;
+}
+
+.phone form .form-btn-container .btn {
+    width: 100%;
+}
+
+.btn {
+    min-width: 100px;
+    border-radius: 100px;
+}
+
+.btn.btn-primary {
+    border-width: 0px;
+}
+
+.btn .test-custom-button  {
+    color: green;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.popup-backdrop {
+    background-color: rgba(0, 0, 0, 0.87);
+}
+
+.vscomp-clear-button {
+    display: none !important;
+}
+.product-container {
+    border: 1px solid #DEE2E6;
+    border-radius: 4px;
+    padding: 16px;
+}
+.phone .product-container {
+    width: 12 col;
+}
+
+.tablet .product-container {
+    width: 12 col;
+}
+
+.wizard-wrapper-item {
+    cursor: default !important;
+}
+
+.phone .btn-container .btn,
+.tablet .btn-container .btn {
+    width: 100%;
+}
+
+.tablet .trading-assessment-steps__desktop,
+.phone .trading-assessment-steps__desktop {
+    visibility: hidden;
+    display: none;
+}
+
+/* make the default popup full screen in mobile */
+.popup-dialog__mobile {
+    max-width: 100% !important;
+    margin: 0;
+    max-height: 100% !important;
+    height: 100%;
+}
+
+.top-right-popup {
+    padding: 16px  !important;
+    border-radius: 8px  !important;
+    width: 320px  !important;
+    box-shadow: 1px 1px 5px lightgray;
+    position: absolute !important;
+    z-index: 999;
+    background: white;
+    top: 50px !important;   
+    inset-inline-end: 50px !important;   
+}
+
+.full-height-popup {
+    margin: 0 !important;
+    max-height: 100% !important;
+    height: 100%;
+    /* margin-left: auto !important; */
+    position: fixed;
+    inset-inline-end: 0;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    width: 400px !important;
+}
+
+.phone .full-height-popup {
+    width: 100% !important;
+}
+
+.flatpickr-calendar:not(.open) {
+    display: none;
+}
+
+.width-auto {
+    width: auto;
+}
+
+label {
+    width: auto !important;
+}
+
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background-color: #fafafa;
+}
+
+.skeleton::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 200%;
+  background: linear-gradient(to right, #fafafa 0%, #f0f0f0 50%, #fafafa 100%);
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.list-center, .list.list-group.list-center {
+    align-items: center;
+    justify-content: center;
+}
+
+label {
+    line-height: 1.6 !important;
+}
+
+input-with-icon-content-icon center ph {
+    top: 5px;
+}
+
+
+.lh22, .text-neutral-7.full-width.lh22 {
+    line-height: 22px;
+}
+
+.is-rtl .account-specification-arrow-icon {
+    transform: rotate(180deg);
+}
+
+.pointer-events-none {
+    pointer-events: none;
+    color: var(--color-neutral-6);
+}
+
+span.input-email {
+    position: relative;
+}
+
+span#Input_Email_DescribedBy {
+    position: absolute;
+    left: 0;
+    bottom: -30px;
+}
+
+[data-label].mandatory:after {
+    content: none;
+}
+
+.is-rtl .account-specification-back-icon {
+    transform: rotate(180deg);
+}
+
+.phone .rac-mobile-footer,
+.tablet .rac-mobile-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    padding: 16px;
+    width: 100%;
+    background-color: var(--color-background-body);
+    border-top: 1px solid var(--color-neutral-3);
+}
+
+.phone .rac-mobile-footer > .btn,
+.tablet .rac-mobile-footer > .btn {
+    width: 100%;
+}
+
+.desktop .rac-mobile-footer {
+    position: unset;
+    padding: unset;
+    background-color: unset;
+    border: none;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}

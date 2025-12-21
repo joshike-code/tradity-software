@@ -1,0 +1,54 @@
+.initial-loader {
+                height: 100%;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                display: flex;
+                background-color: inherit;
+            }
+            .initial-loader__barspinner .initial-loader__barspinner--rect {
+                background-color: #8FA6AA;
+            }
+            .barspinner {
+                margin: 5em auto;
+                height: 2em;
+                white-space: nowrap;
+            }
+            .barspinner__rect {
+                margin: 0.4em;
+                border-radius: 20px;
+                height: 60%;
+                width: 0.6em;
+                display: inline-block;
+                animation: sk-stretchdelay 1.2s infinite ease-in-out;
+            }
+            .barspinner__rect--1 {
+                animation-delay: -1.2s;
+            }
+            .barspinner__rect--2 {
+                animation-delay: -1.0999999999999999s;
+            }
+            .barspinner__rect--3 {
+                animation-delay: -1s;
+            }
+            .barspinner__rect--4 {
+                animation-delay: -0.8999999999999999s;
+            }
+            .barspinner__rect--5 {
+                animation-delay: -0.7999999999999999s;
+            }
+            .barspinner--dark .barspinner__rect {
+                background-color: #fff;
+            }
+
+
+@keyframes sk-stretchdelay {
+                0%,
+                40%,
+                100% {
+                    transform: scaleY(1);
+                }
+                20% {
+                    transform: scaleY(2);
+                }
+            }
