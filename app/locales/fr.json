@@ -1,0 +1,180 @@
+{
+  "header": {
+    "cashier": "Caissier",
+    "account_bar": {
+      "free_margin": "Marge libre",
+      "equity": "Fonds propres",
+      "balance": "Solde"
+    }
+  },
+  "reports": {
+    "nav": {
+      "open_positions": "Positions ouvertes",
+      "trade_table": "Table des trades",
+      "statement": "Relevé"
+    },
+    "open_positions": {
+      "table_head": {
+        "pair": "Paire",
+        "type": "Type",
+        "currency": "Devise",
+        "price": "Prix d'achat/vente",
+        "current_price": "Prix actuel",
+        "open_time": "Heure d'ouverture",
+        "take_stop": "Prendre profit/Stop perte",
+        "commission": "Commission",
+        "total_p_l": "Profit/perte total",
+        "action": "Action"
+      },
+      "close": "fermer",
+      "total": "Total"
+    },
+    "trade_table": {
+      "table_head": {
+        "type": "Type",
+        "ref": "ID de référence",
+        "open_price": "Prix d'ouverture",
+        "close_price": "Prix de clôture",
+        "open_time": "Heure d'ouverture",
+        "close_time": "Heure de clôture",
+        "commission": "Commission",
+        "total_p_l": "Profit/perte total"
+      },
+      "p_l_8_contracts": "Profit/perte sur les 8 derniers contrats"
+    },
+    "statement": {
+      "table_head": {
+        "type": "Type",
+        "ref": "ID de référence",
+        "currency": "Devise",
+        "transaction_time": "Heure de transaction",
+        "transaction": "Transaction",
+        "credit_debit": "Crédit/Débit",
+        "balance": "Solde"
+      }
+    }
+  },
+  "settings": {
+    "nav": {
+      "personal_details": "Informations personnelles",
+      "language": "Langue",
+      "trading_assessment": "Évaluation de trading",
+      "financial_assessment": "Évaluation financière",
+      "identity_verification": "Preuve d'identité",
+      "address_verification": "Preuve d'adresse",
+      "income_verification": "Preuve de revenu",
+      "email_passwords": "E-mail et mots de passe",
+      "login_history": "Historique des connexions",
+      "close_account": "Fermer le compte"
+    },
+    "personal_details": {
+      "main_title": "Paramètres",
+      "sub_title_details": "Détails",
+      "sub_title_email_alerts": "Alertes par e-mail",
+      "content_email_alerts": "Je souhaite recevoir des e-mails",
+      "input_country": "Pays",
+      "input_receive_mails": "Recevoir des e-mails",
+      "main_button": "Enregistrer les modifications"
+    },
+    "language": {
+      "main_title": "Paramètres",
+      "sub_title_one": "Sélectionnez la langue"
+    },
+    "trading_assessment": {
+      "main_title": "Paramètres",
+      "sub_title_trading_experience": "Expérience de trading",
+      "input_prior_trading_experience": "Avez-vous une expérience préalable en trading ?",
+      "input_how_long_trading": "Depuis combien de temps tradez-vous ?",
+      "input_financial_instrument": "Quels instruments financiers avez-vous tradés ?",
+      "input_trade_frequency": "À quelle fréquence tradez-vous ?",
+      "input_primary_objective": "Quel est votre objectif principal en trading ?",
+      "input_risk_level": "Quel est votre niveau de risque préféré ?",
+      "option_prior_trading_experience": {
+        "yes": "Oui",
+        "no": "Non"
+      },
+      "option_how_long_trading": {
+        "less": "Moins d'un an",
+        "mid": "1 à 3 ans",
+        "more": "Plus de 3 ans"
+      },
+      "option_financial_instrument": {
+        "forex": "Forex",
+        "stocks": "Actions",
+        "crypto": "Crypto",
+        "commodities": "Matières premières",
+        "indices": "Indices"
+      },
+      "option_trade_frequency": {
+        "daily": "Quotidien",
+        "weekly": "Hebdomadaire",
+        "monthly": "Mensuel",
+        "rarely": "Rarement"
+      },
+      "option_primary_objective": {
+        "speculation": "Spéculation",
+        "hedging": "Couverture",
+        "diversification": "Diversification",
+        "other": "Autre"
+      },
+      "option_risk_level": {
+        "low": "Faible",
+        "medium": "Moyen",
+        "high": "Élevé"
+      },
+      "main_button": "Enregistrer les modifications"
+    },
+    "financial_assessment": {
+      "main_title": "Paramètres",
+      "sub_title_employment": "Emploi/Revenu",
+      "sub_title_spending": "Dépenses/Investissement",
+      "input_employment_status": "Quel est votre statut professionnel ?",
+      "input_annual_income": "Quel est votre revenu annuel ?",
+      "input_income_source": "Quelle est votre source de revenu ?",
+      "input_net_worth": "Quelle est votre estimation de patrimoine net ?",
+      "input_invest_amount": "Combien prévoyez-vous d'investir ou de trader chaque mois (USD) ?",
+      "input_debt": "Avez-vous une dette impayée ?",
+      "input_pep": "Êtes-vous une personne politiquement exposée (PEP) ?",
+      "input_pep_relationship": "Quelle est votre relation avec le PEP ?",
+      "input_pep_role": "Quelle est la position ou le rôle du PEP ?",
+      "option_employment_status": {
+        "employed": "Employé",
+        "self_employed": "Travailleur indépendant",
+        "unemployed": "Sans emploi",
+        "retired": "Retraité",
+        "student": "Étudiant"
+      },
+      "option_annual_income": {
+        "below_10000": "Moins de 10 000 $",
+        "between_1000050000": "10 000 $ - 50 000 $",
+        "between_50000100000": "50 000 $ - 100 000 $",
+        "over_100000": "Plus de 100 000 $"
+      },
+      "option_income_source": {
+        "employment": "Emploi",
+        "business": "Affaires",
+        "investments": "Investissements",
+        "other": "Autre"
+      },
+      "option_net_worth": {
+        "below_50000": "Moins de 50 000 $",
+        "between_50000250000": "50 000 $ - 250 000 $",
+        "over_250000": "Plus de 250 000 $"
+      },
+      "option_debt": {
+        "yes": "Oui",
+        "no": "Non"
+      },
+      "option_pep": {
+        "yes": "Oui",
+        "no": "Non"
+      },
+      "option_pep_relationship": {
+        "self": "Soi-même",
+        "close_family": "Famille proche",
+        "associate": "Associé"
+      },
+      "main_button": "Enregistrer les modifications"
+    }
+  }
+}

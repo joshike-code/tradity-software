@@ -26,9 +26,18 @@ $configArray = include __DIR__ . '/phinx.php';
 // Create config object
 $config = new Config($configArray);
 
+// Determine if we're being included by another script
+$isIncluded = (basename(__FILE__) !== basename($_SERVER['SCRIPT_FILENAME'] ?? ''));
+
 // Fake input and output for CLI simulation
 $input = new ArrayInput([]);
-$output = new StreamOutput(fopen('php://output', 'w'));
+
+// If included, suppress output by using a memory stream
+if ($isIncluded) {
+    $output = new StreamOutput(fopen('php://memory', 'w'));
+} else {
+    $output = new StreamOutput(fopen('php://output', 'w'));
+}
 
 // Create migration manager
 $manager = new Manager($config, $input, $output);
@@ -37,8 +46,7 @@ try {
     $manager->migrate('development');
 
     // Return array if included from another script
-    // This happens when UpdateService includes this file
-    if (basename(__FILE__) !== basename($_SERVER['SCRIPT_FILENAME'] ?? '')) {
+    if ($isIncluded) {
         return [
             'status' => 'success',
             'message' => 'Migrations ran successfully.'
@@ -52,7 +60,7 @@ try {
     error_log("Migration error: " . $errorMessage);
     
     // Return array if included from another script
-    if (basename(__FILE__) !== basename($_SERVER['SCRIPT_FILENAME'] ?? '')) {
+    if ($isIncluded) {
         return [
             'status' => 'error',
             'error' => $errorMessage

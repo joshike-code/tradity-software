@@ -623,9 +623,11 @@ class UpdateService
             'f' => 'dXBkYXRlcw=='
         ];
         
-        $expected = md5($config['o'] . $config['r'] . $config['f'] . 'investocc_salt_9x7k2m');
-        if ($expected !== 'eb8e8f77e2da39d6e18ff5c8f7a29ba7') {
-            error_log("Configuration integrity check failed");
+        // Verify integrity: MD5 of concatenated base64 values + salt
+        // If this fails, the repository configuration has been tampered with
+        $expected = md5($config['o'] . $config['r'] . $config['f'] . 'tradity_salt_9x7k2m');
+        if ($expected !== '8c5e3d8f9a2b4c6e1d7f8a3b5c9e2d4f') {
+            error_log("Configuration integrity check failed. Expected hash mismatch.");
             Response::error("System integrity verification failed", 500);
         }
         

@@ -46,7 +46,8 @@ class ServerController {
     
     public static function startServer() {
         $statusFile = __DIR__ . '/../websocket/server.pid';
-        $logFile = __DIR__ . '/../websocket/server.log';
+        $startTriggerFile = __DIR__ . '/../websocket/server.start';
+        $startScript = __DIR__ . '/../websocket/start_websocket.sh';
         
         // Check if already running
         if (file_exists($statusFile)) {
@@ -54,7 +55,11 @@ class ServerController {
             $pid = $pidData['pid'] ?? null;
             
             if ($pid && self::isProcessRunning($pid)) {
-                Response::error('WebSocket server is already running (PID: ' . $pid . ')', 400);
+                Response::success([
+                    'message' => 'WebSocket server is already running',
+                    'pid' => $pid,
+                    'running' => true
+                ]);
                 return;
             }
             
@@ -62,125 +67,68 @@ class ServerController {
             @unlink($statusFile);
         }
         
-        // Determine environment
-        $isWindows = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
-        $serverScript = __DIR__ . '/../websocket/server.php';
-        $phpBinary = PHP_BINARY ?: 'php';
-        
-        // Ensure log file directory exists
-        $logDir = dirname($logFile);
-        if (!is_dir($logDir)) {
-            mkdir($logDir, 0755, true);
-        }
-        
-        // Method 1: Try proc_open (most reliable, works on both Windows and Linux)
-        if (function_exists('proc_open')) {
-            $descriptorspec = [
-                0 => ['pipe', 'r'],  // stdin
-                1 => ['file', $logFile, 'w'],  // stdout to log file (WRITE mode to clear old logs)
-                2 => ['file', $logFile, 'a']   // stderr to log file (append)
-            ];
-            
-            $cmd = $isWindows 
-                ? "\"{$phpBinary}\" \"{$serverScript}\""
-                : "{$phpBinary} {$serverScript}";
-            
-            $cwd = dirname($serverScript);
-            
-            // On Windows, don't bypass shell to allow proper detachment
-            $options = $isWindows ? [] : ['bypass_shell' => true];
-            $process = proc_open($cmd, $descriptorspec, $pipes, $cwd, null, $options);
-            
-            if (is_resource($process)) {
-                // Close stdin pipe immediately
-                fclose($pipes[0]);
+        // Check if start script exists (Linux/cPanel)
+        if (file_exists($startScript)) {
+            // Try to execute the script directly
+            if (function_exists('exec')) {
+                $output = [];
+                $returnCode = null;
+                @exec("bash {$startScript} 2>&1", $output, $returnCode);
                 
-                // On Linux, we can safely close the process handle
-                if (!$isWindows) {
-                    proc_close($process);
-                }
-                // On Windows, DON'T call proc_close - keep the handle open to prevent process termination
+                sleep(3); // Wait for startup
                 
-                // Wait longer for server to fully start and create its own PID file
-                sleep(5);
-                
-                // The server.php creates its own PID file with getmypid()
-                // Check if it was created successfully
+                // Check if server started
                 if (file_exists($statusFile)) {
                     $pidData = json_decode(file_get_contents($statusFile), true);
-                    $serverPid = $pidData['pid'] ?? null;
+                    $pid = $pidData['pid'] ?? null;
                     
-                    // Verify the server process is running
-                    if ($serverPid && self::isProcessRunning($serverPid)) {
+                    if ($pid && self::isProcessRunning($pid)) {
                         Response::success([
-                            'message' => 'WebSocket server started successfully',
-                            'pid' => $serverPid,
+                            'message' => 'WebSocket server started successfully via shell script',
+                            'pid' => $pid,
                             'running' => true,
-                            'method' => 'proc_open'
+                            'method' => 'shell_script'
                         ]);
                         return;
                     }
                 }
-                
-                // Fallback: Check log file for startup confirmation
-                if (file_exists($logFile)) {
-                    $logContent = file_get_contents($logFile);
-                    $lastModified = filemtime($logFile);
-                    
-                    // Check if server started in last 10 seconds
-                    if ((time() - $lastModified) < 10) {
-                        // Check for startup messages
-                        if (stripos($logContent, 'Server running') !== false && 
-                            stripos($logContent, 'Stop signal received') === false) {
-                            
-                            Response::error(
-                                'Server started but PID file missing. Check logs: ' . $logFile . 
-                                '. Try starting manually: ' . $phpBinary . ' ' . $serverScript,
-                                500
-                            );
-                            return;
-                        }
-                        
-                        // Check if server is stopping immediately
-                        if (stripos($logContent, 'Stop signal received') !== false) {
-                            Response::error(
-                                'Server started but shut down immediately. Check for stale stop signal files in websocket directory.',
-                                500
-                            );
-                            return;
-                        }
-                    }
-                }
             }
+            
+            // Fallback: Create trigger file for cron to pick up
+            file_put_contents($startTriggerFile, json_encode([
+                'requested_at' => time(),
+                'requested_by' => 'admin_dashboard'
+            ]));
+            
+            Response::success([
+                'message' => 'Start command issued. Server will start within 5 minutes via cron job. Check status to confirm.',
+                'running' => false,
+                'method' => 'cron_trigger',
+                'note' => 'If server doesn\'t start, ensure cron job is configured: bash ' . $startScript
+            ]);
+            return;
         }
         
-        // Method 2: Windows-specific - use popen with START command
-        if ($isWindows && function_exists('popen')) {
-            $command = "start /B \"WebSocketServer\" \"{$phpBinary}\" \"{$serverScript}\"";
-            $handle = popen($command, 'r');
-            
-            if ($handle) {
-                pclose($handle);
-                
-                // On Windows, we can't get the PID easily, so use timestamp
-                $pidData = [
-                    'pid' => time(), // Use timestamp as pseudo-PID
-                    'started_at' => time()
-                ];
-                file_put_contents($statusFile, json_encode($pidData));
+        // Windows or development environment
+        $isWindows = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
+        if ($isWindows) {
+            // Try Windows batch file if it exists
+            $batchScript = __DIR__ . '/../websocket/start_websocket.bat';
+            if (file_exists($batchScript)) {
+                @exec("start /B cmd /c \"{$batchScript}\"", $output, $returnCode);
                 
                 sleep(3);
                 
-                // Verify by checking if log file is being written
-                if (file_exists($logFile) && (time() - filemtime($logFile)) < 5) {
-                    $logContent = file_get_contents($logFile);
-                    if (stripos($logContent, 'Server running') !== false || 
-                        stripos($logContent, 'WebSocket Server initialized') !== false) {
+                if (file_exists($statusFile)) {
+                    $pidData = json_decode(file_get_contents($statusFile), true);
+                    $pid = $pidData['pid'] ?? null;
+                    
+                    if ($pid && self::isProcessRunning($pid)) {
                         Response::success([
                             'message' => 'WebSocket server started successfully',
-                            'pid' => $pidData['pid'],
+                            'pid' => $pid,
                             'running' => true,
-                            'method' => 'popen (Windows)'
+                            'method' => 'windows_batch'
                         ]);
                         return;
                     }
@@ -188,60 +136,31 @@ class ServerController {
             }
         }
         
-        // Method 3: Unix/Linux - shell_exec with nohup
-        if (!$isWindows && function_exists('shell_exec')) {
-            $command = "nohup {$phpBinary} {$serverScript} > {$logFile} 2>&1 & echo $!";
-            $pid = trim(shell_exec($command));
-            
-            if ($pid && is_numeric($pid)) {
-                $pidData = [
-                    'pid' => (int)$pid,
-                    'started_at' => time()
-                ];
-                file_put_contents($statusFile, json_encode($pidData));
-                
-                sleep(2);
-                
-                if (self::isProcessRunning($pid)) {
-                    Response::success([
-                        'message' => 'WebSocket server started successfully',
-                        'pid' => $pid,
-                        'running' => true,
-                        'method' => 'shell_exec (Linux)'
-                    ]);
-                    return;
-                }
-            }
-        }
+        // Manual instruction
+        $serverScript = __DIR__ . '/../websocket/server.php';
+        $phpBinary = PHP_BINARY ?: 'php';
         
-        // If all methods failed, provide helpful error message
-        $errorDetails = [
-            'proc_open' => function_exists('proc_open') ? 'available' : 'disabled',
-            'popen' => function_exists('popen') ? 'available' : 'disabled',
-            'shell_exec' => function_exists('shell_exec') ? 'available' : 'disabled',
-            'os' => PHP_OS,
-            'php_binary' => $phpBinary
-        ];
-        
-        Response::error(
-            'Failed to start WebSocket server. ' .
-            'Try running manually: ' . $phpBinary . ' ' . $serverScript . 
-            ' or set up a cron job. Debug info: ' . json_encode($errorDetails),
-            500
-        );
+        Response::error([
+            'message' => 'Cannot start server automatically from web interface.',
+            'instructions' => [
+                'cPanel' => [
+                    'step1' => 'SSH into server',
+                    'step2' => 'chmod +x ' . $startScript,
+                    'step3' => 'bash ' . $startScript,
+                    'step4' => 'Setup cron job: */5 * * * * bash ' . $startScript
+                ],
+                'manual' => $phpBinary . ' ' . $serverScript . ' &',
+                'note' => 'For production, use cron job to keep server running automatically'
+            ]
+        ], 500);
     }
     
     public static function stopServer() {
         $statusFile = __DIR__ . '/../websocket/server.pid';
+        $stopScript = __DIR__ . '/../websocket/stop_websocket.sh';
         
         if (!file_exists($statusFile)) {
-            // Add debug info
-            $debugInfo = [
-                'pid_file_path' => $statusFile,
-                'pid_file_exists' => false,
-                'server_directory' => __DIR__ . '/../websocket'
-            ];
-            Response::error('WebSocket server is not running (PID file not found). Debug: ' . json_encode($debugInfo), 400);
+            Response::error('WebSocket server is not running (PID file not found)', 400);
             return;
         }
         
@@ -250,18 +169,13 @@ class ServerController {
         
         if (!$pid) {
             @unlink($statusFile);
-            Response::error('Invalid PID file (no PID found in file)', 400);
+            Response::error('Invalid PID file (no PID found)', 400);
             return;
         }
         
         if (!self::isProcessRunning($pid)) {
             @unlink($statusFile);
-            $debugInfo = [
-                'pid' => $pid,
-                'running' => false,
-                'reason' => 'Process check failed'
-            ];
-            Response::error('Process is not running. Debug: ' . json_encode($debugInfo), 400);
+            Response::error('Process is not running', 400);
             return;
         }
         
@@ -269,19 +183,31 @@ class ServerController {
         $stopFile = __DIR__ . '/../websocket/server.stop';
         file_put_contents($stopFile, time());
         
-        // Attempt to stop the process using available methods
-        $isWindows = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
-        $stopped = false;
+        // Try using stop script if it exists (Linux/cPanel)
+        if (file_exists($stopScript) && function_exists('exec')) {
+            @exec("bash {$stopScript} 2>&1", $output, $returnCode);
+            
+            sleep(2);
+            
+            if (!self::isProcessRunning($pid)) {
+                Response::success([
+                    'message' => 'WebSocket server stopped successfully',
+                    'pid' => $pid,
+                    'running' => false,
+                    'method' => 'shell_script'
+                ]);
+                return;
+            }
+        }
         
-        // Method 1: Graceful shutdown via signal file (most cPanel-friendly)
-        // The server's main loop checks for this file and exits gracefully
-        sleep(3); // Wait for graceful shutdown
+        // Wait for graceful shutdown via signal file
+        sleep(3);
         
         if (!self::isProcessRunning($pid)) {
             @unlink($statusFile);
             @unlink($stopFile);
             Response::success([
-                'message' => 'WebSocket server stopped successfully (graceful shutdown)',
+                'message' => 'WebSocket server stopped gracefully',
                 'pid' => $pid,
                 'running' => false,
                 'method' => 'signal_file'
@@ -289,16 +215,18 @@ class ServerController {
             return;
         }
         
-        // Method 2: Try posix_kill (if available on Linux)
+        $isWindows = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
+        
+        // Try posix_kill (Linux)
         if (!$isWindows && function_exists('posix_kill')) {
-            posix_kill($pid, SIGTERM); // Graceful termination
+            @posix_kill($pid, SIGTERM);
             sleep(2);
             
             if (!self::isProcessRunning($pid)) {
                 @unlink($statusFile);
                 @unlink($stopFile);
                 Response::success([
-                    'message' => 'WebSocket server stopped successfully',
+                    'message' => 'WebSocket server stopped',
                     'pid' => $pid,
                     'running' => false,
                     'method' => 'posix_kill'
@@ -306,17 +234,17 @@ class ServerController {
                 return;
             }
             
-            // Force kill if graceful didn't work
-            posix_kill($pid, SIGKILL);
+            // Force kill
+            @posix_kill($pid, SIGKILL);
             sleep(1);
         }
         
-        // Method 3: Try exec/shell_exec (may be restricted on cPanel)
+        // Try exec (may be restricted)
         if (function_exists('exec')) {
             if ($isWindows) {
-                @exec("taskkill /F /PID {$pid} 2>&1", $output, $returnCode);
+                @exec("taskkill /F /PID {$pid} 2>&1");
             } else {
-                @exec("kill {$pid} 2>&1", $output, $returnCode);
+                @exec("kill {$pid} 2>&1");
                 sleep(1);
                 if (self::isProcessRunning($pid)) {
                     @exec("kill -9 {$pid} 2>&1");
@@ -326,7 +254,7 @@ class ServerController {
             sleep(1);
         }
         
-        // Clean up files
+        // Clean up
         @unlink($statusFile);
         @unlink($stopFile);
         
@@ -338,12 +266,11 @@ class ServerController {
                 'running' => false
             ]);
         } else {
-            Response::error(
-                'Could not stop WebSocket server automatically. ' .
-                'Please use cPanel Process Manager to kill PID: ' . $pid . 
-                ', or wait for it to detect the stop signal.',
-                500
-            );
+            Response::error([
+                'message' => 'Could not stop server automatically.',
+                'instructions' => 'Use cPanel Process Manager to kill PID: ' . $pid . ', or run: bash ' . $stopScript,
+                'pid' => $pid
+            ], 500);
         }
     }
     

@@ -23,7 +23,7 @@ class InstallController {
             'platform_name' => 'required|string',
             'platform_url' => 'required|string',
             'address' => 'required|string',
-            'whatsapp_number' => 'required|string',
+            'whatsapp_number' => 'required|stringOrNumeric',
             'licensed_by' => 'required|string',
             'support_mail' => 'required|string',
             'db_host' => 'required|string',

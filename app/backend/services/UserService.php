@@ -52,7 +52,7 @@ class UserService
             // User exists and is active - send OTP
             $otp = OtpService::generateOtp($email);
 
-            Response::success(['message' => 'OTP sent', 'otp' => $otp]);
+            // Response::success(['message' => 'OTP sent', 'otp' => $otp]);
             if (!MailService::sendOtpEmail($email, $otp, 'login')) {
                 // Log error but don't reveal to user
                 error_log("Failed to send OTP to {$email}");
@@ -231,7 +231,7 @@ class UserService
         // Generate OTP
         $otp = OtpService::generateOtp($email);
 
-        Response::success(['message' => 'OTP sent', 'otp' => $otp]);
+        // Response::success(['message' => 'OTP sent', 'otp' => $otp]);
         if (!MailService::sendOtpEmail($email, $otp, 'register')) {
             Response::error('Failed to send OTP email', 500);
         }

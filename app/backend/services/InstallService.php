@@ -53,6 +53,16 @@ class InstallService
             file_put_contents($indexPath, $indexContent);
         }
 
+        // Install in landing index
+        $indexPath = realpath(__DIR__ . '/../../../index.html');
+        if (file_exists($indexPath)) {
+            $indexContent = file_get_contents($indexPath);
+            $indexContent = str_replace('Tradity', $platformName, $indexContent);
+            $indexContent = str_replace('app/backend/logos/default/main_logo_tradity.png', "backend/$mainLogo", $indexContent);
+            $indexContent = str_replace('app/backend/logos/default/favicon_tradity.png', "backend/$favicon", $indexContent);
+            file_put_contents($indexPath, $indexContent);
+        }
+
         // Create new config
         $config = [
             "platformName" => $platformName,
@@ -64,6 +74,7 @@ class InstallService
             "email" => "$supportMail",
             "address" => "$address",
             "licensed_by" => "$licensedBy",
+            "whatsapp" => "$whatsappNumber",
         ];
         $configPath = realpath(__DIR__ . '/../../') . '/config.json';
         file_put_contents($configPath, json_encode($config, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
