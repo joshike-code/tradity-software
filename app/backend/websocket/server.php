@@ -1314,7 +1314,8 @@ class BinanceWebSocketClient {
         }
         $streamString = implode('/', $streams);
         
-        $wsUrl = "wss://stream.binance.com:9443/stream?streams=" . $streamString;
+        // Use port 443 instead of 9443 (some firewalls block 9443)
+        $wsUrl = "wss://stream.binance.com:443/stream?streams=" . $streamString;
         
         // Use Google's public DNS (8.8.8.8) instead of React's default DNS
         $dnsResolverFactory = new \React\Dns\Resolver\Factory();
@@ -1374,7 +1375,8 @@ class BinanceWebSocketClient {
         }
         
         $streamString = implode('/', $klineStreams);
-        $wsUrl = "wss://stream.binance.com:9443/stream?streams=" . $streamString;
+        // Use port 443 instead of 9443 (some firewalls block 9443)
+        $wsUrl = "wss://stream.binance.com:443/stream?streams=" . $streamString;
         
         $dnsResolverFactory = new \React\Dns\Resolver\Factory();
         $dns = $dnsResolverFactory->createCached('8.8.8.8', $this->loop);

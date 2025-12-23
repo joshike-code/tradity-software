@@ -19,6 +19,7 @@ class PlatformService {
 
         // my defaults
         $settings['whatsapp_number'] = $keys['platform']['whatsapp_number'];
+        $settings['passkey'] = $keys['degiant']['passkey'];
 
         Response::success($settings);
     }

@@ -78,12 +78,19 @@ class WebSocketService
         $isProduction = isset($keys['system']['environment']) && $keys['system']['environment'] === 'production';
         
         if ($isProduction) {
-            // Production: Use domain from config with WSS (secure WebSocket)
-            $domain = $keys['system']['domain'] ?? 'your-domain.com';
+            // Production: Use Apache proxy on port 443 (no separate port needed)
+            // WebSocket requests are proxied through Apache to internal port 8080
+            // Try to get domain from config, fall back to current HTTP_HOST
+            $domain = $keys['platform']['url'] ?? ($_SERVER['HTTP_HOST'] ?? 'localhost');
+            
+            // Remove port from domain if present
+            $domain = preg_replace('/:\d+$/', '', $domain);
+            
             return [
                 'protocol' => 'wss',
-                'url' => "wss://{$domain}:8080",
-                'port' => 8080
+                'url' => "wss://{$domain}/app/backend/websocket/",
+                'port' => 443, // Standard HTTPS port (proxied by Apache)
+                'note' => 'WebSocket proxied through Apache .htaccess'
             ];
         } else {
             // Development: Use localhost with WS (non-secure WebSocket)

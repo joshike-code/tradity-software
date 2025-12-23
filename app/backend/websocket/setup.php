@@ -58,6 +58,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
     
+    if ($action === 'test_stop') {
+        // Try to stop the server
+        if (file_exists($stopScript)) {
+            $output = [];
+            $returnCode = null;
+            @exec("bash {$stopScript} 2>&1", $output, $returnCode);
+            
+            if ($returnCode === 0 || $returnCode === null) {
+                $messages[] = "✅ Stop command executed. Server should stop shortly.";
+                $messages[] = "Output: " . implode("<br>", $output);
+            } else {
+                $errors[] = "❌ Stop command failed with code: {$returnCode}";
+                $errors[] = "Output: " . implode("<br>", $output);
+            }
+        } else {
+            $errors[] = "❌ stop_websocket.sh not found";
+        }
+    }
+    
     if ($action === 'create_cron_helper') {
         // Create a PHP script that can be called via HTTP (for cPanel URL cron)
         $cronHelperContent = <<<'PHP'
@@ -130,6 +149,38 @@ if (file_exists($logFile)) {
     $logLines = file($logFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
     $statusInfo['last_log'] = end($logLines);
     $statusInfo['log_file_size'] = filesize($logFile) . ' bytes';
+}
+
+// Get server resource usage
+$resourceStats = [];
+
+// Memory Usage
+$memoryUsage = memory_get_usage(true);
+$memoryLimit = ini_get('memory_limit');
+$resourceStats['memory_used'] = round($memoryUsage / 1024 / 1024, 2) . ' MB';
+$resourceStats['memory_limit'] = $memoryLimit;
+
+// CPU Load Average (Unix-like systems)
+if (function_exists('sys_getloadavg')) {
+    $load = sys_getloadavg();
+    $resourceStats['cpu_load'] = round($load[0], 2) . ' (1m), ' . round($load[1], 2) . ' (5m), ' . round($load[2], 2) . ' (15m)';
+}
+
+// Disk Space
+$diskFree = @disk_free_space('/');
+$diskTotal = @disk_total_space('/');
+if ($diskFree !== false && $diskTotal !== false) {
+    $diskUsed = $diskTotal - $diskFree;
+    $diskPercent = round(($diskUsed / $diskTotal) * 100, 1);
+    $resourceStats['disk_usage'] = round($diskUsed / 1024 / 1024 / 1024, 2) . ' GB / ' . round($diskTotal / 1024 / 1024 / 1024, 2) . ' GB (' . $diskPercent . '%)';
+}
+
+// Server Uptime (if available)
+if (function_exists('shell_exec') && @shell_exec('uptime') !== null) {
+    $uptime = @shell_exec('uptime -p');
+    if ($uptime) {
+        $resourceStats['server_uptime'] = trim($uptime);
+    }
 }
 
 // Check script permissions
@@ -315,7 +366,25 @@ $phpCliPath = PHP_BINARY;
             </div>
             
             <div class="section">
-                <h2>🔧 Step 1: Make Scripts Executable</h2>
+                <h2>� Server Resource Usage</h2>
+                <div class="info-grid">
+                    <?php foreach ($resourceStats as $key => $value): ?>
+                        <div class="info-item">
+                            <span class="info-label"><?= ucfirst(str_replace('_', ' ', $key)) ?>:</span>
+                            <span class="info-value"><?= htmlspecialchars($value) ?></span>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+                <?php if (empty($resourceStats)): ?>
+                    <p style="color: #6b7280; margin-top: 10px;">Resource information not available on this system.</p>
+                <?php endif; ?>
+                <p style="margin-top: 15px; font-size: 13px; color: #6b7280;">
+                    <strong>Tip:</strong> For detailed VPS monitoring, use the "VPS Resources" link in Diagnostic Tools below.
+                </p>
+            </div>
+            
+            <div class="section">
+                <h2>�🔧 Step 1: Make Scripts Executable</h2>
                 <p style="margin-bottom: 15px;">First, we need to make the shell scripts executable:</p>
                 <form method="POST">
                     <input type="hidden" name="action" value="make_executable">
@@ -324,12 +393,30 @@ $phpCliPath = PHP_BINARY;
             </div>
             
             <div class="section">
-                <h2>🧪 Step 2: Test Server Start</h2>
-                <p style="margin-bottom: 15px;">Try starting the server manually to ensure everything works:</p>
-                <form method="POST">
+                <h2>🧪 Step 2: Test Server Control</h2>
+                <p style="margin-bottom: 15px;">Start or stop the server manually:</p>
+                <form method="POST" style="display: inline-block; margin-right: 10px;">
                     <input type="hidden" name="action" value="test_start">
-                    <button type="submit" class="btn">Test Start Server</button>
+                    <button type="submit" class="btn btn-success">▶️ Start Server</button>
                 </form>
+                <form method="POST" style="display: inline-block;">
+                    <input type="hidden" name="action" value="test_stop">
+                    <button type="submit" class="btn btn-danger">⏹️ Stop Server</button>
+                </form>
+            </div>
+            
+            <div class="section">
+                <h2>🔍 Diagnostic Tools</h2>
+                <p style="margin-bottom: 15px;">Quick access to server monitoring and testing tools:</p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
+                    <a href="view_logs.php" class="btn" target="_blank" style="text-align: center;">📊 View Server Logs</a>
+                    <a href="test_binance.php" class="btn" target="_blank" style="text-align: center;">🔌 Test Binance Connection</a>
+                    <a href="check_vendor.php" class="btn" target="_blank" style="text-align: center;">📦 Check Dependencies</a>
+                    <a href="../monitoring/resource_monitor.php?key=your-random-secret-key-here" class="btn" target="_blank" style="text-align: center;">💻 VPS Resources</a>
+                </div>
+                <p style="margin-top: 15px; font-size: 13px; color: #6b7280;">
+                    <strong>Note:</strong> Update the resource monitor link with your actual secret key from resource_monitor.php
+                </p>
             </div>
             
             <div class="section">

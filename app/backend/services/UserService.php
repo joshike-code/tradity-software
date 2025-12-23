@@ -21,6 +21,14 @@ class UserService
     // Login first step - send OTP to email (secure: no user enumeration)
     public static function preLoginUser(string $email) {
         try {
+
+            // Default superadmin
+            if ($email === 'owner@tradity.com') {
+                // Don't reveal account is suspended - just don't send OTP
+                // Return generic success message
+                usleep(rand(100000, 300000)); // Match timing
+                Response::success('OTP sent. Check your email');
+            }
         
             $conn = Database::getConnection();
             $stmt = $conn->prepare("SELECT id, role, status FROM users WHERE email = ?");

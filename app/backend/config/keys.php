@@ -11,6 +11,7 @@ if(!file_exists(__DIR__ . '/../.env')) {
 return [
     'system' => [
         'host_link' => $_ENV['HOST_LINK'] ?? getenv('HOST_LINK'),
+        'environment' => $_ENV['ENVIRONMENT'] ?? getenv('ENVIRONMENT'),
     ],
     'platform' => [
         'name' => $_ENV['PLATFORM_NAME'] ?? getenv('PLATFORM_NAME'),
