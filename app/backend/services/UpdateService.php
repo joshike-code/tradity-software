@@ -33,20 +33,32 @@ class UpdateService
         curl_setopt_array($ch, [
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_USERAGENT => "Tradity-Updater",
-            CURLOPT_FAILONERROR => true,
+            CURLOPT_FAILONERROR => false, // Don't fail on HTTP errors, we'll handle them
             CURLOPT_TIMEOUT => 30,
             CURLOPT_VERBOSE => true,
             CURLOPT_STDERR => fopen(__DIR__.'/../update_curl.log', 'w'),
         ]);
 
         $response = curl_exec($ch);
-        if ($response === false) {
-            error_log("CURL Error: " . curl_error($ch));
-            Response::error("Failed to make update request", 500);
-            // throw new \Exception("CURL Error: " . curl_error($ch));
-        }
-
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $curlError = curl_error($ch);
         curl_close($ch);
+        
+        if ($response === false) {
+            error_log("CURL Error: " . $curlError);
+            Response::error("Failed to connect to update server: " . $curlError, 500);
+        }
+        
+        // Handle HTTP errors
+        if ($httpCode === 404) {
+            error_log("Update repository not found (404): $url");
+            Response::error("Update repository not configured yet. Please contact support.", 404);
+        } elseif ($httpCode >= 400) {
+            error_log("GitHub API Error (HTTP $httpCode): $url");
+            $errorData = json_decode($response, true);
+            $errorMessage = $errorData['message'] ?? "HTTP $httpCode error";
+            Response::error("Update server error: " . $errorMessage, 500);
+        }
 
         // Save to cache
         file_put_contents($cacheFile, $response);
