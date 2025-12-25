@@ -3,9 +3,16 @@
 // Author: Joshike-code
 
 
+// CORS headers - allow cross-origin requests
 header("Access-Control-Allow-Origin:*");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+
+// Cache-Control headers - prevent browser caching of API responses
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Cache-Control: post-check=0, pre-check=0', false);
+header('Pragma: no-cache');
+header('Expires: 0');
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);

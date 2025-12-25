@@ -34,11 +34,12 @@ class InstallService
         $appIcon512 = $logos['app_icon_512'];
         $favicon = $logos['favicon'];
         $jwtSecret = 'ujbdi93ndufis30dbksdrtdcalg94';
+        $websocket_control = 'tradity_socket_control';
 
         self::checkDBCredentials($dbHost, $dbUser, $dbPass, $dbName,);
 
         // Write backend .env
-        $envContent = "# System Configuration\nHOST_LINK=$hostlink\nENVIRONMENT=$environment\n\n# Database Configuration\nDB_HOST=$dbHost\nDB_PORT=$dbPort\nDB_NAME=$dbName\nDB_USERNAME=$dbUser\nDB_PASSWORD=$dbPass\n\n# Platform Configuration\nPLATFORM_NAME=$platformName\nMAIN_LOGO=$mainLogo\nMAIN_ICON=$mainIcon\nTHEME_NAME=$theme\nTHEME_COLOR=$themeColor\nPLATFORM_URL=$platformURl\nPLATFORM_ADDRESS=$address\nPLATFORM_WHATSAPP_NUMBER=$whatsappNumber\nPLATFORM_LICENSED_BY=$licensedBy\nPLATFORM_SUPPORT_MAIL=$supportMail\n\n# JWT Configuration\nJWT_SECRET_KEY=$jwtSecret\n\n# Degiant Configuration\nDEGIANT_PASSKEY=\n\n# Exchange Rates API Configuration\nEXCHANGE_RATES_API_KEY=\n\n# PHPMailer Configuration\nPHPMAILER_HOST=\nPHPMAILER_USERNAME=\nPHPMAILER_FROM=\nPHPMAILER_PASSWORD=\nPHPMAILER_AUTH=true\nPHPMAILER_SECURITY=TLS\nPHPMAILER_PORT=587\nPHPMAILER_ADMIN=\n\n";
+        $envContent = "# System Configuration\nHOST_LINK=$hostlink\nENVIRONMENT=$environment\n\n# Database Configuration\nDB_HOST=$dbHost\nDB_PORT=$dbPort\nDB_NAME=$dbName\nDB_USERNAME=$dbUser\nDB_PASSWORD=$dbPass\n\n# Platform Configuration\nPLATFORM_NAME=$platformName\nMAIN_LOGO=$mainLogo\nMAIN_ICON=$mainIcon\nTHEME_NAME=$theme\nTHEME_COLOR=$themeColor\nPLATFORM_URL=$platformURl\nPLATFORM_ADDRESS=$address\nPLATFORM_WHATSAPP_NUMBER=$whatsappNumber\nPLATFORM_LICENSED_BY=$licensedBy\nPLATFORM_SUPPORT_MAIL=$supportMail\n\n# JWT Configuration\nJWT_SECRET_KEY=$jwtSecret\n\n# Degiant Configuration\nDEGIANT_PASSKEY=\n\n# Websocket and server control\nWEBSOCKET_CONTROL_KEY=$websocket_control\n\n# PHPMailer Configuration\nPHPMAILER_HOST=\nPHPMAILER_USERNAME=\nPHPMAILER_FROM=\nPHPMAILER_PASSWORD=\nPHPMAILER_AUTH=true\nPHPMAILER_SECURITY=TLS\nPHPMAILER_PORT=587\nPHPMAILER_ADMIN=\n\n";
         file_put_contents(__DIR__ . '/../.env', $envContent);
 
         // Install in index
@@ -55,13 +56,13 @@ class InstallService
         }
 
         // Install in landing index
-        $indexPath = realpath(__DIR__ . '/../../../index.html');
-        if (file_exists($indexPath)) {
-            $indexContent = file_get_contents($indexPath);
+        $mainIndexPath = realpath(__DIR__ . '/../../../index.html');
+        if (file_exists($mainIndexPath)) {
+            $indexContent = file_get_contents($mainIndexPath);
             $indexContent = str_replace('Tradity', $platformName, $indexContent);
-            $indexContent = str_replace('app/backend/logos/default/main_logo_tradity.png', "backend/$mainLogo", $indexContent);
-            $indexContent = str_replace('app/backend/logos/default/favicon_tradity.png', "backend/$favicon", $indexContent);
-            file_put_contents($indexPath, $indexContent);
+            $indexContent = str_replace('app/backend/logos/default/main_logo_tradity.png', "app/backend/$mainLogo", $indexContent);
+            $indexContent = str_replace('app/backend/logos/default/favicon_tradity.png', "app/backend/$favicon", $indexContent);
+            file_put_contents($mainIndexPath, $indexContent);
         }
 
         // Create new config

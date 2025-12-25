@@ -128,5 +128,3 @@ php server.php
 - ❌ Don't rely on dashboard start button in production
 
 ---
-
-*For detailed instructions, see: COMPLETE_SETUP_GUIDE.md*
