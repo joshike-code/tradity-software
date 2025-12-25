@@ -42,7 +42,7 @@ class TradeAccountService
             $date = gmdate('Y-m-d H:i:s');
 
             $stmt = $conn->prepare("INSERT INTO accounts (user_id, id_hash, type, leverage, balance, date) VALUES (?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("isssds", $user_id, $id_hash, $type, $leverage, $balance, $date);
+            $stmt->bind_param("iisids", $user_id, $id_hash, $type, $leverage, $balance, $date); // Fixed: id_hash and user_id are integers, type is string (enum), leverage is int, balance is decimal
             
             if ($stmt->execute()) {
                 $account_id = $conn->insert_id;
@@ -67,8 +67,11 @@ class TradeAccountService
     public static function getAccountById($user_id, $id_hash) {
         try {
             $conn = Database::getConnection();
+            
+            // CRITICAL FIX: id_hash is an integer in database, not string
+            // Type mismatch causes wrong account to be returned in production
             $stmt = $conn->prepare("SELECT id_hash, type, balance, leverage, first_deposit, status, date FROM accounts WHERE id_hash = ? AND user_id = ?");
-            $stmt->bind_param("si", $id_hash, $user_id);
+            $stmt->bind_param("ii", $id_hash, $user_id); // Changed from "si" to "ii"
             $stmt->execute();
             $result = $stmt->get_result();
 
@@ -117,7 +120,7 @@ class TradeAccountService
         $leverage = $input['leverage'];
 
         $stmt = $conn->prepare("UPDATE accounts SET leverage = ? WHERE id_hash = ?");
-        $stmt->bind_param("si", $leverage, $id_hash);
+        $stmt->bind_param("ii", $leverage, $id_hash); // Fixed: id_hash is integer
 
         if (!$stmt->execute()) {
             Response::error('Leverage update failed', 500);
@@ -156,7 +159,7 @@ class TradeAccountService
             $conn = Database::getConnection();
 
             $stmt = $conn->prepare("UPDATE accounts SET balance = balance + ? WHERE id_hash = ?");
-            $stmt->bind_param("ds", $amount_value, $user_account['id_hash']);
+            $stmt->bind_param("di", $amount_value, $user_account['id_hash']); // Fixed: id_hash is integer
             
             if ($stmt->execute()) {
                 // Get the updated account data
@@ -186,7 +189,7 @@ class TradeAccountService
             $conn = Database::getConnection();
 
             $stmt = $conn->prepare("UPDATE accounts SET balance = ? WHERE id_hash = ?");
-            $stmt->bind_param("ds", $default_balance, $account['id_hash']);
+            $stmt->bind_param("di", $default_balance, $account['id_hash']); // Fixed: id_hash is integer
 
             if ($stmt->execute()) {
                 // Get the updated account data
@@ -362,7 +365,7 @@ class TradeAccountService
             
             // Verify account belongs to user
             $stmt = $conn->prepare("SELECT id_hash, status FROM accounts WHERE id_hash = ? AND user_id = ?");
-            $stmt->bind_param("si", $id_hash, $user_id);
+            $stmt->bind_param("ii", $id_hash, $user_id); // Fixed: id_hash is integer
             $stmt->execute();
             $result = $stmt->get_result();
 
@@ -381,7 +384,7 @@ class TradeAccountService
 
             // Update user's current account
             $stmt = $conn->prepare("UPDATE users SET current_account = ? WHERE id = ?");
-            $stmt->bind_param("si", $id_hash, $user_id);
+            $stmt->bind_param("ii", $id_hash, $user_id); // Fixed: id_hash is integer
             
             if ($stmt->execute()) {
                 return $id_hash;
@@ -402,7 +405,7 @@ class TradeAccountService
         $conn = Database::getConnection();
 
         $stmt = $conn->prepare("UPDATE accounts SET first_deposit = 'yes' WHERE id_hash = ?");
-        $stmt->bind_param("s", $account_id);
+        $stmt->bind_param("i", $account_id); // Fixed: id_hash is integer
 
         if(!$stmt->execute()) {
           Response::error('Status update failed', 500);

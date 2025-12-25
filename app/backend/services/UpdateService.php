@@ -231,7 +231,7 @@ class UpdateService
         return array_values($updates); // Return as indexed array
     }
 
-    public static function applyUpdate(array $input): array {
+    public static function applyUpdate(array $input) {
         $currentVersionLine = file_get_contents(self::$versionFile);
         if (preg_match('/version=([\d\.]+)/', $currentVersionLine, $matches)) {
             $currentVersion = $matches[1];
@@ -637,12 +637,10 @@ class UpdateService
             'f' => 'dXBkYXRlcw=='
         ];
         
-        // Verify integrity: MD5 of concatenated base64 values + salt
-        // If this fails, the repository configuration has been tampered with
         $expected = md5($config['o'] . $config['r'] . $config['f'] . 'tradity_salt_9x7k2m');
         if ($expected !== 'c2072c0c6035ffd668c8a7e871795e1e') {
             error_log("Configuration integrity check failed. Expected hash mismatch.");
-            Response::error("System integrity verification failed", 500);
+            Response::error("System integrity verification failed", 400);
         }
         
         return [
