@@ -4,6 +4,9 @@
 
 This software was built by [Joshike-code](https://github.com/joshike-code) for **Degiant Software**.
 
+Official website: https://degiantstore.live
+Live demo: https://tradity.degiantstore.live
+
 ---
 
 ## 🚀 Features
