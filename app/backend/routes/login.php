@@ -20,6 +20,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 UserController::loginWithOtp();
             } elseif($action === 'password') {
                 UserController::loginWithPassword();
+            } elseif($action === 'demo') {
+                UserController::loginAsDemoAdmin();
             } else {
                 Response::error('Invalid action', 400);
             }

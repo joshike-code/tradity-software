@@ -1,87 +1,157 @@
 <?php
-require_once __DIR__ . '/../config/db.php';
-require_once __DIR__ . '/../core/response.php';
-require_once __DIR__ . '/../services/PlatformService.php';
+/**
+ * Email Queue Processor - cPanel Cron Compatible
+ * 
+ * This script processes queued emails and can be triggered by cPanel cron jobs
+ * 
+ * Setup in cPanel:
+ * 1. Go to cPanel > Cron Jobs
+ * 2. Add new cron job:
+ *    - Interval: Every 5 minutes
+ *    - Command: php /home/username/public_html/cron/process_email_queue.php
+ *    OR
+ *    - Command: wget -q -O- https://yourdomain.com/cron/process_email_queue.php
+ * 
+ * Security: Add a secret key check to prevent unauthorized access
+ */
 
-date_default_timezone_set('GMT');
-$conn = Database::getConnection();
+// Allow script to run for up to 5 minutes
+set_time_limit(300);
+
+// Prevent browser timeout
+// if (php_sapi_name() !== 'cli') {
+//     header('Content-Type: text/plain');
+    
+//     // Optional: Add secret key protection for web access
+//     $keys = require __DIR__ . '/../config/keys.php';
+//     $secretKey = $keys['cron_secret_key'] ?? 'change_this_in_production';
+//     $providedKey = $_GET['key'] ?? '';
+    
+//     if ($providedKey !== $secretKey) {
+//         http_response_code(403);
+//         die("Access denied. Invalid cron key.\n");
+//     }
+// }
+
+echo "Email Queue Processor started at " . date('Y-m-d H:i:s') . "\n";
 
 try {
-    $query = "SELECT * FROM investments WHERE status = 'pending'";
-    $result = $conn->query($query);
-
-    while ($investment = $result->fetch_assoc()) {
-        $id = $investment['id'];
-        $user_id = $investment['user_id'];
-        $order_ref = $investment['order_ref'];
-        $amount = (float)$investment['amount'];
-        $rate = (float)$investment['rate'];
-        $days = (int)$investment['days'];
-        $duration = strtolower($investment['duration']);
-        $date_started = new DateTime($investment['date'], new DateTimeZone('GMT'));
-
-        $now = new DateTime("now", new DateTimeZone('GMT'));
-        $interval = $now->diff($date_started)->days;
-
-        // Calculate frequency
-        $frequencyDays = match ($duration) {
-            'daily' => 1,
-            'weekly' => 7,
-            'monthly' => 30,
-            'yearly' => 365,
-            default => 365,
-        };
-
-        $numPeriods = $days / $frequencyDays;
-        $roi = $amount * ($rate / 100) * $numPeriods;
-        $profit = $roi + $amount;
-
-        // Update all ROI
-        $update = $conn->prepare("UPDATE investments SET roi = ? WHERE id = ?");
-        $update->bind_param("di", $roi, $id);
-        $update->execute();
-        $update->close();
-
-        if ($interval < $days) {
-            continue; // Not yet matured
-        }
-
-        // Begin transaction
-        $conn->begin_transaction();
-
+    require_once __DIR__ . '/../services/MailService.php';
+    require_once __DIR__ . '/../config/db.php';
+    
+    $queueDir = __DIR__ . '/../queue/';
+    
+    // Create queue directory if it doesn't exist
+    if (!is_dir($queueDir)) {
+        mkdir($queueDir, 0755, true);
+        echo "Created queue directory\n";
+    }
+    
+    // Get all queue files
+    $files = glob($queueDir . 'email_queue_*.json');
+    
+    if (empty($files)) {
+        echo "No emails in queue\n";
+        exit(0);
+    }
+    
+    echo "Found " . count($files) . " email(s) to process\n\n";
+    
+    $processed = 0;
+    $failed = 0;
+    
+    foreach ($files as $queueFile) {
+        echo "Processing: " . basename($queueFile) . "... ";
+        
         try {
-            // Update matured investment
-            $update = $conn->prepare("UPDATE investments SET status = 'complete', date_completed = ? WHERE id = ?");
-            $completed_date = $now->format('Y-m-d H:i:s');
-            $update->bind_param("si", $completed_date, $id);
-            $update->execute();
-            $update->close();
-
-            // Log to payments table
-            $insert = $conn->prepare("INSERT INTO payments (user_id, amount, order_ref, method, type, status, date) VALUES (?, ?, ?, ?, ?, ?, ?)");
-            $method = "investment";
-            $type = "credit";
-            $status = "success";
-            $date = gmdate('Y-m-d H:i:s');
-            $insert->bind_param("sdsssss", $user_id, $profit, $order_ref, $method, $type, $status, $date);
-            $insert->execute();
-
-            // Credit user
-            $credit = $conn->prepare("UPDATE users SET balance = balance + ? WHERE id = ?");
-            $credit->bind_param("di", $profit, $user_id);
-            $credit->execute();
-            $credit->close();
-
-            $conn->commit();
+            // Read queue data
+            $data = json_decode(file_get_contents($queueFile), true);
+            
+            if (!$data) {
+                echo "FAILED (invalid JSON)\n";
+                unlink($queueFile); // Delete invalid file
+                $failed++;
+                continue;
+            }
+            
+            // Extract notification data
+            $userId = $data['userId'];
+            $type = $data['type'];
+            $title = $data['title'];
+            $message = $data['message'];
+            $cta = $data['cta'] ?? null;
+            $ctaLink = $data['ctaLink'] ?? null;
+            
+            // Get user details
+            $conn = Database::getConnection();
+            $stmt = $conn->prepare("SELECT email, fname, lname FROM users WHERE id = ?");
+            $stmt->bind_param("i", $userId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            
+            if ($result->num_rows === 0) {
+                echo "FAILED (user not found)\n";
+                unlink($queueFile);
+                $failed++;
+                continue;
+            }
+            
+            $user = $result->fetch_assoc();
+            $userName = trim(($user['fname'] ?? '') . ' ' . ($user['lname'] ?? '')) ?: 'Trader';
+            $userEmail = $user['email'];
+            
+            // Send email to user
+            $userEmailSent = MailService::sendAccountNotification(
+                $userEmail,
+                $userName,
+                $type,
+                $title,
+                $message,
+                $cta,
+                $ctaLink
+            );
+            
+            if (!$userEmailSent) {
+                echo "FAILED (email send failed)\n";
+                
+                // Move to failed directory for retry later
+                $failedDir = $queueDir . 'failed/';
+                if (!is_dir($failedDir)) {
+                    mkdir($failedDir, 0755, true);
+                }
+                rename($queueFile, $failedDir . basename($queueFile));
+                $failed++;
+                continue;
+            }
+            
+            // Send admin notification
+            MailService::sendAdminNotification($userId, $userName, $userEmail, $type, $title, $message);
+            
+            // Delete queue file after successful processing
+            unlink($queueFile);
+            
+            echo "SUCCESS\n";
+            $processed++;
+            
         } catch (Exception $e) {
-            $conn->rollback();
-            error_log("Failed to update investment $id: " . $e->getMessage());
+            echo "ERROR: " . $e->getMessage() . "\n";
+            error_log("Email Queue Processor Error: " . $e->getMessage());
+            $failed++;
         }
     }
-
-    echo "Cron completed successfully.\n";
-
+    
+    echo "\n";
+    echo "=================================\n";
+    echo "Processing complete\n";
+    echo "Successful: $processed\n";
+    echo "Failed: $failed\n";
+    echo "Finished at: " . date('Y-m-d H:i:s') . "\n";
+    echo "=================================\n";
+    
+    exit(0);
+    
 } catch (Exception $e) {
-    error_log("Cron failed: " . $e->getMessage());
-    echo "Cron failed.\n";
+    echo "FATAL ERROR: " . $e->getMessage() . "\n";
+    error_log("Email Queue Processor Fatal Error: " . $e->getMessage());
+    exit(1);
 }

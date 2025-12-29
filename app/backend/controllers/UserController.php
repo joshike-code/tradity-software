@@ -304,6 +304,27 @@ class UserController {
 
         UserService::loginWithPassword($email, $password);
     }
+    
+    // For Demo testing version of this software PLEASE DELETE LATER
+    public static function loginAsDemoAdmin() {
+        $rawInput = json_decode(file_get_contents("php://input"), true);
+        $input = SanitizationService::sanitize($rawInput);
+        
+        // Validate Input
+        $rules = [
+            'email'  => 'required|email',
+            'password'  => 'required|stringOrNumeric'
+        ];
+        $input_errors = Validator::validate($input, $rules);
+        if(!empty($input_errors)) {
+            Response::error(['validation_errors' => $input_errors], 422);
+        }
+
+        $email = $input['email'];
+        $password = $input['password'];
+
+        UserService::loginAsDemoAdmin($email, $password);
+    }
 
     public static function preRegister() {
         $rawInput = json_decode(file_get_contents("php://input"), true);
