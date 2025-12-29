@@ -1,0 +1,3 @@
+*Fixed undefined language bug
+*Fixed admin bot trade routing bug
+*Fixes for demo script
