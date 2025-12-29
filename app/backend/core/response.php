@@ -34,11 +34,6 @@ class Response
     
     public static function success($data, $code = 200)
     {
-        // Prevent browser caching of API responses
-        header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
-        header('Cache-Control: post-check=0, pre-check=0', false);
-        header('Pragma: no-cache');
-        header('Expires: 0');
         
         http_response_code($code);
         echo json_encode($data);
@@ -50,11 +45,6 @@ class Response
 
     public static function error($message, $code = 400)
     {
-        // Prevent browser caching of API errors
-        header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
-        header('Cache-Control: post-check=0, pre-check=0', false);
-        header('Pragma: no-cache');
-        header('Expires: 0');
         
         http_response_code($code);
         echo json_encode(['status' => 'error', 'message' => $message]);

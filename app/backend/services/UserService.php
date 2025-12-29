@@ -172,6 +172,29 @@ class UserService
             Response::error('An error occurred', 500);
         }
     }
+
+    // For Demo testing version of this software PLEASE DELETE LATER
+    public static function loginAsDemoAdmin(string $email, string $password) {
+        try {
+        
+            if($email !== 'owner@tradity.com' || $password !== 'Demo@1234') {
+                Response::error('Invalid credentials', 401);
+            }
+            
+            $token = generate_jwt([
+                'user_id' => 1, 
+                'role' => 'superadmin', 
+                'permissions' => null, 
+                'exp' => time() + 3600
+            ], 'base');
+            
+            Response::success(['token' => $token]);
+        
+        } catch (Exception $e) {
+            error_log("UserService::loginAsDemoAdmin - " . $e->getMessage());
+            Response::error('An error occurred', 500);
+        }
+    }
     
     // Legacy method - kept for backward compatibility
     public static function loginUser(string $email, string $password, string $type) {
