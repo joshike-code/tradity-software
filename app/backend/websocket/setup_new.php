@@ -8,6 +8,14 @@
  * IMPORTANT: Delete this file after setup is complete for security!
  */
 
+// Error handling - prevent 500 errors from crashing the page
+ini_set('display_errors', 0);
+error_reporting(0);
+set_error_handler(function($errno, $errstr, $errfile, $errline) {
+    error_log("Setup error: $errstr in $errfile:$errline");
+    return true;
+});
+
 header('Content-Type: text/html; charset=UTF-8');
 
 $websocketDir = __DIR__;
@@ -17,6 +25,21 @@ $serverScript = $websocketDir . '/server.php';
 
 $messages = [];
 $errors = [];
+
+// Check if shell commands are available
+function isShellAvailable() {
+    $output = @shell_exec('echo "test" 2>&1');
+    return $output !== null && trim($output) === 'test';
+}
+
+// Check if exec functions are disabled
+function isExecDisabled() {
+    $disabled = explode(',', ini_get('disable_functions'));
+    return in_array('exec', $disabled) || in_array('shell_exec', $disabled);
+}
+
+$shellAvailable = isShellAvailable();
+$execDisabled = isExecDisabled();
 
 // Process form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -40,40 +63,75 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     
     if ($action === 'test_start') {
-        // Try to start the server
-        if (file_exists($startScript)) {
-            $output = [];
-            $returnCode = null;
-            @exec("bash {$startScript} 2>&1", $output, $returnCode);
-            
-            if ($returnCode === 0 || $returnCode === null) {
-                $messages[] = "✅ Start command executed. Check status below.";
-                $messages[] = "Output: " . implode("<br>", $output);
-            } else {
-                $errors[] = "❌ Start command failed with code: {$returnCode}";
-                $errors[] = "Output: " . implode("<br>", $output);
-            }
+        if ($execDisabled) {
+            $errors[] = "❌ Shell execution is disabled on this server. Use Method B (HTTP Cron) instead.";
+        } elseif (!$shellAvailable) {
+            $errors[] = "❌ Shell commands are restricted on this server. Use Method B (HTTP Cron) instead.";
         } else {
-            $errors[] = "❌ start_websocket.sh not found";
+            // Try to start the server
+            if (file_exists($startScript)) {
+                $output = [];
+                $returnCode = null;
+                @exec("bash {$startScript} 2>&1", $output, $returnCode);
+                
+                if ($returnCode === 0 || $returnCode === null) {
+                    $messages[] = "✅ Start command executed. Check status below.";
+                    if (!empty($output)) {
+                        $messages[] = "Output: " . implode("<br>", $output);
+                    }
+                } else {
+                    $errors[] = "❌ Start command failed with code: {$returnCode}";
+                    $errors[] = "Output: " . implode("<br>", $output);
+                    $errors[] = "💡 Try Method B (HTTP Cron) instead.";
+                }
+            } else {
+                $errors[] = "❌ start_websocket.sh not found";
+            }
         }
     }
     
     if ($action === 'test_stop') {
-        // Try to stop the server
-        if (file_exists($stopScript)) {
-            $output = [];
-            $returnCode = null;
-            @exec("bash {$stopScript} 2>&1", $output, $returnCode);
-            
-            if ($returnCode === 0 || $returnCode === null) {
-                $messages[] = "✅ Stop command executed. Server should stop shortly.";
-                $messages[] = "Output: " . implode("<br>", $output);
+        $pidFile = $websocketDir . '/server.pid';
+        
+        if ($execDisabled) {
+            // Fallback: Kill process directly using PID file
+            if (file_exists($pidFile)) {
+                $pidData = json_decode(file_get_contents($pidFile), true);
+                $pid = $pidData['pid'] ?? null;
+                if ($pid && function_exists('posix_kill')) {
+                    if (@posix_kill($pid, 15)) { // SIGTERM
+                        $messages[] = "✅ Server stopped (PID: $pid)";
+                        @unlink($pidFile);
+                    } else {
+                        $errors[] = "❌ Failed to stop server";
+                    }
+                } else {
+                    $errors[] = "❌ Cannot stop server - posix_kill not available";
+                }
             } else {
-                $errors[] = "❌ Stop command failed with code: {$returnCode}";
-                $errors[] = "Output: " . implode("<br>", $output);
+                $errors[] = "❌ No PID file found - server may not be running";
             }
+        } elseif (!$shellAvailable) {
+            $errors[] = "❌ Shell commands are restricted";
         } else {
-            $errors[] = "❌ stop_websocket.sh not found";
+            // Try to stop the server normally
+            if (file_exists($stopScript)) {
+                $output = [];
+                $returnCode = null;
+                @exec("bash {$stopScript} 2>&1", $output, $returnCode);
+                
+                if ($returnCode === 0 || $returnCode === null) {
+                    $messages[] = "✅ Stop command executed. Server should stop shortly.";
+                    if (!empty($output)) {
+                        $messages[] = "Output: " . implode("<br>", $output);
+                    }
+                } else {
+                    $errors[] = "❌ Stop command failed with code: {$returnCode}";
+                    $errors[] = "Output: " . implode("<br>", $output);
+                }
+            } else {
+                $errors[] = "❌ stop_websocket.sh not found";
+            }
         }
     }
     
@@ -341,6 +399,14 @@ $phpCliPath = PHP_BINARY;
                 <?php endforeach; ?>
             <?php endif; ?>
             
+            <?php if ($execDisabled || !$shellAvailable): ?>
+                <div class="warning">
+                    <strong>⚠️ Shell Access Restricted</strong><br>
+                    Your hosting provider has disabled shell command execution. This is common on shared hosting.<br>
+                    <strong>Solution:</strong> Use <strong>Method B (HTTP URL Cron)</strong> below instead of the Start/Stop buttons.
+                </div>
+            <?php endif; ?>
+            
             <div class="section">
                 <h2>📊 Current Status</h2>
                 <div class="info-grid">
@@ -394,15 +460,30 @@ $phpCliPath = PHP_BINARY;
             
             <div class="section">
                 <h2>🧪 Step 2: Test Server Control</h2>
-                <p style="margin-bottom: 15px;">Start or stop the server manually:</p>
-                <form method="POST" style="display: inline-block; margin-right: 10px;">
-                    <input type="hidden" name="action" value="test_start">
-                    <button type="submit" class="btn btn-success">▶️ Start Server</button>
-                </form>
-                <form method="POST" style="display: inline-block;">
-                    <input type="hidden" name="action" value="test_stop">
-                    <button type="submit" class="btn btn-danger">⏹️ Stop Server</button>
-                </form>
+                <?php if ($execDisabled || !$shellAvailable): ?>
+                    <p style="margin-bottom: 15px; color: #dc2626;">
+                        ⚠️ Shell commands are disabled on this server. 
+                        <strong>Use Method B (HTTP Cron) in Step 3 instead.</strong>
+                    </p>
+                    <form method="POST" style="display: inline-block; margin-right: 10px;">
+                        <input type="hidden" name="action" value="test_start">
+                        <button type="submit" class="btn btn-success" disabled style="opacity: 0.5; cursor: not-allowed;">▶️ Start Server (Disabled)</button>
+                    </form>
+                    <form method="POST" style="display: inline-block;">
+                        <input type="hidden" name="action" value="test_stop">
+                        <button type="submit" class="btn btn-danger" disabled style="opacity: 0.5; cursor: not-allowed;">⏹️ Stop Server (Disabled)</button>
+                    </form>
+                <?php else: ?>
+                    <p style="margin-bottom: 15px;">Start or stop the server manually:</p>
+                    <form method="POST" style="display: inline-block; margin-right: 10px;">
+                        <input type="hidden" name="action" value="test_start">
+                        <button type="submit" class="btn btn-success">▶️ Start Server</button>
+                    </form>
+                    <form method="POST" style="display: inline-block;">
+                        <input type="hidden" name="action" value="test_stop">
+                        <button type="submit" class="btn btn-danger">⏹️ Stop Server</button>
+                    </form>
+                <?php endif; ?>
             </div>
             
             <div class="section">

@@ -216,7 +216,7 @@ class MailService
         $platformUrl = $platform['platform']['url'];
         $themeColor = '#' . ($platform['platform']['theme_color'] ?? '006CBF');
 
-        $message = 'Test mail message to you so that you can see what a quite long message looks like and appreciate all we do here my friend.';
+        // $message = 'Test mail message to you so that you can see what a quite long message looks like and appreciate all we do here my friend.';
         
         // Build email body
         $body = "<p style='mso-line-height-rule: exactly; font-family: tahoma, verdana, segoe, sans-serif; line-height: 24px; letter-spacing: 0; color: #181C25; font-size: 16px; margin: 0 0 12px;'> Hi $userName, </p>";
@@ -323,8 +323,8 @@ class MailService
             $platformUrl = $keys['platform']['url'];
             $themeColor = '#' . ($platform['platform']['theme_color'] ?? '006CBF');
             $mainLogo = $keys['platform']['main_logo'];
-            // $logoLink = 'https://' . $platformUrl . '/app/backend/' . $mainLogo;
-            $logoLink = 'https://test.affixglobal.live/tradity_logo.png'; // FOR LOCAL TESTING ONLY, REMOVE IN PRODUCTION
+            $logoLink = 'https://' . $platformUrl . '/app/backend/' . $mainLogo;
+            // $logoLink = 'https://*******.live/tradity_logo.png'; // FOR LOCAL TESTING ONLY, REMOVE IN PRODUCTION
             
             $mail = self::configureMailer();
             $mail->addAddress($toEmail);
