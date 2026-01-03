@@ -1,0 +1,561 @@
+[01-Jan-2026 18:23:57 UTC] [PRICE UPDATE 2026-01-01 18:23:57] Received prices: {"btcusdt":88240}
+[01-Jan-2026 18:23:57 UTC] [PRICE UPDATE 2026-01-01 18:23:57] Total prices in memory after merge: 3
+[01-Jan-2026 18:23:57 UTC] [PRICE UPDATE 2026-01-01 18:23:57] Received prices: {"ethusdt":2990.79}
+[01-Jan-2026 18:23:57 UTC] [PRICE UPDATE 2026-01-01 18:23:57] Total prices in memory after merge: 3
+[01-Jan-2026 18:23:57 UTC] [PRICE UPDATE 2026-01-01 18:23:57] Received prices: {"bnbusdt":860}
+[01-Jan-2026 18:23:57 UTC] [PRICE UPDATE 2026-01-01 18:23:57] Total prices in memory after merge: 3
+[01-Jan-2026 18:23:58 UTC] [PRICE UPDATE 2026-01-01 18:23:58] Received prices: {"btcusdt":88240}
+[01-Jan-2026 18:23:58 UTC] [PRICE UPDATE 2026-01-01 18:23:58] Total prices in memory after merge: 3
+[01-Jan-2026 18:23:58 UTC] [PRICE UPDATE 2026-01-01 18:23:58] Received prices: {"ethusdt":2990.79}
+[01-Jan-2026 18:23:58 UTC] [PRICE UPDATE 2026-01-01 18:23:58] Total prices in memory after merge: 3
+[01-Jan-2026 18:23:58 UTC] [ACCOUNT CALC] calculateAccountBalances called at 2026-01-01 18:23:58 for account 3651816725 with 3 prices
+[01-Jan-2026 18:23:58 UTC] [PROFIT CALC] Trade #1 (buy BTC/USD): open_price=88444.46, current_price=88240, lot=0.10
+[01-Jan-2026 18:23:58 UTC] [PROFIT CALC] Trade #1 P&L: -20.446000000001 (formula: buy -> (88240 - 88444.46) × 0.10 × 1)
+[01-Jan-2026 18:23:58 UTC] [PROFIT CALC] Trade #5 (sell BTC/USD): open_price=88540.78, current_price=88240, lot=0.10
+[01-Jan-2026 18:23:58 UTC] [PROFIT CALC] Trade #5 P&L: 30.078 (formula: sell -> (88540.78 - 88240) × 0.10 × 1)
+[01-Jan-2026 18:23:58 UTC] [ACCOUNT CALC] Account 3651816725: 2 total trades
+[01-Jan-2026 18:23:58 UTC] [ACCOUNT CALC] Trades: [{"id":1,"pair":"BTC\/USD","pairKey":"btcusdt","type":"buy","trade_price":"88444.46"},{"id":5,"pair":"BTC\/USD","pairKey":"btcusdt","type":"sell","trade_price":"88540.78"}]
+[01-Jan-2026 18:23:58 UTC] [ACCOUNT CALC] Available price keys: ["btcusdt","ethusdt","bnbusdt"]
+[01-Jan-2026 18:23:58 UTC] [ACCOUNT CALC] Result for account 3651816725: equity=10181.502, profit_loss=9.6319999999992, processed=2, skipped=0
+[01-Jan-2026 18:23:58 UTC] [ACCOUNT CALC] calculateAccountBalances called at 2026-01-01 18:23:58 for account 6597790162 with 3 prices
+[01-Jan-2026 18:23:58 UTC] [PROFIT CALC] Trade #3 (buy BTC/USD): open_price=88458.79, current_price=88240, lot=0.30
+[01-Jan-2026 18:23:58 UTC] [PROFIT CALC] Trade #3 P&L: -65.636999999998 (formula: buy -> (88240 - 88458.79) × 0.30 × 1)
+[01-Jan-2026 18:23:58 UTC] [ACCOUNT CALC] Account 6597790162: 1 total trades
+[01-Jan-2026 18:23:58 UTC] [ACCOUNT CALC] Trades: [{"id":3,"pair":"BTC\/USD","pairKey":"btcusdt","type":"buy","trade_price":"88458.79"}]
+[01-Jan-2026 18:23:58 UTC] [ACCOUNT CALC] Available price keys: ["btcusdt","ethusdt","bnbusdt"]
+[01-Jan-2026 18:23:58 UTC] [ACCOUNT CALC] Result for account 6597790162: equity=10208.493, profit_loss=-65.636999999998, processed=1, skipped=0
+[01-Jan-2026 18:23:58 UTC] [ACCOUNT CALC] calculateAccountBalances called at 2026-01-01 18:23:58 for account 8971883360 with 3 prices
+[01-Jan-2026 18:23:58 UTC] [PROFIT CALC] Trade #6 (buy BTC/USD): open_price=88590.06, current_price=88240, lot=0.10
+[01-Jan-2026 18:23:58 UTC] [PROFIT CALC] Trade #6 P&L: -35.006 (formula: buy -> (88240 - 88590.06) × 0.10 × 1)
+[01-Jan-2026 18:23:58 UTC] [ACCOUNT CALC] Account 8971883360: 1 total trades
+[01-Jan-2026 18:23:58 UTC] [ACCOUNT CALC] Trades: [{"id":6,"pair":"BTC\/USD","pairKey":"btcusdt","type":"buy","trade_price":"88590.06"}]
+[01-Jan-2026 18:23:58 UTC] [ACCOUNT CALC] Available price keys: ["btcusdt","ethusdt","bnbusdt"]
+[01-Jan-2026 18:23:58 UTC] [ACCOUNT CALC] Result for account 8971883360: equity=9964.994, profit_loss=-35.006, processed=1, skipped=0
+[01-Jan-2026 18:23:58 UTC] [PRICE UPDATE 2026-01-01 18:23:58] Received prices: {"bnbusdt":859.99}
+[01-Jan-2026 18:23:58 UTC] [PRICE UPDATE 2026-01-01 18:23:58] Total prices in memory after merge: 3
+[01-Jan-2026 18:23:59 UTC] [PRICE UPDATE 2026-01-01 18:23:59] Received prices: {"btcusdt":88240.01}
+[01-Jan-2026 18:23:59 UTC] [PRICE UPDATE 2026-01-01 18:23:59] Total prices in memory after merge: 3
+[01-Jan-2026 18:23:59 UTC] [PRICE UPDATE 2026-01-01 18:23:59] Received prices: {"ethusdt":2990.79}
+[01-Jan-2026 18:23:59 UTC] [PRICE UPDATE 2026-01-01 18:23:59] Total prices in memory after merge: 3
+[01-Jan-2026 18:23:59 UTC] [PRICE UPDATE 2026-01-01 18:23:59] Received prices: {"bnbusdt":859.99}
+[01-Jan-2026 18:23:59 UTC] [PRICE UPDATE 2026-01-01 18:23:59] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:00 UTC] [PRICE UPDATE 2026-01-01 18:24:00] Received prices: {"btcusdt":88240}
+[01-Jan-2026 18:24:00 UTC] [PRICE UPDATE 2026-01-01 18:24:00] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:00 UTC] [PRICE UPDATE 2026-01-01 18:24:00] Received prices: {"ethusdt":2990.79}
+[01-Jan-2026 18:24:00 UTC] [PRICE UPDATE 2026-01-01 18:24:00] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:00 UTC] [PRICE UPDATE 2026-01-01 18:24:00] Received prices: {"bnbusdt":859.99}
+[01-Jan-2026 18:24:00 UTC] [PRICE UPDATE 2026-01-01 18:24:00] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:01 UTC] [PRICE UPDATE 2026-01-01 18:24:01] Received prices: {"btcusdt":88240}
+[01-Jan-2026 18:24:01 UTC] [PRICE UPDATE 2026-01-01 18:24:01] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:01 UTC] [PRICE UPDATE 2026-01-01 18:24:01] Received prices: {"ethusdt":2990.79}
+[01-Jan-2026 18:24:01 UTC] [PRICE UPDATE 2026-01-01 18:24:01] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:01 UTC] [PRICE UPDATE 2026-01-01 18:24:01] Received prices: {"bnbusdt":860}
+[01-Jan-2026 18:24:01 UTC] [PRICE UPDATE 2026-01-01 18:24:01] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:01 UTC] [ACCOUNT CALC] calculateAccountBalances called at 2026-01-01 18:24:01 for account 3651816725 with 3 prices
+[01-Jan-2026 18:24:01 UTC] [PROFIT CALC] Trade #1 (buy BTC/USD): open_price=88444.46, current_price=88240, lot=0.10
+[01-Jan-2026 18:24:01 UTC] [PROFIT CALC] Trade #1 P&L: -20.446000000001 (formula: buy -> (88240 - 88444.46) × 0.10 × 1)
+[01-Jan-2026 18:24:01 UTC] [PROFIT CALC] Trade #5 (sell BTC/USD): open_price=88540.78, current_price=88240, lot=0.10
+[01-Jan-2026 18:24:01 UTC] [PROFIT CALC] Trade #5 P&L: 30.078 (formula: sell -> (88540.78 - 88240) × 0.10 × 1)
+[01-Jan-2026 18:24:01 UTC] [ACCOUNT CALC] Account 3651816725: 2 total trades
+[01-Jan-2026 18:24:01 UTC] [ACCOUNT CALC] Trades: [{"id":1,"pair":"BTC\/USD","pairKey":"btcusdt","type":"buy","trade_price":"88444.46"},{"id":5,"pair":"BTC\/USD","pairKey":"btcusdt","type":"sell","trade_price":"88540.78"}]
+[01-Jan-2026 18:24:01 UTC] [ACCOUNT CALC] Available price keys: ["btcusdt","ethusdt","bnbusdt"]
+[01-Jan-2026 18:24:01 UTC] [ACCOUNT CALC] Result for account 3651816725: equity=10181.502, profit_loss=9.6319999999992, processed=2, skipped=0
+[01-Jan-2026 18:24:01 UTC] [ACCOUNT CALC] calculateAccountBalances called at 2026-01-01 18:24:01 for account 6597790162 with 3 prices
+[01-Jan-2026 18:24:01 UTC] [PROFIT CALC] Trade #3 (buy BTC/USD): open_price=88458.79, current_price=88240, lot=0.30
+[01-Jan-2026 18:24:01 UTC] [PROFIT CALC] Trade #3 P&L: -65.636999999998 (formula: buy -> (88240 - 88458.79) × 0.30 × 1)
+[01-Jan-2026 18:24:01 UTC] [ACCOUNT CALC] Account 6597790162: 1 total trades
+[01-Jan-2026 18:24:01 UTC] [ACCOUNT CALC] Trades: [{"id":3,"pair":"BTC\/USD","pairKey":"btcusdt","type":"buy","trade_price":"88458.79"}]
+[01-Jan-2026 18:24:01 UTC] [ACCOUNT CALC] Available price keys: ["btcusdt","ethusdt","bnbusdt"]
+[01-Jan-2026 18:24:01 UTC] [ACCOUNT CALC] Result for account 6597790162: equity=10208.493, profit_loss=-65.636999999998, processed=1, skipped=0
+[01-Jan-2026 18:24:01 UTC] [ACCOUNT CALC] calculateAccountBalances called at 2026-01-01 18:24:01 for account 8971883360 with 3 prices
+[01-Jan-2026 18:24:01 UTC] [PROFIT CALC] Trade #6 (buy BTC/USD): open_price=88590.06, current_price=88240, lot=0.10
+[01-Jan-2026 18:24:01 UTC] [PROFIT CALC] Trade #6 P&L: -35.006 (formula: buy -> (88240 - 88590.06) × 0.10 × 1)
+[01-Jan-2026 18:24:01 UTC] [ACCOUNT CALC] Account 8971883360: 1 total trades
+[01-Jan-2026 18:24:01 UTC] [ACCOUNT CALC] Trades: [{"id":6,"pair":"BTC\/USD","pairKey":"btcusdt","type":"buy","trade_price":"88590.06"}]
+[01-Jan-2026 18:24:01 UTC] [ACCOUNT CALC] Available price keys: ["btcusdt","ethusdt","bnbusdt"]
+[01-Jan-2026 18:24:01 UTC] [ACCOUNT CALC] Result for account 8971883360: equity=9964.994, profit_loss=-35.006, processed=1, skipped=0
+[01-Jan-2026 18:24:02 UTC] [PRICE UPDATE 2026-01-01 18:24:02] Received prices: {"btcusdt":88240}
+[01-Jan-2026 18:24:02 UTC] [PRICE UPDATE 2026-01-01 18:24:02] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:02 UTC] [PRICE UPDATE 2026-01-01 18:24:02] Received prices: {"ethusdt":2990.79}
+[01-Jan-2026 18:24:02 UTC] [PRICE UPDATE 2026-01-01 18:24:02] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:02 UTC] [PRICE UPDATE 2026-01-01 18:24:02] Received prices: {"bnbusdt":859.99}
+[01-Jan-2026 18:24:02 UTC] [PRICE UPDATE 2026-01-01 18:24:02] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:03 UTC] [PRICE UPDATE 2026-01-01 18:24:03] Received prices: {"btcusdt":88240.01}
+[01-Jan-2026 18:24:03 UTC] [PRICE UPDATE 2026-01-01 18:24:03] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:03 UTC] [PRICE UPDATE 2026-01-01 18:24:03] Received prices: {"bnbusdt":859.99}
+[01-Jan-2026 18:24:03 UTC] [PRICE UPDATE 2026-01-01 18:24:03] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:04 UTC] [PRICE UPDATE 2026-01-01 18:24:04] Received prices: {"btcusdt":88240.01}
+[01-Jan-2026 18:24:04 UTC] [PRICE UPDATE 2026-01-01 18:24:04] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:04 UTC] [PRICE UPDATE 2026-01-01 18:24:04] Received prices: {"bnbusdt":860}
+[01-Jan-2026 18:24:04 UTC] [PRICE UPDATE 2026-01-01 18:24:04] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:05 UTC] [PRICE UPDATE 2026-01-01 18:24:05] Received prices: {"btcusdt":88231.19}
+[01-Jan-2026 18:24:05 UTC] [PRICE UPDATE 2026-01-01 18:24:05] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:05 UTC] [PRICE UPDATE 2026-01-01 18:24:05] Received prices: {"ethusdt":2990.79}
+[01-Jan-2026 18:24:05 UTC] [PRICE UPDATE 2026-01-01 18:24:05] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:05 UTC] [PRICE UPDATE 2026-01-01 18:24:05] Received prices: {"bnbusdt":860}
+[01-Jan-2026 18:24:05 UTC] [PRICE UPDATE 2026-01-01 18:24:05] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:05 UTC] [ACCOUNT CALC] calculateAccountBalances called at 2026-01-01 18:24:05 for account 3651816725 with 3 prices
+[01-Jan-2026 18:24:05 UTC] [PROFIT CALC] Trade #1 (buy BTC/USD): open_price=88444.46, current_price=88231.19, lot=0.10
+[01-Jan-2026 18:24:05 UTC] [PROFIT CALC] Trade #1 P&L: -21.327 (formula: buy -> (88231.19 - 88444.46) × 0.10 × 1)
+[01-Jan-2026 18:24:05 UTC] [PROFIT CALC] Trade #5 (sell BTC/USD): open_price=88540.78, current_price=88231.19, lot=0.10
+[01-Jan-2026 18:24:05 UTC] [PROFIT CALC] Trade #5 P&L: 30.959 (formula: sell -> (88540.78 - 88231.19) × 0.10 × 1)
+[01-Jan-2026 18:24:05 UTC] [ACCOUNT CALC] Account 3651816725: 2 total trades
+[01-Jan-2026 18:24:05 UTC] [ACCOUNT CALC] Trades: [{"id":1,"pair":"BTC\/USD","pairKey":"btcusdt","type":"buy","trade_price":"88444.46"},{"id":5,"pair":"BTC\/USD","pairKey":"btcusdt","type":"sell","trade_price":"88540.78"}]
+[01-Jan-2026 18:24:05 UTC] [ACCOUNT CALC] Available price keys: ["btcusdt","ethusdt","bnbusdt"]
+[01-Jan-2026 18:24:05 UTC] [ACCOUNT CALC] Result for account 3651816725: equity=10181.502, profit_loss=9.6319999999992, processed=2, skipped=0
+[01-Jan-2026 18:24:05 UTC] [ACCOUNT CALC] calculateAccountBalances called at 2026-01-01 18:24:05 for account 6597790162 with 3 prices
+[01-Jan-2026 18:24:05 UTC] [PROFIT CALC] Trade #3 (buy BTC/USD): open_price=88458.79, current_price=88231.19, lot=0.30
+[01-Jan-2026 18:24:05 UTC] [PROFIT CALC] Trade #3 P&L: -68.279999999997 (formula: buy -> (88231.19 - 88458.79) × 0.30 × 1)
+[01-Jan-2026 18:24:05 UTC] [ACCOUNT CALC] Account 6597790162: 1 total trades
+[01-Jan-2026 18:24:05 UTC] [ACCOUNT CALC] Trades: [{"id":3,"pair":"BTC\/USD","pairKey":"btcusdt","type":"buy","trade_price":"88458.79"}]
+[01-Jan-2026 18:24:05 UTC] [ACCOUNT CALC] Available price keys: ["btcusdt","ethusdt","bnbusdt"]
+[01-Jan-2026 18:24:05 UTC] [ACCOUNT CALC] Result for account 6597790162: equity=10205.85, profit_loss=-68.279999999997, processed=1, skipped=0
+[01-Jan-2026 18:24:05 UTC] [ACCOUNT CALC] calculateAccountBalances called at 2026-01-01 18:24:05 for account 8971883360 with 3 prices
+[01-Jan-2026 18:24:05 UTC] [PROFIT CALC] Trade #6 (buy BTC/USD): open_price=88590.06, current_price=88231.19, lot=0.10
+[01-Jan-2026 18:24:05 UTC] [PROFIT CALC] Trade #6 P&L: -35.887 (formula: buy -> (88231.19 - 88590.06) × 0.10 × 1)
+[01-Jan-2026 18:24:05 UTC] [ACCOUNT CALC] Account 8971883360: 1 total trades
+[01-Jan-2026 18:24:05 UTC] [ACCOUNT CALC] Trades: [{"id":6,"pair":"BTC\/USD","pairKey":"btcusdt","type":"buy","trade_price":"88590.06"}]
+[01-Jan-2026 18:24:05 UTC] [ACCOUNT CALC] Available price keys: ["btcusdt","ethusdt","bnbusdt"]
+[01-Jan-2026 18:24:05 UTC] [ACCOUNT CALC] Result for account 8971883360: equity=9964.113, profit_loss=-35.887, processed=1, skipped=0
+[01-Jan-2026 18:24:06 UTC] [PRICE UPDATE 2026-01-01 18:24:06] Received prices: {"btcusdt":88226.44}
+[01-Jan-2026 18:24:06 UTC] [PRICE UPDATE 2026-01-01 18:24:06] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:06 UTC] [PRICE UPDATE 2026-01-01 18:24:06] Received prices: {"ethusdt":2990.79}
+[01-Jan-2026 18:24:06 UTC] [PRICE UPDATE 2026-01-01 18:24:06] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:06 UTC] [PRICE UPDATE 2026-01-01 18:24:06] Received prices: {"bnbusdt":859.99}
+[01-Jan-2026 18:24:06 UTC] [PRICE UPDATE 2026-01-01 18:24:06] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:07 UTC] [PRICE UPDATE 2026-01-01 18:24:07] Received prices: {"btcusdt":88226.45}
+[01-Jan-2026 18:24:07 UTC] [PRICE UPDATE 2026-01-01 18:24:07] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:07 UTC] [PRICE UPDATE 2026-01-01 18:24:07] Received prices: {"ethusdt":2990.78}
+[01-Jan-2026 18:24:07 UTC] [PRICE UPDATE 2026-01-01 18:24:07] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:07 UTC] [PRICE UPDATE 2026-01-01 18:24:07] Received prices: {"bnbusdt":860}
+[01-Jan-2026 18:24:07 UTC] [PRICE UPDATE 2026-01-01 18:24:07] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:08 UTC] [PRICE UPDATE 2026-01-01 18:24:08] Received prices: {"btcusdt":88226.44}
+[01-Jan-2026 18:24:08 UTC] [PRICE UPDATE 2026-01-01 18:24:08] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:08 UTC] [PRICE UPDATE 2026-01-01 18:24:08] Received prices: {"ethusdt":2990.62}
+[01-Jan-2026 18:24:08 UTC] [PRICE UPDATE 2026-01-01 18:24:08] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:08 UTC] [PRICE UPDATE 2026-01-01 18:24:08] Received prices: {"bnbusdt":860}
+[01-Jan-2026 18:24:08 UTC] [PRICE UPDATE 2026-01-01 18:24:08] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:09 UTC] [PRICE UPDATE 2026-01-01 18:24:09] Received prices: {"btcusdt":88226.45}
+[01-Jan-2026 18:24:09 UTC] [PRICE UPDATE 2026-01-01 18:24:09] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:09 UTC] [ACCOUNT CALC] calculateAccountBalances called at 2026-01-01 18:24:09 for account 3651816725 with 3 prices
+[01-Jan-2026 18:24:09 UTC] [PROFIT CALC] Trade #1 (buy BTC/USD): open_price=88444.46, current_price=88226.45, lot=0.10
+[01-Jan-2026 18:24:09 UTC] [PROFIT CALC] Trade #1 P&L: -21.801000000001 (formula: buy -> (88226.45 - 88444.46) × 0.10 × 1)
+[01-Jan-2026 18:24:09 UTC] [PROFIT CALC] Trade #5 (sell BTC/USD): open_price=88540.78, current_price=88226.45, lot=0.10
+[01-Jan-2026 18:24:09 UTC] [PROFIT CALC] Trade #5 P&L: 31.433 (formula: sell -> (88540.78 - 88226.45) × 0.10 × 1)
+[01-Jan-2026 18:24:09 UTC] [ACCOUNT CALC] Account 3651816725: 2 total trades
+[01-Jan-2026 18:24:09 UTC] [ACCOUNT CALC] Trades: [{"id":1,"pair":"BTC\/USD","pairKey":"btcusdt","type":"buy","trade_price":"88444.46"},{"id":5,"pair":"BTC\/USD","pairKey":"btcusdt","type":"sell","trade_price":"88540.78"}]
+[01-Jan-2026 18:24:09 UTC] [ACCOUNT CALC] Available price keys: ["btcusdt","ethusdt","bnbusdt"]
+[01-Jan-2026 18:24:09 UTC] [ACCOUNT CALC] Result for account 3651816725: equity=10181.502, profit_loss=9.6319999999992, processed=2, skipped=0
+[01-Jan-2026 18:24:09 UTC] [ACCOUNT CALC] calculateAccountBalances called at 2026-01-01 18:24:09 for account 6597790162 with 3 prices
+[01-Jan-2026 18:24:09 UTC] [PROFIT CALC] Trade #3 (buy BTC/USD): open_price=88458.79, current_price=88226.45, lot=0.30
+[01-Jan-2026 18:24:09 UTC] [PROFIT CALC] Trade #3 P&L: -69.701999999999 (formula: buy -> (88226.45 - 88458.79) × 0.30 × 1)
+[01-Jan-2026 18:24:09 UTC] [ACCOUNT CALC] Account 6597790162: 1 total trades
+[01-Jan-2026 18:24:09 UTC] [ACCOUNT CALC] Trades: [{"id":3,"pair":"BTC\/USD","pairKey":"btcusdt","type":"buy","trade_price":"88458.79"}]
+[01-Jan-2026 18:24:09 UTC] [ACCOUNT CALC] Available price keys: ["btcusdt","ethusdt","bnbusdt"]
+[01-Jan-2026 18:24:09 UTC] [ACCOUNT CALC] Result for account 6597790162: equity=10204.428, profit_loss=-69.701999999999, processed=1, skipped=0
+[01-Jan-2026 18:24:09 UTC] [ACCOUNT CALC] calculateAccountBalances called at 2026-01-01 18:24:09 for account 8971883360 with 3 prices
+[01-Jan-2026 18:24:09 UTC] [PROFIT CALC] Trade #6 (buy BTC/USD): open_price=88590.06, current_price=88226.45, lot=0.10
+[01-Jan-2026 18:24:09 UTC] [PROFIT CALC] Trade #6 P&L: -36.361 (formula: buy -> (88226.45 - 88590.06) × 0.10 × 1)
+[01-Jan-2026 18:24:09 UTC] [ACCOUNT CALC] Account 8971883360: 1 total trades
+[01-Jan-2026 18:24:09 UTC] [ACCOUNT CALC] Trades: [{"id":6,"pair":"BTC\/USD","pairKey":"btcusdt","type":"buy","trade_price":"88590.06"}]
+[01-Jan-2026 18:24:09 UTC] [ACCOUNT CALC] Available price keys: ["btcusdt","ethusdt","bnbusdt"]
+[01-Jan-2026 18:24:09 UTC] [ACCOUNT CALC] Result for account 8971883360: equity=9963.639, profit_loss=-36.361, processed=1, skipped=0
+[01-Jan-2026 18:24:09 UTC] [PRICE UPDATE 2026-01-01 18:24:09] Received prices: {"ethusdt":2990.62}
+[01-Jan-2026 18:24:09 UTC] [PRICE UPDATE 2026-01-01 18:24:09] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:09 UTC] [PRICE UPDATE 2026-01-01 18:24:09] Received prices: {"bnbusdt":859.99}
+[01-Jan-2026 18:24:09 UTC] [PRICE UPDATE 2026-01-01 18:24:09] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:10 UTC] [PRICE UPDATE 2026-01-01 18:24:10] Received prices: {"btcusdt":88226.44}
+[01-Jan-2026 18:24:10 UTC] [PRICE UPDATE 2026-01-01 18:24:10] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:10 UTC] [PRICE UPDATE 2026-01-01 18:24:10] Received prices: {"ethusdt":2990.62}
+[01-Jan-2026 18:24:10 UTC] [PRICE UPDATE 2026-01-01 18:24:10] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:10 UTC] [PRICE UPDATE 2026-01-01 18:24:10] Received prices: {"bnbusdt":860}
+[01-Jan-2026 18:24:10 UTC] [PRICE UPDATE 2026-01-01 18:24:10] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:11 UTC] [PRICE UPDATE 2026-01-01 18:24:11] Received prices: {"btcusdt":88226.44}
+[01-Jan-2026 18:24:11 UTC] [PRICE UPDATE 2026-01-01 18:24:11] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:11 UTC] [PRICE UPDATE 2026-01-01 18:24:11] Received prices: {"ethusdt":2990.62}
+[01-Jan-2026 18:24:11 UTC] [PRICE UPDATE 2026-01-01 18:24:11] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:11 UTC] [PRICE UPDATE 2026-01-01 18:24:11] Received prices: {"bnbusdt":860}
+[01-Jan-2026 18:24:11 UTC] [PRICE UPDATE 2026-01-01 18:24:11] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:12 UTC] [PRICE UPDATE 2026-01-01 18:24:12] Received prices: {"btcusdt":88226.44}
+[01-Jan-2026 18:24:12 UTC] [PRICE UPDATE 2026-01-01 18:24:12] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:12 UTC] [PRICE UPDATE 2026-01-01 18:24:12] Received prices: {"ethusdt":2990.61}
+[01-Jan-2026 18:24:12 UTC] [PRICE UPDATE 2026-01-01 18:24:12] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:12 UTC] [ACCOUNT CALC] calculateAccountBalances called at 2026-01-01 18:24:12 for account 3651816725 with 3 prices
+[01-Jan-2026 18:24:12 UTC] [PROFIT CALC] Trade #1 (buy BTC/USD): open_price=88444.46, current_price=88226.44, lot=0.10
+[01-Jan-2026 18:24:12 UTC] [PROFIT CALC] Trade #1 P&L: -21.802 (formula: buy -> (88226.44 - 88444.46) × 0.10 × 1)
+[01-Jan-2026 18:24:12 UTC] [PROFIT CALC] Trade #5 (sell BTC/USD): open_price=88540.78, current_price=88226.44, lot=0.10
+[01-Jan-2026 18:24:12 UTC] [PROFIT CALC] Trade #5 P&L: 31.434 (formula: sell -> (88540.78 - 88226.44) × 0.10 × 1)
+[01-Jan-2026 18:24:12 UTC] [ACCOUNT CALC] Account 3651816725: 2 total trades
+[01-Jan-2026 18:24:12 UTC] [ACCOUNT CALC] Trades: [{"id":1,"pair":"BTC\/USD","pairKey":"btcusdt","type":"buy","trade_price":"88444.46"},{"id":5,"pair":"BTC\/USD","pairKey":"btcusdt","type":"sell","trade_price":"88540.78"}]
+[01-Jan-2026 18:24:12 UTC] [ACCOUNT CALC] Available price keys: ["btcusdt","ethusdt","bnbusdt"]
+[01-Jan-2026 18:24:12 UTC] [ACCOUNT CALC] Result for account 3651816725: equity=10181.502, profit_loss=9.6319999999992, processed=2, skipped=0
+[01-Jan-2026 18:24:12 UTC] [ACCOUNT CALC] calculateAccountBalances called at 2026-01-01 18:24:12 for account 6597790162 with 3 prices
+[01-Jan-2026 18:24:12 UTC] [PROFIT CALC] Trade #3 (buy BTC/USD): open_price=88458.79, current_price=88226.44, lot=0.30
+[01-Jan-2026 18:24:12 UTC] [PROFIT CALC] Trade #3 P&L: -69.704999999997 (formula: buy -> (88226.44 - 88458.79) × 0.30 × 1)
+[01-Jan-2026 18:24:12 UTC] [ACCOUNT CALC] Account 6597790162: 1 total trades
+[01-Jan-2026 18:24:12 UTC] [ACCOUNT CALC] Trades: [{"id":3,"pair":"BTC\/USD","pairKey":"btcusdt","type":"buy","trade_price":"88458.79"}]
+[01-Jan-2026 18:24:12 UTC] [ACCOUNT CALC] Available price keys: ["btcusdt","ethusdt","bnbusdt"]
+[01-Jan-2026 18:24:12 UTC] [ACCOUNT CALC] Result for account 6597790162: equity=10204.425, profit_loss=-69.704999999997, processed=1, skipped=0
+[01-Jan-2026 18:24:12 UTC] [ACCOUNT CALC] calculateAccountBalances called at 2026-01-01 18:24:12 for account 8971883360 with 3 prices
+[01-Jan-2026 18:24:12 UTC] [PROFIT CALC] Trade #6 (buy BTC/USD): open_price=88590.06, current_price=88226.44, lot=0.10
+[01-Jan-2026 18:24:12 UTC] [PROFIT CALC] Trade #6 P&L: -36.362 (formula: buy -> (88226.44 - 88590.06) × 0.10 × 1)
+[01-Jan-2026 18:24:12 UTC] [ACCOUNT CALC] Account 8971883360: 1 total trades
+[01-Jan-2026 18:24:12 UTC] [ACCOUNT CALC] Trades: [{"id":6,"pair":"BTC\/USD","pairKey":"btcusdt","type":"buy","trade_price":"88590.06"}]
+[01-Jan-2026 18:24:12 UTC] [ACCOUNT CALC] Available price keys: ["btcusdt","ethusdt","bnbusdt"]
+[01-Jan-2026 18:24:12 UTC] [ACCOUNT CALC] Result for account 8971883360: equity=9963.638, profit_loss=-36.362, processed=1, skipped=0
+[01-Jan-2026 18:24:12 UTC] [PRICE UPDATE 2026-01-01 18:24:12] Received prices: {"bnbusdt":859.99}
+[01-Jan-2026 18:24:12 UTC] [PRICE UPDATE 2026-01-01 18:24:12] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:13 UTC] [PRICE UPDATE 2026-01-01 18:24:13] Received prices: {"btcusdt":88226.45}
+[01-Jan-2026 18:24:13 UTC] [PRICE UPDATE 2026-01-01 18:24:13] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:13 UTC] [PRICE UPDATE 2026-01-01 18:24:13] Received prices: {"ethusdt":2990.61}
+[01-Jan-2026 18:24:13 UTC] [PRICE UPDATE 2026-01-01 18:24:13] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:13 UTC] [PRICE UPDATE 2026-01-01 18:24:13] Received prices: {"bnbusdt":860}
+[01-Jan-2026 18:24:13 UTC] [PRICE UPDATE 2026-01-01 18:24:13] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:14 UTC] [PRICE UPDATE 2026-01-01 18:24:14] Received prices: {"btcusdt":88226.44}
+[01-Jan-2026 18:24:14 UTC] [PRICE UPDATE 2026-01-01 18:24:14] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:14 UTC] [PRICE UPDATE 2026-01-01 18:24:14] Received prices: {"ethusdt":2990.62}
+[01-Jan-2026 18:24:14 UTC] [PRICE UPDATE 2026-01-01 18:24:14] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:14 UTC] [PRICE UPDATE 2026-01-01 18:24:14] Received prices: {"bnbusdt":859.99}
+[01-Jan-2026 18:24:14 UTC] [PRICE UPDATE 2026-01-01 18:24:14] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:15 UTC] [PRICE UPDATE 2026-01-01 18:24:15] Received prices: {"btcusdt":88226.45}
+[01-Jan-2026 18:24:15 UTC] [PRICE UPDATE 2026-01-01 18:24:15] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:15 UTC] [PRICE UPDATE 2026-01-01 18:24:15] Received prices: {"ethusdt":2990.62}
+[01-Jan-2026 18:24:15 UTC] [PRICE UPDATE 2026-01-01 18:24:15] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:15 UTC] [PRICE UPDATE 2026-01-01 18:24:15] Received prices: {"bnbusdt":859.99}
+[01-Jan-2026 18:24:15 UTC] [PRICE UPDATE 2026-01-01 18:24:15] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:15 UTC] [ACCOUNT CALC] calculateAccountBalances called at 2026-01-01 18:24:15 for account 3651816725 with 3 prices
+[01-Jan-2026 18:24:15 UTC] [PROFIT CALC] Trade #1 (buy BTC/USD): open_price=88444.46, current_price=88226.45, lot=0.10
+[01-Jan-2026 18:24:15 UTC] [PROFIT CALC] Trade #1 P&L: -21.801000000001 (formula: buy -> (88226.45 - 88444.46) × 0.10 × 1)
+[01-Jan-2026 18:24:15 UTC] [PROFIT CALC] Trade #5 (sell BTC/USD): open_price=88540.78, current_price=88226.45, lot=0.10
+[01-Jan-2026 18:24:15 UTC] [PROFIT CALC] Trade #5 P&L: 31.433 (formula: sell -> (88540.78 - 88226.45) × 0.10 × 1)
+[01-Jan-2026 18:24:15 UTC] [ACCOUNT CALC] Account 3651816725: 2 total trades
+[01-Jan-2026 18:24:15 UTC] [ACCOUNT CALC] Trades: [{"id":1,"pair":"BTC\/USD","pairKey":"btcusdt","type":"buy","trade_price":"88444.46"},{"id":5,"pair":"BTC\/USD","pairKey":"btcusdt","type":"sell","trade_price":"88540.78"}]
+[01-Jan-2026 18:24:15 UTC] [ACCOUNT CALC] Available price keys: ["btcusdt","ethusdt","bnbusdt"]
+[01-Jan-2026 18:24:15 UTC] [ACCOUNT CALC] Result for account 3651816725: equity=10181.502, profit_loss=9.6319999999992, processed=2, skipped=0
+[01-Jan-2026 18:24:15 UTC] [ACCOUNT CALC] calculateAccountBalances called at 2026-01-01 18:24:15 for account 6597790162 with 3 prices
+[01-Jan-2026 18:24:15 UTC] [PROFIT CALC] Trade #3 (buy BTC/USD): open_price=88458.79, current_price=88226.45, lot=0.30
+[01-Jan-2026 18:24:15 UTC] [PROFIT CALC] Trade #3 P&L: -69.701999999999 (formula: buy -> (88226.45 - 88458.79) × 0.30 × 1)
+[01-Jan-2026 18:24:15 UTC] [ACCOUNT CALC] Account 6597790162: 1 total trades
+[01-Jan-2026 18:24:15 UTC] [ACCOUNT CALC] Trades: [{"id":3,"pair":"BTC\/USD","pairKey":"btcusdt","type":"buy","trade_price":"88458.79"}]
+[01-Jan-2026 18:24:15 UTC] [ACCOUNT CALC] Available price keys: ["btcusdt","ethusdt","bnbusdt"]
+[01-Jan-2026 18:24:15 UTC] [ACCOUNT CALC] Result for account 6597790162: equity=10204.428, profit_loss=-69.701999999999, processed=1, skipped=0
+[01-Jan-2026 18:24:15 UTC] [ACCOUNT CALC] calculateAccountBalances called at 2026-01-01 18:24:15 for account 8971883360 with 3 prices
+[01-Jan-2026 18:24:15 UTC] [PROFIT CALC] Trade #6 (buy BTC/USD): open_price=88590.06, current_price=88226.45, lot=0.10
+[01-Jan-2026 18:24:15 UTC] [PROFIT CALC] Trade #6 P&L: -36.361 (formula: buy -> (88226.45 - 88590.06) × 0.10 × 1)
+[01-Jan-2026 18:24:15 UTC] [ACCOUNT CALC] Account 8971883360: 1 total trades
+[01-Jan-2026 18:24:15 UTC] [ACCOUNT CALC] Trades: [{"id":6,"pair":"BTC\/USD","pairKey":"btcusdt","type":"buy","trade_price":"88590.06"}]
+[01-Jan-2026 18:24:15 UTC] [ACCOUNT CALC] Available price keys: ["btcusdt","ethusdt","bnbusdt"]
+[01-Jan-2026 18:24:15 UTC] [ACCOUNT CALC] Result for account 8971883360: equity=9963.639, profit_loss=-36.361, processed=1, skipped=0
+[01-Jan-2026 18:24:16 UTC] [PRICE UPDATE 2026-01-01 18:24:16] Received prices: {"btcusdt":88226.45}
+[01-Jan-2026 18:24:16 UTC] [PRICE UPDATE 2026-01-01 18:24:16] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:16 UTC] [PRICE UPDATE 2026-01-01 18:24:16] Received prices: {"ethusdt":2990.62}
+[01-Jan-2026 18:24:16 UTC] [PRICE UPDATE 2026-01-01 18:24:16] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:16 UTC] [PRICE UPDATE 2026-01-01 18:24:16] Received prices: {"bnbusdt":860}
+[01-Jan-2026 18:24:16 UTC] [PRICE UPDATE 2026-01-01 18:24:16] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:17 UTC] [PRICE UPDATE 2026-01-01 18:24:17] Received prices: {"btcusdt":88226.44}
+[01-Jan-2026 18:24:17 UTC] [PRICE UPDATE 2026-01-01 18:24:17] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:17 UTC] [PRICE UPDATE 2026-01-01 18:24:17] Received prices: {"ethusdt":2990.67}
+[01-Jan-2026 18:24:17 UTC] [PRICE UPDATE 2026-01-01 18:24:17] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:17 UTC] [PRICE UPDATE 2026-01-01 18:24:17] Received prices: {"bnbusdt":860}
+[01-Jan-2026 18:24:17 UTC] [PRICE UPDATE 2026-01-01 18:24:17] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:18 UTC] [PRICE UPDATE 2026-01-01 18:24:18] Received prices: {"btcusdt":88226.45}
+[01-Jan-2026 18:24:18 UTC] [PRICE UPDATE 2026-01-01 18:24:18] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:18 UTC] [PRICE UPDATE 2026-01-01 18:24:18] Received prices: {"ethusdt":2990.67}
+[01-Jan-2026 18:24:18 UTC] [PRICE UPDATE 2026-01-01 18:24:18] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:18 UTC] [PRICE UPDATE 2026-01-01 18:24:18] Received prices: {"bnbusdt":859.99}
+[01-Jan-2026 18:24:18 UTC] [PRICE UPDATE 2026-01-01 18:24:18] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:19 UTC] [PRICE UPDATE 2026-01-01 18:24:19] Received prices: {"btcusdt":88192.66}
+[01-Jan-2026 18:24:19 UTC] [PRICE UPDATE 2026-01-01 18:24:19] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:19 UTC] [ACCOUNT CALC] calculateAccountBalances called at 2026-01-01 18:24:19 for account 3651816725 with 3 prices
+[01-Jan-2026 18:24:19 UTC] [PROFIT CALC] Trade #1 (buy BTC/USD): open_price=88444.46, current_price=88192.66, lot=0.10
+[01-Jan-2026 18:24:19 UTC] [PROFIT CALC] Trade #1 P&L: -25.18 (formula: buy -> (88192.66 - 88444.46) × 0.10 × 1)
+[01-Jan-2026 18:24:19 UTC] [PROFIT CALC] Trade #5 (sell BTC/USD): open_price=88540.78, current_price=88192.66, lot=0.10
+[01-Jan-2026 18:24:19 UTC] [PROFIT CALC] Trade #5 P&L: 34.812 (formula: sell -> (88540.78 - 88192.66) × 0.10 × 1)
+[01-Jan-2026 18:24:19 UTC] [ACCOUNT CALC] Account 3651816725: 2 total trades
+[01-Jan-2026 18:24:19 UTC] [ACCOUNT CALC] Trades: [{"id":1,"pair":"BTC\/USD","pairKey":"btcusdt","type":"buy","trade_price":"88444.46"},{"id":5,"pair":"BTC\/USD","pairKey":"btcusdt","type":"sell","trade_price":"88540.78"}]
+[01-Jan-2026 18:24:19 UTC] [ACCOUNT CALC] Available price keys: ["btcusdt","ethusdt","bnbusdt"]
+[01-Jan-2026 18:24:19 UTC] [ACCOUNT CALC] Result for account 3651816725: equity=10181.502, profit_loss=9.6319999999992, processed=2, skipped=0
+[01-Jan-2026 18:24:19 UTC] [ACCOUNT CALC] calculateAccountBalances called at 2026-01-01 18:24:19 for account 6597790162 with 3 prices
+[01-Jan-2026 18:24:19 UTC] [PROFIT CALC] Trade #3 (buy BTC/USD): open_price=88458.79, current_price=88192.66, lot=0.30
+[01-Jan-2026 18:24:19 UTC] [PROFIT CALC] Trade #3 P&L: -79.838999999997 (formula: buy -> (88192.66 - 88458.79) × 0.30 × 1)
+[01-Jan-2026 18:24:19 UTC] [ACCOUNT CALC] Account 6597790162: 1 total trades
+[01-Jan-2026 18:24:19 UTC] [ACCOUNT CALC] Trades: [{"id":3,"pair":"BTC\/USD","pairKey":"btcusdt","type":"buy","trade_price":"88458.79"}]
+[01-Jan-2026 18:24:19 UTC] [ACCOUNT CALC] Available price keys: ["btcusdt","ethusdt","bnbusdt"]
+[01-Jan-2026 18:24:19 UTC] [ACCOUNT CALC] Result for account 6597790162: equity=10194.291, profit_loss=-79.838999999997, processed=1, skipped=0
+[01-Jan-2026 18:24:19 UTC] [ACCOUNT CALC] calculateAccountBalances called at 2026-01-01 18:24:19 for account 8971883360 with 3 prices
+[01-Jan-2026 18:24:19 UTC] [PROFIT CALC] Trade #6 (buy BTC/USD): open_price=88590.06, current_price=88192.66, lot=0.10
+[01-Jan-2026 18:24:19 UTC] [PROFIT CALC] Trade #6 P&L: -39.739999999999 (formula: buy -> (88192.66 - 88590.06) × 0.10 × 1)
+[01-Jan-2026 18:24:19 UTC] [ACCOUNT CALC] Account 8971883360: 1 total trades
+[01-Jan-2026 18:24:19 UTC] [ACCOUNT CALC] Trades: [{"id":6,"pair":"BTC\/USD","pairKey":"btcusdt","type":"buy","trade_price":"88590.06"}]
+[01-Jan-2026 18:24:19 UTC] [ACCOUNT CALC] Available price keys: ["btcusdt","ethusdt","bnbusdt"]
+[01-Jan-2026 18:24:19 UTC] [ACCOUNT CALC] Result for account 8971883360: equity=9960.26, profit_loss=-39.739999999999, processed=1, skipped=0
+[01-Jan-2026 18:24:19 UTC] [PRICE UPDATE 2026-01-01 18:24:19] Received prices: {"ethusdt":2990.45}
+[01-Jan-2026 18:24:19 UTC] [PRICE UPDATE 2026-01-01 18:24:19] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:19 UTC] [PRICE UPDATE 2026-01-01 18:24:19] Received prices: {"bnbusdt":859.97}
+[01-Jan-2026 18:24:19 UTC] [PRICE UPDATE 2026-01-01 18:24:19] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:20 UTC] [PRICE UPDATE 2026-01-01 18:24:20] Received prices: {"btcusdt":88192.65}
+[01-Jan-2026 18:24:20 UTC] [PRICE UPDATE 2026-01-01 18:24:20] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:20 UTC] [PRICE UPDATE 2026-01-01 18:24:20] Received prices: {"ethusdt":2990.45}
+[01-Jan-2026 18:24:20 UTC] [PRICE UPDATE 2026-01-01 18:24:20] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:20 UTC] [PRICE UPDATE 2026-01-01 18:24:20] Received prices: {"bnbusdt":859.96}
+[01-Jan-2026 18:24:20 UTC] [PRICE UPDATE 2026-01-01 18:24:20] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:21 UTC] [PRICE UPDATE 2026-01-01 18:24:21] Received prices: {"btcusdt":88192.65}
+[01-Jan-2026 18:24:21 UTC] [PRICE UPDATE 2026-01-01 18:24:21] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:21 UTC] [PRICE UPDATE 2026-01-01 18:24:21] Received prices: {"ethusdt":2990.45}
+[01-Jan-2026 18:24:21 UTC] [PRICE UPDATE 2026-01-01 18:24:21] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:21 UTC] [PRICE UPDATE 2026-01-01 18:24:21] Received prices: {"bnbusdt":859.96}
+[01-Jan-2026 18:24:21 UTC] [PRICE UPDATE 2026-01-01 18:24:21] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:22 UTC] [PRICE UPDATE 2026-01-01 18:24:22] Received prices: {"btcusdt":88176.78}
+[01-Jan-2026 18:24:22 UTC] [PRICE UPDATE 2026-01-01 18:24:22] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:22 UTC] [PRICE UPDATE 2026-01-01 18:24:22] Received prices: {"ethusdt":2990.02}
+[01-Jan-2026 18:24:22 UTC] [PRICE UPDATE 2026-01-01 18:24:22] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:22 UTC] [ACCOUNT CALC] calculateAccountBalances called at 2026-01-01 18:24:22 for account 3651816725 with 3 prices
+[01-Jan-2026 18:24:22 UTC] [PROFIT CALC] Trade #1 (buy BTC/USD): open_price=88444.46, current_price=88176.78, lot=0.10
+[01-Jan-2026 18:24:22 UTC] [PROFIT CALC] Trade #1 P&L: -26.768000000001 (formula: buy -> (88176.78 - 88444.46) × 0.10 × 1)
+[01-Jan-2026 18:24:22 UTC] [PROFIT CALC] Trade #5 (sell BTC/USD): open_price=88540.78, current_price=88176.78, lot=0.10
+[01-Jan-2026 18:24:22 UTC] [PROFIT CALC] Trade #5 P&L: 36.4 (formula: sell -> (88540.78 - 88176.78) × 0.10 × 1)
+[01-Jan-2026 18:24:22 UTC] [ACCOUNT CALC] Account 3651816725: 2 total trades
+[01-Jan-2026 18:24:22 UTC] [ACCOUNT CALC] Trades: [{"id":1,"pair":"BTC\/USD","pairKey":"btcusdt","type":"buy","trade_price":"88444.46"},{"id":5,"pair":"BTC\/USD","pairKey":"btcusdt","type":"sell","trade_price":"88540.78"}]
+[01-Jan-2026 18:24:22 UTC] [ACCOUNT CALC] Available price keys: ["btcusdt","ethusdt","bnbusdt"]
+[01-Jan-2026 18:24:22 UTC] [ACCOUNT CALC] Result for account 3651816725: equity=10181.502, profit_loss=9.6319999999992, processed=2, skipped=0
+[01-Jan-2026 18:24:22 UTC] [ACCOUNT CALC] calculateAccountBalances called at 2026-01-01 18:24:22 for account 6597790162 with 3 prices
+[01-Jan-2026 18:24:22 UTC] [PROFIT CALC] Trade #3 (buy BTC/USD): open_price=88458.79, current_price=88176.78, lot=0.30
+[01-Jan-2026 18:24:22 UTC] [PROFIT CALC] Trade #3 P&L: -84.602999999998 (formula: buy -> (88176.78 - 88458.79) × 0.30 × 1)
+[01-Jan-2026 18:24:22 UTC] [ACCOUNT CALC] Account 6597790162: 1 total trades
+[01-Jan-2026 18:24:22 UTC] [ACCOUNT CALC] Trades: [{"id":3,"pair":"BTC\/USD","pairKey":"btcusdt","type":"buy","trade_price":"88458.79"}]
+[01-Jan-2026 18:24:22 UTC] [ACCOUNT CALC] Available price keys: ["btcusdt","ethusdt","bnbusdt"]
+[01-Jan-2026 18:24:22 UTC] [ACCOUNT CALC] Result for account 6597790162: equity=10189.527, profit_loss=-84.602999999998, processed=1, skipped=0
+[01-Jan-2026 18:24:22 UTC] [ACCOUNT CALC] calculateAccountBalances called at 2026-01-01 18:24:22 for account 8971883360 with 3 prices
+[01-Jan-2026 18:24:22 UTC] [PROFIT CALC] Trade #6 (buy BTC/USD): open_price=88590.06, current_price=88176.78, lot=0.10
+[01-Jan-2026 18:24:22 UTC] [PROFIT CALC] Trade #6 P&L: -41.328 (formula: buy -> (88176.78 - 88590.06) × 0.10 × 1)
+[01-Jan-2026 18:24:22 UTC] [ACCOUNT CALC] Account 8971883360: 1 total trades
+[01-Jan-2026 18:24:22 UTC] [ACCOUNT CALC] Trades: [{"id":6,"pair":"BTC\/USD","pairKey":"btcusdt","type":"buy","trade_price":"88590.06"}]
+[01-Jan-2026 18:24:22 UTC] [ACCOUNT CALC] Available price keys: ["btcusdt","ethusdt","bnbusdt"]
+[01-Jan-2026 18:24:22 UTC] [ACCOUNT CALC] Result for account 8971883360: equity=9958.672, profit_loss=-41.328, processed=1, skipped=0
+[01-Jan-2026 18:24:22 UTC] [PRICE UPDATE 2026-01-01 18:24:22] Received prices: {"bnbusdt":859.94}
+[01-Jan-2026 18:24:22 UTC] [PRICE UPDATE 2026-01-01 18:24:22] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:23 UTC] [PRICE UPDATE 2026-01-01 18:24:23] Received prices: {"btcusdt":88176.79}
+[01-Jan-2026 18:24:23 UTC] [PRICE UPDATE 2026-01-01 18:24:23] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:23 UTC] [PRICE UPDATE 2026-01-01 18:24:23] Received prices: {"ethusdt":2990.01}
+[01-Jan-2026 18:24:23 UTC] [PRICE UPDATE 2026-01-01 18:24:23] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:23 UTC] [PRICE UPDATE 2026-01-01 18:24:23] Received prices: {"bnbusdt":859.93}
+[01-Jan-2026 18:24:23 UTC] [PRICE UPDATE 2026-01-01 18:24:23] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:24 UTC] [PRICE UPDATE 2026-01-01 18:24:24] Received prices: {"btcusdt":88176.79}
+[01-Jan-2026 18:24:24 UTC] [PRICE UPDATE 2026-01-01 18:24:24] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:24 UTC] [PRICE UPDATE 2026-01-01 18:24:24] Received prices: {"ethusdt":2990}
+[01-Jan-2026 18:24:24 UTC] [PRICE UPDATE 2026-01-01 18:24:24] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:24 UTC] [PRICE UPDATE 2026-01-01 18:24:24] Received prices: {"bnbusdt":859.94}
+[01-Jan-2026 18:24:24 UTC] [PRICE UPDATE 2026-01-01 18:24:24] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:25 UTC] [PRICE UPDATE 2026-01-01 18:24:25] Received prices: {"btcusdt":88176.79}
+[01-Jan-2026 18:24:25 UTC] [PRICE UPDATE 2026-01-01 18:24:25] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:25 UTC] [PRICE UPDATE 2026-01-01 18:24:25] Received prices: {"ethusdt":2990}
+[01-Jan-2026 18:24:25 UTC] [PRICE UPDATE 2026-01-01 18:24:25] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:25 UTC] [PRICE UPDATE 2026-01-01 18:24:25] Received prices: {"bnbusdt":859.93}
+[01-Jan-2026 18:24:25 UTC] [PRICE UPDATE 2026-01-01 18:24:25] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:25 UTC] [ACCOUNT CALC] calculateAccountBalances called at 2026-01-01 18:24:25 for account 3651816725 with 3 prices
+[01-Jan-2026 18:24:25 UTC] [PROFIT CALC] Trade #1 (buy BTC/USD): open_price=88444.46, current_price=88176.79, lot=0.10
+[01-Jan-2026 18:24:25 UTC] [PROFIT CALC] Trade #1 P&L: -26.767000000001 (formula: buy -> (88176.79 - 88444.46) × 0.10 × 1)
+[01-Jan-2026 18:24:25 UTC] [PROFIT CALC] Trade #5 (sell BTC/USD): open_price=88540.78, current_price=88176.79, lot=0.10
+[01-Jan-2026 18:24:25 UTC] [PROFIT CALC] Trade #5 P&L: 36.399000000001 (formula: sell -> (88540.78 - 88176.79) × 0.10 × 1)
+[01-Jan-2026 18:24:25 UTC] [ACCOUNT CALC] Account 3651816725: 2 total trades
+[01-Jan-2026 18:24:25 UTC] [ACCOUNT CALC] Trades: [{"id":1,"pair":"BTC\/USD","pairKey":"btcusdt","type":"buy","trade_price":"88444.46"},{"id":5,"pair":"BTC\/USD","pairKey":"btcusdt","type":"sell","trade_price":"88540.78"}]
+[01-Jan-2026 18:24:25 UTC] [ACCOUNT CALC] Available price keys: ["btcusdt","ethusdt","bnbusdt"]
+[01-Jan-2026 18:24:25 UTC] [ACCOUNT CALC] Result for account 3651816725: equity=10181.502, profit_loss=9.6319999999992, processed=2, skipped=0
+[01-Jan-2026 18:24:25 UTC] [ACCOUNT CALC] calculateAccountBalances called at 2026-01-01 18:24:25 for account 6597790162 with 3 prices
+[01-Jan-2026 18:24:25 UTC] [PROFIT CALC] Trade #3 (buy BTC/USD): open_price=88458.79, current_price=88176.79, lot=0.30
+[01-Jan-2026 18:24:25 UTC] [PROFIT CALC] Trade #3 P&L: -84.6 (formula: buy -> (88176.79 - 88458.79) × 0.30 × 1)
+[01-Jan-2026 18:24:25 UTC] [ACCOUNT CALC] Account 6597790162: 1 total trades
+[01-Jan-2026 18:24:25 UTC] [ACCOUNT CALC] Trades: [{"id":3,"pair":"BTC\/USD","pairKey":"btcusdt","type":"buy","trade_price":"88458.79"}]
+[01-Jan-2026 18:24:25 UTC] [ACCOUNT CALC] Available price keys: ["btcusdt","ethusdt","bnbusdt"]
+[01-Jan-2026 18:24:25 UTC] [ACCOUNT CALC] Result for account 6597790162: equity=10189.53, profit_loss=-84.6, processed=1, skipped=0
+[01-Jan-2026 18:24:25 UTC] [ACCOUNT CALC] calculateAccountBalances called at 2026-01-01 18:24:25 for account 8971883360 with 3 prices
+[01-Jan-2026 18:24:25 UTC] [PROFIT CALC] Trade #6 (buy BTC/USD): open_price=88590.06, current_price=88176.79, lot=0.10
+[01-Jan-2026 18:24:25 UTC] [PROFIT CALC] Trade #6 P&L: -41.327 (formula: buy -> (88176.79 - 88590.06) × 0.10 × 1)
+[01-Jan-2026 18:24:25 UTC] [ACCOUNT CALC] Account 8971883360: 1 total trades
+[01-Jan-2026 18:24:25 UTC] [ACCOUNT CALC] Trades: [{"id":6,"pair":"BTC\/USD","pairKey":"btcusdt","type":"buy","trade_price":"88590.06"}]
+[01-Jan-2026 18:24:25 UTC] [ACCOUNT CALC] Available price keys: ["btcusdt","ethusdt","bnbusdt"]
+[01-Jan-2026 18:24:25 UTC] [ACCOUNT CALC] Result for account 8971883360: equity=9958.673, profit_loss=-41.327, processed=1, skipped=0
+[01-Jan-2026 18:24:26 UTC] [PRICE UPDATE 2026-01-01 18:24:26] Received prices: {"btcusdt":88176.78}
+[01-Jan-2026 18:24:26 UTC] [PRICE UPDATE 2026-01-01 18:24:26] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:26 UTC] [PRICE UPDATE 2026-01-01 18:24:26] Received prices: {"ethusdt":2990}
+[01-Jan-2026 18:24:26 UTC] [PRICE UPDATE 2026-01-01 18:24:26] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:26 UTC] [PRICE UPDATE 2026-01-01 18:24:26] Received prices: {"bnbusdt":859.93}
+[01-Jan-2026 18:24:26 UTC] [PRICE UPDATE 2026-01-01 18:24:26] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:27 UTC] [PRICE UPDATE 2026-01-01 18:24:27] Received prices: {"btcusdt":88176.78}
+[01-Jan-2026 18:24:27 UTC] [PRICE UPDATE 2026-01-01 18:24:27] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:27 UTC] [PRICE UPDATE 2026-01-01 18:24:27] Received prices: {"ethusdt":2990}
+[01-Jan-2026 18:24:27 UTC] [PRICE UPDATE 2026-01-01 18:24:27] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:27 UTC] [PRICE UPDATE 2026-01-01 18:24:27] Received prices: {"bnbusdt":859.94}
+[01-Jan-2026 18:24:27 UTC] [PRICE UPDATE 2026-01-01 18:24:27] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:28 UTC] [PRICE UPDATE 2026-01-01 18:24:28] Received prices: {"btcusdt":88176.79}
+[01-Jan-2026 18:24:28 UTC] [PRICE UPDATE 2026-01-01 18:24:28] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:28 UTC] [PRICE UPDATE 2026-01-01 18:24:28] Received prices: {"ethusdt":2990}
+[01-Jan-2026 18:24:28 UTC] [PRICE UPDATE 2026-01-01 18:24:28] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:28 UTC] [PRICE UPDATE 2026-01-01 18:24:28] Received prices: {"bnbusdt":859.94}
+[01-Jan-2026 18:24:28 UTC] [PRICE UPDATE 2026-01-01 18:24:28] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:29 UTC] [PRICE UPDATE 2026-01-01 18:24:29] Received prices: {"btcusdt":88176.79}
+[01-Jan-2026 18:24:29 UTC] [PRICE UPDATE 2026-01-01 18:24:29] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:29 UTC] [ACCOUNT CALC] calculateAccountBalances called at 2026-01-01 18:24:29 for account 3651816725 with 3 prices
+[01-Jan-2026 18:24:29 UTC] [PROFIT CALC] Trade #1 (buy BTC/USD): open_price=88444.46, current_price=88176.79, lot=0.10
+[01-Jan-2026 18:24:29 UTC] [PROFIT CALC] Trade #1 P&L: -26.767000000001 (formula: buy -> (88176.79 - 88444.46) × 0.10 × 1)
+[01-Jan-2026 18:24:29 UTC] [PROFIT CALC] Trade #5 (sell BTC/USD): open_price=88540.78, current_price=88176.79, lot=0.10
+[01-Jan-2026 18:24:29 UTC] [PROFIT CALC] Trade #5 P&L: 36.399000000001 (formula: sell -> (88540.78 - 88176.79) × 0.10 × 1)
+[01-Jan-2026 18:24:29 UTC] [ACCOUNT CALC] Account 3651816725: 2 total trades
+[01-Jan-2026 18:24:29 UTC] [ACCOUNT CALC] Trades: [{"id":1,"pair":"BTC\/USD","pairKey":"btcusdt","type":"buy","trade_price":"88444.46"},{"id":5,"pair":"BTC\/USD","pairKey":"btcusdt","type":"sell","trade_price":"88540.78"}]
+[01-Jan-2026 18:24:29 UTC] [ACCOUNT CALC] Available price keys: ["btcusdt","ethusdt","bnbusdt"]
+[01-Jan-2026 18:24:29 UTC] [ACCOUNT CALC] Result for account 3651816725: equity=10181.502, profit_loss=9.6319999999992, processed=2, skipped=0
+[01-Jan-2026 18:24:29 UTC] [ACCOUNT CALC] calculateAccountBalances called at 2026-01-01 18:24:29 for account 6597790162 with 3 prices
+[01-Jan-2026 18:24:29 UTC] [PROFIT CALC] Trade #3 (buy BTC/USD): open_price=88458.79, current_price=88176.79, lot=0.30
+[01-Jan-2026 18:24:29 UTC] [PROFIT CALC] Trade #3 P&L: -84.6 (formula: buy -> (88176.79 - 88458.79) × 0.30 × 1)
+[01-Jan-2026 18:24:29 UTC] [ACCOUNT CALC] Account 6597790162: 1 total trades
+[01-Jan-2026 18:24:29 UTC] [ACCOUNT CALC] Trades: [{"id":3,"pair":"BTC\/USD","pairKey":"btcusdt","type":"buy","trade_price":"88458.79"}]
+[01-Jan-2026 18:24:29 UTC] [ACCOUNT CALC] Available price keys: ["btcusdt","ethusdt","bnbusdt"]
+[01-Jan-2026 18:24:29 UTC] [ACCOUNT CALC] Result for account 6597790162: equity=10189.53, profit_loss=-84.6, processed=1, skipped=0
+[01-Jan-2026 18:24:29 UTC] [ACCOUNT CALC] calculateAccountBalances called at 2026-01-01 18:24:29 for account 8971883360 with 3 prices
+[01-Jan-2026 18:24:29 UTC] [PROFIT CALC] Trade #6 (buy BTC/USD): open_price=88590.06, current_price=88176.79, lot=0.10
+[01-Jan-2026 18:24:29 UTC] [PROFIT CALC] Trade #6 P&L: -41.327 (formula: buy -> (88176.79 - 88590.06) × 0.10 × 1)
+[01-Jan-2026 18:24:29 UTC] [ACCOUNT CALC] Account 8971883360: 1 total trades
+[01-Jan-2026 18:24:29 UTC] [ACCOUNT CALC] Trades: [{"id":6,"pair":"BTC\/USD","pairKey":"btcusdt","type":"buy","trade_price":"88590.06"}]
+[01-Jan-2026 18:24:29 UTC] [ACCOUNT CALC] Available price keys: ["btcusdt","ethusdt","bnbusdt"]
+[01-Jan-2026 18:24:29 UTC] [ACCOUNT CALC] Result for account 8971883360: equity=9958.673, profit_loss=-41.327, processed=1, skipped=0
+[01-Jan-2026 18:24:29 UTC] [PRICE UPDATE 2026-01-01 18:24:29] Received prices: {"ethusdt":2990.01}
+[01-Jan-2026 18:24:29 UTC] [PRICE UPDATE 2026-01-01 18:24:29] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:29 UTC] [PRICE UPDATE 2026-01-01 18:24:29] Received prices: {"bnbusdt":859.94}
+[01-Jan-2026 18:24:29 UTC] [PRICE UPDATE 2026-01-01 18:24:29] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:30 UTC] [PRICE UPDATE 2026-01-01 18:24:30] Received prices: {"btcusdt":88176.79}
+[01-Jan-2026 18:24:30 UTC] [PRICE UPDATE 2026-01-01 18:24:30] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:30 UTC] [PRICE UPDATE 2026-01-01 18:24:30] Received prices: {"ethusdt":2990.01}
+[01-Jan-2026 18:24:30 UTC] [PRICE UPDATE 2026-01-01 18:24:30] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:30 UTC] [PRICE UPDATE 2026-01-01 18:24:30] Received prices: {"bnbusdt":859.93}
+[01-Jan-2026 18:24:30 UTC] [PRICE UPDATE 2026-01-01 18:24:30] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:31 UTC] [PRICE UPDATE 2026-01-01 18:24:31] Received prices: {"btcusdt":88176.78}
+[01-Jan-2026 18:24:31 UTC] [PRICE UPDATE 2026-01-01 18:24:31] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:31 UTC] [PRICE UPDATE 2026-01-01 18:24:31] Received prices: {"ethusdt":2990.01}
+[01-Jan-2026 18:24:31 UTC] [PRICE UPDATE 2026-01-01 18:24:31] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:31 UTC] [PRICE UPDATE 2026-01-01 18:24:31] Received prices: {"bnbusdt":859.93}
+[01-Jan-2026 18:24:31 UTC] [PRICE UPDATE 2026-01-01 18:24:31] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:32 UTC] [PRICE UPDATE 2026-01-01 18:24:32] Received prices: {"btcusdt":88176.79}
+[01-Jan-2026 18:24:32 UTC] [PRICE UPDATE 2026-01-01 18:24:32] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:32 UTC] [PRICE UPDATE 2026-01-01 18:24:32] Received prices: {"ethusdt":2990.01}
+[01-Jan-2026 18:24:32 UTC] [PRICE UPDATE 2026-01-01 18:24:32] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:32 UTC] [ACCOUNT CALC] calculateAccountBalances called at 2026-01-01 18:24:32 for account 3651816725 with 3 prices
+[01-Jan-2026 18:24:32 UTC] [PROFIT CALC] Trade #1 (buy BTC/USD): open_price=88444.46, current_price=88176.79, lot=0.10
+[01-Jan-2026 18:24:32 UTC] [PROFIT CALC] Trade #1 P&L: -26.767000000001 (formula: buy -> (88176.79 - 88444.46) × 0.10 × 1)
+[01-Jan-2026 18:24:32 UTC] [PROFIT CALC] Trade #5 (sell BTC/USD): open_price=88540.78, current_price=88176.79, lot=0.10
+[01-Jan-2026 18:24:32 UTC] [PROFIT CALC] Trade #5 P&L: 36.399000000001 (formula: sell -> (88540.78 - 88176.79) × 0.10 × 1)
+[01-Jan-2026 18:24:32 UTC] [ACCOUNT CALC] Account 3651816725: 2 total trades
+[01-Jan-2026 18:24:32 UTC] [ACCOUNT CALC] Trades: [{"id":1,"pair":"BTC\/USD","pairKey":"btcusdt","type":"buy","trade_price":"88444.46"},{"id":5,"pair":"BTC\/USD","pairKey":"btcusdt","type":"sell","trade_price":"88540.78"}]
+[01-Jan-2026 18:24:32 UTC] [ACCOUNT CALC] Available price keys: ["btcusdt","ethusdt","bnbusdt"]
+[01-Jan-2026 18:24:32 UTC] [ACCOUNT CALC] Result for account 3651816725: equity=10181.502, profit_loss=9.6319999999992, processed=2, skipped=0
+[01-Jan-2026 18:24:32 UTC] [ACCOUNT CALC] calculateAccountBalances called at 2026-01-01 18:24:32 for account 6597790162 with 3 prices
+[01-Jan-2026 18:24:32 UTC] [PROFIT CALC] Trade #3 (buy BTC/USD): open_price=88458.79, current_price=88176.79, lot=0.30
+[01-Jan-2026 18:24:32 UTC] [PROFIT CALC] Trade #3 P&L: -84.6 (formula: buy -> (88176.79 - 88458.79) × 0.30 × 1)
+[01-Jan-2026 18:24:32 UTC] [ACCOUNT CALC] Account 6597790162: 1 total trades
+[01-Jan-2026 18:24:32 UTC] [ACCOUNT CALC] Trades: [{"id":3,"pair":"BTC\/USD","pairKey":"btcusdt","type":"buy","trade_price":"88458.79"}]
+[01-Jan-2026 18:24:32 UTC] [ACCOUNT CALC] Available price keys: ["btcusdt","ethusdt","bnbusdt"]
+[01-Jan-2026 18:24:32 UTC] [ACCOUNT CALC] Result for account 6597790162: equity=10189.53, profit_loss=-84.6, processed=1, skipped=0
+[01-Jan-2026 18:24:32 UTC] [ACCOUNT CALC] calculateAccountBalances called at 2026-01-01 18:24:32 for account 8971883360 with 3 prices
+[01-Jan-2026 18:24:32 UTC] [PROFIT CALC] Trade #6 (buy BTC/USD): open_price=88590.06, current_price=88176.79, lot=0.10
+[01-Jan-2026 18:24:32 UTC] [PROFIT CALC] Trade #6 P&L: -41.327 (formula: buy -> (88176.79 - 88590.06) × 0.10 × 1)
+[01-Jan-2026 18:24:32 UTC] [ACCOUNT CALC] Account 8971883360: 1 total trades
+[01-Jan-2026 18:24:32 UTC] [ACCOUNT CALC] Trades: [{"id":6,"pair":"BTC\/USD","pairKey":"btcusdt","type":"buy","trade_price":"88590.06"}]
+[01-Jan-2026 18:24:32 UTC] [ACCOUNT CALC] Available price keys: ["btcusdt","ethusdt","bnbusdt"]
+[01-Jan-2026 18:24:32 UTC] [ACCOUNT CALC] Result for account 8971883360: equity=9958.673, profit_loss=-41.327, processed=1, skipped=0
+[01-Jan-2026 18:24:33 UTC] [PRICE UPDATE 2026-01-01 18:24:33] Received prices: {"btcusdt":88176.79}
+[01-Jan-2026 18:24:33 UTC] [PRICE UPDATE 2026-01-01 18:24:33] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:33 UTC] [PRICE UPDATE 2026-01-01 18:24:33] Received prices: {"bnbusdt":859.93}
+[01-Jan-2026 18:24:33 UTC] [PRICE UPDATE 2026-01-01 18:24:33] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:34 UTC] [PRICE UPDATE 2026-01-01 18:24:34] Received prices: {"btcusdt":88176.79}
+[01-Jan-2026 18:24:34 UTC] [PRICE UPDATE 2026-01-01 18:24:34] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:34 UTC] [PRICE UPDATE 2026-01-01 18:24:34] Received prices: {"ethusdt":2990.01}
+[01-Jan-2026 18:24:34 UTC] [PRICE UPDATE 2026-01-01 18:24:34] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:34 UTC] [PRICE UPDATE 2026-01-01 18:24:34] Received prices: {"bnbusdt":859.94}
+[01-Jan-2026 18:24:34 UTC] [PRICE UPDATE 2026-01-01 18:24:34] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:35 UTC] [PRICE UPDATE 2026-01-01 18:24:35] Received prices: {"btcusdt":88176.78}
+[01-Jan-2026 18:24:35 UTC] [PRICE UPDATE 2026-01-01 18:24:35] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:35 UTC] [PRICE UPDATE 2026-01-01 18:24:35] Received prices: {"ethusdt":2990.01}
+[01-Jan-2026 18:24:35 UTC] [PRICE UPDATE 2026-01-01 18:24:35] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:35 UTC] [PRICE UPDATE 2026-01-01 18:24:35] Received prices: {"bnbusdt":859.94}
+[01-Jan-2026 18:24:35 UTC] [PRICE UPDATE 2026-01-01 18:24:35] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:36 UTC] [PRICE UPDATE 2026-01-01 18:24:36] Received prices: {"btcusdt":88176.78}
+[01-Jan-2026 18:24:36 UTC] [PRICE UPDATE 2026-01-01 18:24:36] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:36 UTC] [PRICE UPDATE 2026-01-01 18:24:36] Received prices: {"ethusdt":2990.01}
+[01-Jan-2026 18:24:36 UTC] [PRICE UPDATE 2026-01-01 18:24:36] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:36 UTC] [ACCOUNT CALC] calculateAccountBalances called at 2026-01-01 18:24:36 for account 3651816725 with 3 prices
+[01-Jan-2026 18:24:36 UTC] [PROFIT CALC] Trade #1 (buy BTC/USD): open_price=88444.46, current_price=88176.78, lot=0.10
+[01-Jan-2026 18:24:36 UTC] [PROFIT CALC] Trade #1 P&L: -26.768000000001 (formula: buy -> (88176.78 - 88444.46) × 0.10 × 1)
+[01-Jan-2026 18:24:36 UTC] [PROFIT CALC] Trade #5 (sell BTC/USD): open_price=88540.78, current_price=88176.78, lot=0.10
+[01-Jan-2026 18:24:36 UTC] [PROFIT CALC] Trade #5 P&L: 36.4 (formula: sell -> (88540.78 - 88176.78) × 0.10 × 1)
+[01-Jan-2026 18:24:36 UTC] [ACCOUNT CALC] Account 3651816725: 2 total trades
+[01-Jan-2026 18:24:36 UTC] [ACCOUNT CALC] Trades: [{"id":1,"pair":"BTC\/USD","pairKey":"btcusdt","type":"buy","trade_price":"88444.46"},{"id":5,"pair":"BTC\/USD","pairKey":"btcusdt","type":"sell","trade_price":"88540.78"}]
+[01-Jan-2026 18:24:36 UTC] [ACCOUNT CALC] Available price keys: ["btcusdt","ethusdt","bnbusdt"]
+[01-Jan-2026 18:24:36 UTC] [ACCOUNT CALC] Result for account 3651816725: equity=10181.502, profit_loss=9.6319999999992, processed=2, skipped=0
+[01-Jan-2026 18:24:36 UTC] [ACCOUNT CALC] calculateAccountBalances called at 2026-01-01 18:24:36 for account 6597790162 with 3 prices
+[01-Jan-2026 18:24:36 UTC] [PROFIT CALC] Trade #3 (buy BTC/USD): open_price=88458.79, current_price=88176.78, lot=0.30
+[01-Jan-2026 18:24:36 UTC] [PROFIT CALC] Trade #3 P&L: -84.602999999998 (formula: buy -> (88176.78 - 88458.79) × 0.30 × 1)
+[01-Jan-2026 18:24:36 UTC] [ACCOUNT CALC] Account 6597790162: 1 total trades
+[01-Jan-2026 18:24:36 UTC] [ACCOUNT CALC] Trades: [{"id":3,"pair":"BTC\/USD","pairKey":"btcusdt","type":"buy","trade_price":"88458.79"}]
+[01-Jan-2026 18:24:36 UTC] [ACCOUNT CALC] Available price keys: ["btcusdt","ethusdt","bnbusdt"]
+[01-Jan-2026 18:24:36 UTC] [ACCOUNT CALC] Result for account 6597790162: equity=10189.527, profit_loss=-84.602999999998, processed=1, skipped=0
+[01-Jan-2026 18:24:36 UTC] [ACCOUNT CALC] calculateAccountBalances called at 2026-01-01 18:24:36 for account 8971883360 with 3 prices
+[01-Jan-2026 18:24:36 UTC] [PROFIT CALC] Trade #6 (buy BTC/USD): open_price=88590.06, current_price=88176.78, lot=0.10
+[01-Jan-2026 18:24:36 UTC] [PROFIT CALC] Trade #6 P&L: -41.328 (formula: buy -> (88176.78 - 88590.06) × 0.10 × 1)
+[01-Jan-2026 18:24:36 UTC] [ACCOUNT CALC] Account 8971883360: 1 total trades
+[01-Jan-2026 18:24:36 UTC] [ACCOUNT CALC] Trades: [{"id":6,"pair":"BTC\/USD","pairKey":"btcusdt","type":"buy","trade_price":"88590.06"}]
+[01-Jan-2026 18:24:36 UTC] [ACCOUNT CALC] Available price keys: ["btcusdt","ethusdt","bnbusdt"]
+[01-Jan-2026 18:24:36 UTC] [ACCOUNT CALC] Result for account 8971883360: equity=9958.672, profit_loss=-41.328, processed=1, skipped=0
+[01-Jan-2026 18:24:36 UTC] [PRICE UPDATE 2026-01-01 18:24:36] Received prices: {"bnbusdt":859.93}
+[01-Jan-2026 18:24:36 UTC] [PRICE UPDATE 2026-01-01 18:24:36] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:37 UTC] [PRICE UPDATE 2026-01-01 18:24:37] Received prices: {"btcusdt":88176.78}
+[01-Jan-2026 18:24:37 UTC] [PRICE UPDATE 2026-01-01 18:24:37] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:37 UTC] [PRICE UPDATE 2026-01-01 18:24:37] Received prices: {"ethusdt":2990}
+[01-Jan-2026 18:24:37 UTC] [PRICE UPDATE 2026-01-01 18:24:37] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:37 UTC] [PRICE UPDATE 2026-01-01 18:24:37] Received prices: {"bnbusdt":859.93}
+[01-Jan-2026 18:24:37 UTC] [PRICE UPDATE 2026-01-01 18:24:37] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:38 UTC] [PRICE UPDATE 2026-01-01 18:24:38] Received prices: {"btcusdt":88176.78}
+[01-Jan-2026 18:24:38 UTC] [PRICE UPDATE 2026-01-01 18:24:38] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:38 UTC] [PRICE UPDATE 2026-01-01 18:24:38] Received prices: {"ethusdt":2990}
+[01-Jan-2026 18:24:38 UTC] [PRICE UPDATE 2026-01-01 18:24:38] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:38 UTC] [PRICE UPDATE 2026-01-01 18:24:38] Received prices: {"bnbusdt":859.93}
+[01-Jan-2026 18:24:38 UTC] [PRICE UPDATE 2026-01-01 18:24:38] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:39 UTC] [PRICE UPDATE 2026-01-01 18:24:39] Received prices: {"btcusdt":88176.79}
+[01-Jan-2026 18:24:39 UTC] [PRICE UPDATE 2026-01-01 18:24:39] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:39 UTC] [PRICE UPDATE 2026-01-01 18:24:39] Received prices: {"ethusdt":2990}
+[01-Jan-2026 18:24:39 UTC] [PRICE UPDATE 2026-01-01 18:24:39] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:39 UTC] [PRICE UPDATE 2026-01-01 18:24:39] Received prices: {"bnbusdt":859.93}
+[01-Jan-2026 18:24:39 UTC] [PRICE UPDATE 2026-01-01 18:24:39] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:39 UTC] [ACCOUNT CALC] calculateAccountBalances called at 2026-01-01 18:24:39 for account 3651816725 with 3 prices
+[01-Jan-2026 18:24:39 UTC] [PROFIT CALC] Trade #1 (buy BTC/USD): open_price=88444.46, current_price=88176.79, lot=0.10
+[01-Jan-2026 18:24:39 UTC] [PROFIT CALC] Trade #1 P&L: -26.767000000001 (formula: buy -> (88176.79 - 88444.46) × 0.10 × 1)
+[01-Jan-2026 18:24:39 UTC] [PROFIT CALC] Trade #5 (sell BTC/USD): open_price=88540.78, current_price=88176.79, lot=0.10
+[01-Jan-2026 18:24:39 UTC] [PROFIT CALC] Trade #5 P&L: 36.399000000001 (formula: sell -> (88540.78 - 88176.79) × 0.10 × 1)
+[01-Jan-2026 18:24:39 UTC] [ACCOUNT CALC] Account 3651816725: 2 total trades
+[01-Jan-2026 18:24:39 UTC] [ACCOUNT CALC] Trades: [{"id":1,"pair":"BTC\/USD","pairKey":"btcusdt","type":"buy","trade_price":"88444.46"},{"id":5,"pair":"BTC\/USD","pairKey":"btcusdt","type":"sell","trade_price":"88540.78"}]
+[01-Jan-2026 18:24:39 UTC] [ACCOUNT CALC] Available price keys: ["btcusdt","ethusdt","bnbusdt"]
+[01-Jan-2026 18:24:39 UTC] [ACCOUNT CALC] Result for account 3651816725: equity=10181.502, profit_loss=9.6319999999992, processed=2, skipped=0
+[01-Jan-2026 18:24:39 UTC] [ACCOUNT CALC] calculateAccountBalances called at 2026-01-01 18:24:39 for account 6597790162 with 3 prices
+[01-Jan-2026 18:24:39 UTC] [PROFIT CALC] Trade #3 (buy BTC/USD): open_price=88458.79, current_price=88176.79, lot=0.30
+[01-Jan-2026 18:24:39 UTC] [PROFIT CALC] Trade #3 P&L: -84.6 (formula: buy -> (88176.79 - 88458.79) × 0.30 × 1)
+[01-Jan-2026 18:24:39 UTC] [ACCOUNT CALC] Account 6597790162: 1 total trades
+[01-Jan-2026 18:24:39 UTC] [ACCOUNT CALC] Trades: [{"id":3,"pair":"BTC\/USD","pairKey":"btcusdt","type":"buy","trade_price":"88458.79"}]
+[01-Jan-2026 18:24:39 UTC] [ACCOUNT CALC] Available price keys: ["btcusdt","ethusdt","bnbusdt"]
+[01-Jan-2026 18:24:39 UTC] [ACCOUNT CALC] Result for account 6597790162: equity=10189.53, profit_loss=-84.6, processed=1, skipped=0
+[01-Jan-2026 18:24:39 UTC] [ACCOUNT CALC] calculateAccountBalances called at 2026-01-01 18:24:39 for account 8971883360 with 3 prices
+[01-Jan-2026 18:24:39 UTC] [PROFIT CALC] Trade #6 (buy BTC/USD): open_price=88590.06, current_price=88176.79, lot=0.10
+[01-Jan-2026 18:24:39 UTC] [PROFIT CALC] Trade #6 P&L: -41.327 (formula: buy -> (88176.79 - 88590.06) × 0.10 × 1)
+[01-Jan-2026 18:24:39 UTC] [ACCOUNT CALC] Account 8971883360: 1 total trades
+[01-Jan-2026 18:24:39 UTC] [ACCOUNT CALC] Trades: [{"id":6,"pair":"BTC\/USD","pairKey":"btcusdt","type":"buy","trade_price":"88590.06"}]
+[01-Jan-2026 18:24:39 UTC] [ACCOUNT CALC] Available price keys: ["btcusdt","ethusdt","bnbusdt"]
+[01-Jan-2026 18:24:39 UTC] [ACCOUNT CALC] Result for account 8971883360: equity=9958.673, profit_loss=-41.327, processed=1, skipped=0
+[01-Jan-2026 18:24:40 UTC] [PRICE UPDATE 2026-01-01 18:24:40] Received prices: {"btcusdt":88176.79}
+[01-Jan-2026 18:24:40 UTC] [PRICE UPDATE 2026-01-01 18:24:40] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:40 UTC] [PRICE UPDATE 2026-01-01 18:24:40] Received prices: {"ethusdt":2990.01}
+[01-Jan-2026 18:24:40 UTC] [PRICE UPDATE 2026-01-01 18:24:40] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:40 UTC] [PRICE UPDATE 2026-01-01 18:24:40] Received prices: {"bnbusdt":859.94}
+[01-Jan-2026 18:24:40 UTC] [PRICE UPDATE 2026-01-01 18:24:40] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:41 UTC] [PRICE UPDATE 2026-01-01 18:24:41] Received prices: {"btcusdt":88176.79}
+[01-Jan-2026 18:24:41 UTC] [PRICE UPDATE 2026-01-01 18:24:41] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:41 UTC] [PRICE UPDATE 2026-01-01 18:24:41] Received prices: {"ethusdt":2990.01}
+[01-Jan-2026 18:24:41 UTC] [PRICE UPDATE 2026-01-01 18:24:41] Total prices in memory after merge: 3
+[01-Jan-2026 18:24:41 UTC] [PRICE UPDATE 2026-01-01 18:24:41] Received prices: {"bnbusdt":859.93}
+[01-Jan-2026 18:24:41 UTC] [PRICE UPDATE 2026-01-01 18:24:41] Total prices in memory after merge: 3
