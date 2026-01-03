@@ -413,9 +413,10 @@ $phpCliPath = PHP_BINARY;
                     <a href="test_binance.php" class="btn" target="_blank" style="text-align: center;">🔌 Test Binance Connection</a>
                     <a href="check_vendor.php" class="btn" target="_blank" style="text-align: center;">📦 Check Dependencies</a>
                     <a href="../monitoring/resource_monitor.php?key=your-random-secret-key-here" class="btn" target="_blank" style="text-align: center;">💻 VPS Resources</a>
+                    <a href="restart_and_clean.php?key=CHANGE_ME_<?= md5('your-random-string-here') ?>" class="btn btn-danger" target="_blank" style="text-align: center;">🔄 Restart & Clean Cache</a>
                 </div>
                 <p style="margin-top: 15px; font-size: 13px; color: #6b7280;">
-                    <strong>Note:</strong> Update the resource monitor link with your actual secret key from resource_monitor.php
+                    <strong>Note:</strong> Update the secret keys in restart_and_clean.php and resource_monitor.php before using
                 </p>
             </div>
             

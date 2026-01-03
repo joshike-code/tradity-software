@@ -185,6 +185,10 @@ class ProfitCalculationService
         try {
             $conn = Database::getConnection();
             
+            // CRITICAL: Disable MySQL query cache to prevent stale data
+            // This forces fresh data on every call - essential for real-time trading
+            $conn->query("SET SESSION query_cache_type = OFF");
+            
             // Get account balance
             $stmt = $conn->prepare("SELECT balance, leverage FROM accounts WHERE id_hash = ?");
             $stmt->bind_param("s", $accountId);
@@ -214,6 +218,8 @@ class ProfitCalculationService
             
             $profit_loss = 0;
             $totalMargin = 0;
+            $tradesProcessed = 0;
+            $tradesSkipped = 0;
             
             while ($trade = $tradesResult->fetch_assoc()) {
                 // Add up margins
@@ -233,8 +239,15 @@ class ProfitCalculationService
                     $profitCalc = self::calculateTradeProfit($trade, $currentPrice, $pairConfig);
                     if ($profitCalc) {
                         $profit_loss += $profitCalc['totalProfit'];
+                        $tradesProcessed++;
                     }
+                } else {
+                    $tradesSkipped++;
                 }
+            }
+            
+            if ($tradesSkipped > 0) {
+                error_log("[ACCOUNT CALC] WARNING: Account {$accountId} has {$tradesSkipped} trades with missing prices");
             }
             
             $roundedProfit = number_format(abs($profit_loss), 2, '.', '');

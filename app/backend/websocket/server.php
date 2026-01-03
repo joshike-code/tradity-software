@@ -48,6 +48,9 @@ class TradingWebSocketServer implements MessageComponentInterface {
         $this->adminTradeSubscriptions = []; // Initialize admin trade subscriptions
         $this->formingCandles = []; // Initialize forming candles tracker
         
+        // Load cached prices from file to prevent stale data on restart
+        $this->loadCachedPrices();
+        
         // Set up WebSocket notification callback for trade closures
         // This allows TradeService to notify WebSocket clients when trades are closed
         TradeService::setNotificationCallback(function($trade, $reason) {
@@ -57,6 +60,41 @@ class TradingWebSocketServer implements MessageComponentInterface {
         echo "WebSocket Server initialized\n";
         echo "Trade closure notifications enabled (SL/TP/Margin/Alter/Admin)\n";
         echo "Chart alteration system enabled\n";
+    }
+    
+    /**
+     * Load cached prices from file on server startup
+     * This prevents showing stale/empty data until Binance sends first update
+     */
+    private function loadCachedPrices() {
+        $cacheFile = __DIR__ . '/../cache/websocket_live_prices.json';
+        
+        if (!file_exists($cacheFile)) {
+            echo "[CACHE] No cached prices found - starting with empty prices\n";
+            return;
+        }
+        
+        $cacheContent = file_get_contents($cacheFile);
+        $cacheData = json_decode($cacheContent, true);
+        
+        if (!$cacheData || !isset($cacheData['prices'])) {
+            echo "[CACHE] Invalid cache format - starting with empty prices\n";
+            return;
+        }
+        
+        // Load prices into memory
+        $this->currentPrices = $cacheData['prices'];
+        $priceCount = count($this->currentPrices);
+        $cacheAge = isset($cacheData['timestamp']) ? (time() - $cacheData['timestamp']) : 'unknown';
+        
+        echo "[CACHE] ✅ Loaded $priceCount cached prices into memory\n";
+        echo "[CACHE] Cache age: $cacheAge seconds\n";
+        
+        // List first 5 prices for debugging
+        $samplePrices = array_slice($this->currentPrices, 0, 5, true);
+        foreach ($samplePrices as $pair => $price) {
+            echo "[CACHE]   $pair = $price\n";
+        }
     }
     
     public function onOpen(ConnectionInterface $conn) {
@@ -847,9 +885,6 @@ class TradingWebSocketServer implements MessageComponentInterface {
     }
     
     public function updatePrices($prices) {
-        // Debug: Log received prices
-        echo "updatePrices called with: " . json_encode($prices) . "\n";
-        
         // Merge new prices
         $this->currentPrices = array_merge($this->currentPrices, $prices);
         

@@ -1,9 +1,10 @@
-const CACHE_NAME = 'tradity-v0.8.1';
+const CACHE_NAME = 'tradity-v0.8.2';
 const ASSETS_TO_CACHE = [
-    '/app/static/css/distv0.8.1/my-styles.css',
-    '/app/static/css/distv0.8.1/admin-more-styles.css',
-    '/app/static/css/distv0.8.1/admin-style.css',
-    '/app/static/css/distv0.8.1/loader.css',
+    'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap',
+    '/app/static/css/distv0.8.2/my-styles.css',
+    '/app/static/css/distv0.8.2/admin-more-styles.css',
+    '/app/static/css/distv0.8.2/admin-style.css',
+    '/app/static/css/distv0.8.2/loader.css',
     '/app/static/css/core.8101.7635118be0daf6f0feff.main.css',
     '/app/static/css/core.chunk.6408.ea813ca5196078e4b5dc.css',
     '/app/static/css/core.chunk.8283.e093a20f556e53514056.css',
@@ -191,88 +192,88 @@ const ASSETS_TO_CACHE = [
     '/app/static/vendor/wnumb/wNumb.js',
     '/app/',
     '/app/index.html',
-    '/app/distv0.8.1/1018.bundle.js',
-    '/app/distv0.8.1/1069.bundle.js',
-    '/app/distv0.8.1/1118.bundle.js',
-    '/app/distv0.8.1/1174.bundle.js',
-    '/app/distv0.8.1/1233.bundle.js',
-    '/app/distv0.8.1/1323.bundle.js',
-    '/app/distv0.8.1/1400.bundle.js',
-    '/app/distv0.8.1/1598.bundle.js',
-    '/app/distv0.8.1/1765.bundle.js',
-    '/app/distv0.8.1/1793.bundle.js',
-    '/app/distv0.8.1/1796.bundle.js',
-    '/app/distv0.8.1/1855.bundle.js',
-    '/app/distv0.8.1/1861.bundle.js',
-    '/app/distv0.8.1/1906.bundle.js',
-    '/app/distv0.8.1/1938.bundle.js',
-    '/app/distv0.8.1/204.bundle.js',
-    '/app/distv0.8.1/2088.bundle.js',
-    '/app/distv0.8.1/2097.bundle.js',
-    '/app/distv0.8.1/2290.bundle.js',
-    '/app/distv0.8.1/2465.bundle.js',
-    '/app/distv0.8.1/2972.bundle.js',
-    '/app/distv0.8.1/3028.bundle.js',
-    '/app/distv0.8.1/3458.bundle.js',
-    '/app/distv0.8.1/3556.bundle.js',
-    '/app/distv0.8.1/3576.bundle.js',
-    '/app/distv0.8.1/3591.bundle.js',
-    '/app/distv0.8.1/3624.bundle.js',
-    '/app/distv0.8.1/3663.bundle.js',
-    '/app/distv0.8.1/4065.bundle.js',
-    '/app/distv0.8.1/4259.bundle.js',
-    '/app/distv0.8.1/4366.bundle.js',
-    '/app/distv0.8.1/4573.bundle.js',
-    '/app/distv0.8.1/4723.bundle.js',
-    '/app/distv0.8.1/5068.bundle.js',
-    '/app/distv0.8.1/5357.bundle.js',
-    '/app/distv0.8.1/5398.bundle.js',
-    '/app/distv0.8.1/5432.bundle.js',
-    '/app/distv0.8.1/5524.bundle.js',
-    '/app/distv0.8.1/5562.bundle.js',
-    '/app/distv0.8.1/5693.bundle.js',
-    '/app/distv0.8.1/586.bundle.js',
-    '/app/distv0.8.1/6058.bundle.js',
-    '/app/distv0.8.1/6070.bundle.js',
-    '/app/distv0.8.1/6125.bundle.js',
-    '/app/distv0.8.1/6218.bundle.js',
-    '/app/distv0.8.1/625.bundle.js',
-    '/app/distv0.8.1/6314.bundle.js',
-    '/app/distv0.8.1/6342.bundle.js',
-    '/app/distv0.8.1/6502.bundle.js',
-    '/app/distv0.8.1/6679.bundle.js',
-    '/app/distv0.8.1/6783.bundle.js',
-    '/app/distv0.8.1/6856.bundle.js',
-    '/app/distv0.8.1/6869.bundle.js',
-    '/app/distv0.8.1/6880.bundle.js',
-    '/app/distv0.8.1/7149.bundle.js',
-    '/app/distv0.8.1/7157.bundle.js',
-    '/app/distv0.8.1/7188.bundle.js',
-    '/app/distv0.8.1/7277.bundle.js',
-    '/app/distv0.8.1/7297.bundle.js',
-    '/app/distv0.8.1/7314.bundle.js',
-    '/app/distv0.8.1/7361.bundle.js',
-    '/app/distv0.8.1/7393.bundle.js',
-    '/app/distv0.8.1/7523.bundle.js',
-    '/app/distv0.8.1/7540.bundle.js',
-    '/app/distv0.8.1/7571.bundle.js',
-    '/app/distv0.8.1/7615.bundle.js',
-    '/app/distv0.8.1/7634.bundle.js',
-    '/app/distv0.8.1/7722.bundle.js',
-    '/app/distv0.8.1/7871.bundle.js',
-    '/app/distv0.8.1/7997.bundle.js',
-    '/app/distv0.8.1/8398.bundle.js',
-    '/app/distv0.8.1/8670.bundle.js',
-    '/app/distv0.8.1/8902.bundle.js',
-    '/app/distv0.8.1/9001.bundle.js',
-    '/app/distv0.8.1/9159.bundle.js',
-    '/app/distv0.8.1/9524.bundle.js',
-    '/app/distv0.8.1/9592.bundle.js',
-    '/app/distv0.8.1/9652.bundle.js',
-    '/app/distv0.8.1/9655.bundle.js',
-    '/app/distv0.8.1/9667.bundle.js',
-    '/app/distv0.8.1/9755.bundle.js',
-    '/app/distv0.8.1/bundle.js'
+    '/app/distv0.8.2/1018.bundle.js',
+    '/app/distv0.8.2/1069.bundle.js',
+    '/app/distv0.8.2/1118.bundle.js',
+    '/app/distv0.8.2/1174.bundle.js',
+    '/app/distv0.8.2/1233.bundle.js',
+    '/app/distv0.8.2/1323.bundle.js',
+    '/app/distv0.8.2/1400.bundle.js',
+    '/app/distv0.8.2/1598.bundle.js',
+    '/app/distv0.8.2/1765.bundle.js',
+    '/app/distv0.8.2/1793.bundle.js',
+    '/app/distv0.8.2/1796.bundle.js',
+    '/app/distv0.8.2/1855.bundle.js',
+    '/app/distv0.8.2/1861.bundle.js',
+    '/app/distv0.8.2/1906.bundle.js',
+    '/app/distv0.8.2/1938.bundle.js',
+    '/app/distv0.8.2/204.bundle.js',
+    '/app/distv0.8.2/2088.bundle.js',
+    '/app/distv0.8.2/2097.bundle.js',
+    '/app/distv0.8.2/2290.bundle.js',
+    '/app/distv0.8.2/2465.bundle.js',
+    '/app/distv0.8.2/2972.bundle.js',
+    '/app/distv0.8.2/3028.bundle.js',
+    '/app/distv0.8.2/3458.bundle.js',
+    '/app/distv0.8.2/3556.bundle.js',
+    '/app/distv0.8.2/3576.bundle.js',
+    '/app/distv0.8.2/3591.bundle.js',
+    '/app/distv0.8.2/3624.bundle.js',
+    '/app/distv0.8.2/3663.bundle.js',
+    '/app/distv0.8.2/4065.bundle.js',
+    '/app/distv0.8.2/4259.bundle.js',
+    '/app/distv0.8.2/4366.bundle.js',
+    '/app/distv0.8.2/4573.bundle.js',
+    '/app/distv0.8.2/4723.bundle.js',
+    '/app/distv0.8.2/5068.bundle.js',
+    '/app/distv0.8.2/5357.bundle.js',
+    '/app/distv0.8.2/5398.bundle.js',
+    '/app/distv0.8.2/5432.bundle.js',
+    '/app/distv0.8.2/5524.bundle.js',
+    '/app/distv0.8.2/5562.bundle.js',
+    '/app/distv0.8.2/5693.bundle.js',
+    '/app/distv0.8.2/586.bundle.js',
+    '/app/distv0.8.2/6058.bundle.js',
+    '/app/distv0.8.2/6070.bundle.js',
+    '/app/distv0.8.2/6125.bundle.js',
+    '/app/distv0.8.2/6218.bundle.js',
+    '/app/distv0.8.2/625.bundle.js',
+    '/app/distv0.8.2/6314.bundle.js',
+    '/app/distv0.8.2/6342.bundle.js',
+    '/app/distv0.8.2/6502.bundle.js',
+    '/app/distv0.8.2/6679.bundle.js',
+    '/app/distv0.8.2/6783.bundle.js',
+    '/app/distv0.8.2/6856.bundle.js',
+    '/app/distv0.8.2/6869.bundle.js',
+    '/app/distv0.8.2/6880.bundle.js',
+    '/app/distv0.8.2/7149.bundle.js',
+    '/app/distv0.8.2/7157.bundle.js',
+    '/app/distv0.8.2/7188.bundle.js',
+    '/app/distv0.8.2/7277.bundle.js',
+    '/app/distv0.8.2/7297.bundle.js',
+    '/app/distv0.8.2/7314.bundle.js',
+    '/app/distv0.8.2/7361.bundle.js',
+    '/app/distv0.8.2/7393.bundle.js',
+    '/app/distv0.8.2/7523.bundle.js',
+    '/app/distv0.8.2/7540.bundle.js',
+    '/app/distv0.8.2/7571.bundle.js',
+    '/app/distv0.8.2/7615.bundle.js',
+    '/app/distv0.8.2/7634.bundle.js',
+    '/app/distv0.8.2/7722.bundle.js',
+    '/app/distv0.8.2/7871.bundle.js',
+    '/app/distv0.8.2/7997.bundle.js',
+    '/app/distv0.8.2/8398.bundle.js',
+    '/app/distv0.8.2/8670.bundle.js',
+    '/app/distv0.8.2/8902.bundle.js',
+    '/app/distv0.8.2/9001.bundle.js',
+    '/app/distv0.8.2/9159.bundle.js',
+    '/app/distv0.8.2/9524.bundle.js',
+    '/app/distv0.8.2/9592.bundle.js',
+    '/app/distv0.8.2/9652.bundle.js',
+    '/app/distv0.8.2/9655.bundle.js',
+    '/app/distv0.8.2/9667.bundle.js',
+    '/app/distv0.8.2/9755.bundle.js',
+    '/app/distv0.8.2/bundle.js'
 ];
 
 // Install: cache assets in chunks to prevent overwhelming the browser
@@ -328,15 +329,23 @@ self.addEventListener('activate', event => {
 
 // Fetch: try cache first, fallback to network with better error handling
 self.addEventListener('fetch', event => {
-  // Skip cross-origin requests
-  if (!event.request.url.startsWith(self.location.origin)) {
-    return;
+  const url = new URL(event.request.url);
+  
+  // Skip non-GET requests and API requests
+  if (event.request.method !== 'GET' || url.pathname.includes('/api/')) {
+    return; // Don't call event.respondWith() - let browser handle it
   }
   
-  // Skip cross-origin, non-GET, and API requests completely
-  // Do NOT intercept these - let them pass through directly
-  if (event.request.method !== 'GET' || event.request.url.includes('/api/')) {
-    return; // Don't call event.respondWith() - let browser handle it
+  // Allow caching for:
+  // 1. Same-origin requests
+  // 2. Google Fonts (fonts.googleapis.com and fonts.gstatic.com)
+  // 3. CDNJS (cdnjs.cloudflare.com)
+  const isGoogleFont = url.hostname === 'fonts.googleapis.com' || url.hostname === 'fonts.gstatic.com';
+  const isCDNJS = url.hostname === 'cdnjs.cloudflare.com';
+  const isSameOrigin = url.origin === self.location.origin;
+  
+  if (!isSameOrigin && !isGoogleFont && !isCDNJS) {
+    return; // Skip other cross-origin requests
   }
   
   // Only cache static assets (CSS, JS, images, fonts, etc.)
@@ -348,8 +357,9 @@ self.addEventListener('fetch', event => {
       
       // Clone the request because it can only be used once
       return fetch(event.request.clone()).then(fetchResponse => {
-        // Check if valid response
-        if (!fetchResponse || fetchResponse.status !== 200 || fetchResponse.type !== 'basic') {
+        // Check if valid response (allow 'opaque' for cross-origin fonts)
+        if (!fetchResponse || fetchResponse.status !== 200 || 
+            (fetchResponse.type !== 'basic' && fetchResponse.type !== 'cors')) {
           return fetchResponse;
         }
         
