@@ -1,0 +1,3 @@
+*Fixed mail logo issue
+*Added/cached web fonts to service-worker for faster load time
+*Kill server now ends all processes/ running instances
