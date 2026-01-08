@@ -40,6 +40,12 @@ return [
     'degiant' => [
         'passkey' => $_ENV['DEGIANT_PASSKEY'] ?? getenv('DEGIANT_PASSKEY')
     ],
+    'finnhub' => [
+        'api_key' => $_ENV['FINNHUB_API_KEY'] ?? getenv('FINNHUB_API_KEY')
+    ],
+    'twelve_data' => [
+        'api_key' => $_ENV['TWELVE_DATA_API_KEY'] ?? getenv('TWELVE_DATA_API_KEY')
+    ],
     'exchangeratesapi' => [
         'api_key' => $_ENV['EXCHANGE_RATES_API_KEY'] ?? getenv('EXCHANGE_RATES_API_KEY')
     ],

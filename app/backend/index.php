@@ -247,6 +247,10 @@ switch($request) {
         require 'routes/admin/mailManager.php';
         break;
 
+    case $host.'api/admin/api-keys':
+        require 'routes/admin/apiKeys.php';
+        break;
+
     case $host.'api/admin/account_trade_stats':
         require 'routes/admin/accountTradeStats.php';
         break;

@@ -6,6 +6,14 @@ class AddDefaultSuperadminUser extends AbstractMigration
 {
     public function up()
     {
+        // Check if superadmin already exists
+        $exists = $this->fetchRow("SELECT id FROM users WHERE email = 'owner@tradity.com'");
+        
+        if ($exists) {
+            echo "Superadmin user already exists. Skipping...\n";
+            return;
+        }
+        
         $hashedPassword = password_hash('1234', PASSWORD_DEFAULT);
         $id_hash = rand(1000000000, 9999999999);
 

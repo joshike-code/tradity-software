@@ -98,8 +98,9 @@ class TradeController {
             $account = $result['data']['account'];
 
             // Get all open trades
-            $trades = TradeService::getOpenTrades($user_id);
-            Response::success(['openTrades' => $trades, 'balance' => $account['balance']]);
+            $openTrades = TradeService::getOpenTrades($user_id);
+            $closedTrades = TradeService::getClosedTrades($user_id);
+            Response::success(['openTrades' => $openTrades, 'closedTrades' => $closedTrades, 'balance' => $account['balance']]);
         } else {
             Response::error($result['message'], $result['code']);
         }

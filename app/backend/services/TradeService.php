@@ -10,6 +10,7 @@ require_once __DIR__ . '/../services/TradeAccountService.php';
 require_once __DIR__ . '/../services/TransactionService.php';
 require_once __DIR__ . '/../services/ProfitCalculationService.php';
 require_once __DIR__ . '/../services/WebSocketNotificationQueue.php';
+require_once __DIR__ . '/../services/PriceFormatterService.php';
 
 class TradeService
 {
@@ -192,11 +193,15 @@ class TradeService
             // Buy/sell prices
             $buyPrice = $spreadData['buyPrice'];
             $sellPrice = $spreadData['sellPrice'];
-            $price = $spreadData['currentPrice'];
+            $currentPriceRaw = $spreadData['currentPrice'];
             
             // Calculate buy/sell prices based on type
             $type = $input['type'];
-            $trade_price = ($type === 'buy') ? $buyPrice : $sellPrice;
+            $tradePriceRaw = ($type === 'buy') ? $buyPrice : $sellPrice;
+            
+            // Format prices as strings with correct decimals for database storage
+            $price = PriceFormatterService::formatPriceString($pair, $currentPriceRaw);
+            $trade_price = PriceFormatterService::formatPriceString($pair, $tradePriceRaw);
 
             // Calculate Required margin
             $requiredMargin = ProfitCalculationService::calculateRequiredMargin($input, $pairData, $leverage, $currentPrice);
@@ -211,15 +216,15 @@ class TradeService
             $lot = $input['lot'];
             $stop_loss = $input['stop_loss'] ?? '0';
             $take_profit = $input['take_profit'] ?? '0';
-            $commission = '0';
-            $swap = '0';
+            $commission = PlatformService::getSetting('commission_amount', '0');
+            $swap = PlatformService::getSetting('swap_amount', '0');
             $profit = '';
             $trade_acc = $account['type'];
             $date = gmdate('Y-m-d H:i:s');
             $close_date = null;
 
             $stmt = $conn->prepare("INSERT INTO trades (userid, account, ref, pair, type, trade_price, price, margin, lot, leverage, stop_loss, take_profit, commission, swap, profit, trade_acc, date, close_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("issssddddiddddssss", $user_id, $current_account, $ref, $pair, $type, $trade_price, $price, $margin, $lot, $leverage, $stop_loss, $take_profit, $commission, $swap, $profit, $trade_acc, $date, $close_date);
+            $stmt->bind_param("issssssddiddddssss", $user_id, $current_account, $ref, $pair, $type, $trade_price, $price, $margin, $lot, $leverage, $stop_loss, $take_profit, $commission, $swap, $profit, $trade_acc, $date, $close_date);
             
             if ($stmt->execute()) {
                 $trades = self::getOpenTrades($user_id);
@@ -242,7 +247,7 @@ class TradeService
             $trade_id = $input['id'];
             $close_date = gmdate('Y-m-d H:i:s');
 
-            // Get the trade (no user_id needed - trade ID is unique)
+            // Get the trade
             $stmt = $conn->prepare("SELECT t.*, p.lot_size, p.digits, p.spread, p.pip_value FROM trades t LEFT JOIN pairs p ON t.pair = p.name WHERE t.id = ?");
             $stmt->bind_param("i", $trade_id);
             $stmt->execute();
@@ -263,13 +268,16 @@ class TradeService
             
             // Get current market price (or use override from alter target)
             if ($overridePrice !== null) {
-                $currentPrice = $overridePrice;
+                $currentPriceRaw = $overridePrice;
             } else {
-                $currentPrice = ProfitCalculationService::getCurrentPairPrice($trade['pair']);
-                if ($currentPrice === null) {
+                $currentPriceRaw = ProfitCalculationService::getCurrentPairPrice($trade['pair']);
+                if ($currentPriceRaw === null) {
                     return ['success' => false, 'message' => 'Unable to get current price for ' . $trade['pair'], 'code' => 503];
                 }
             }
+
+            // Format prices as strings with correct decimals for database storage
+            $currentPrice = PriceFormatterService::formatPriceString($trade['pair'], $currentPriceRaw);
 
             // Calculate profit/loss
             $profitData = ProfitCalculationService::calculateTradeProfit($trade, $currentPrice, $trade);

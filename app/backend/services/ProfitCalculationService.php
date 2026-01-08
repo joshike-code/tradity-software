@@ -5,6 +5,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 require_once __DIR__ . '/../config/db.php';
+require_once __DIR__ . '/PriceFormatterService.php';
 
 class ProfitCalculationService
 {
@@ -18,9 +19,10 @@ class ProfitCalculationService
      */
     public static function getCurrentPairPrice($pair, $maxAge = 10) {
         try {
-            // Transform pair name to cache key format (e.g., BTC/USD -> btcusdt)
-            $pairKey = str_replace(['/', 'USD'], ['', 'USDT'], $pair);
-            $pairKey = strtolower($pairKey);
+            // Transform pair name to cache key format
+            // Crypto: BTC/USD -> btcusdt
+            // Forex/Commodity: EUR/USD -> eurusd, XAU/USD -> xauusd
+            $pairKey = self::getPairKey($pair);
             
             // Check WebSocket live prices cache
             $livePricesFile = __DIR__ . '/../cache/websocket_live_prices.json';
@@ -57,6 +59,30 @@ class ProfitCalculationService
             error_log("ProfitCalculationService::getCurrentPairPrice - " . $e->getMessage());
             return null;
         }
+    }
+    
+    /**
+     * Convert pair name to internal price key format
+     * PUBLIC method - can be used by other services
+     * 
+     * @param string $pair - Trading pair name (e.g., 'BTC/USD', 'EUR/USD', 'XAU/USD')
+     * @return string - Internal key (e.g., 'btcusdt', 'eurusd', 'xauusd')
+     */
+    public static function getPairKey($pair) {
+        // Check if it's a crypto pair (contains BTC, ETH, BNB, etc.)
+        $cryptoSymbols = ['BTC', 'ETH', 'BNB', 'XRP', 'ADA', 'SOL', 'DOT', 'DOGE', 'MATIC', 'LINK'];
+        
+        foreach ($cryptoSymbols as $crypto) {
+            if (strpos($pair, $crypto) !== false) {
+                // Crypto pairs use USDT format: BTC/USD -> btcusdt
+                $pairKey = str_replace(['/', 'USD'], ['', 'USDT'], $pair);
+                return strtolower($pairKey);
+            }
+        }
+        
+        // For forex and commodities, just remove the slash: EUR/USD -> eurusd, XAU/USD -> xauusd
+        $pairKey = str_replace('/', '', $pair);
+        return strtolower($pairKey);
     }
 
     public static function calculateTradeProfit($trade, $currentPrice, $pairConfig) {
@@ -226,8 +252,7 @@ class ProfitCalculationService
                 $totalMargin += floatval($trade['margin']);
                 
                 // Calculate P&L if we have current price
-                $pairKey = str_replace(['/', 'USD'], ['', 'USDT'], $trade['pair']);
-                $pairKey = strtolower($pairKey);
+                $pairKey = self::getPairKey($trade['pair']);
                 
                 if (isset($currentPrices[$pairKey])) {
                     $currentPrice = $currentPrices[$pairKey];
@@ -356,8 +381,7 @@ class ProfitCalculationService
             
             while ($trade = $tradesResult->fetch_assoc()) {
                 $tradeId = $trade['id'];
-                $pairKey = str_replace(['/', 'USD'], ['', 'USDT'], $trade['pair']);
-                $pairKey = strtolower($pairKey);
+                $pairKey = self::getPairKey($trade['pair']);
                 
                 // Always include the trade, but only calculate P&L if we have current price
                 $tradeData = [
@@ -391,7 +415,8 @@ class ProfitCalculationService
                         $tradeData['formattedProfit'] = $profitCalc['formattedProfit'];
                         $tradeData['profitStatus'] = $profitCalc['profitStatus'];
                         $tradeData['totalProfit'] = $profitCalc['totalProfit'];
-                        $tradeData['currentPrice'] = $profitCalc['currentPrice'];
+                        // Format currentPrice as string with correct decimals for this pair
+                        $tradeData['currentPrice'] = PriceFormatterService::formatPriceString($trade['pair'], $profitCalc['currentPrice']);
                     }
                 } else {
                     // No price available yet

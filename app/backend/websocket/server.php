@@ -19,6 +19,8 @@ require_once __DIR__ . '/../services/TradeAlterMonitorService.php';
 require_once __DIR__ . '/../services/TradeService.php';
 require_once __DIR__ . '/../services/WebSocketNotificationQueue.php';
 require_once __DIR__ . '/../services/AlteredCandleCacheService.php';
+require_once __DIR__ . '/../services/PriceFormatterService.php';
+require_once __DIR__ . '/FinnhubWebSocketClient.php';
 
 // Disable exit() in Response class for WebSocket server context
 Response::disableExit();
@@ -120,8 +122,12 @@ class TradingWebSocketServer implements MessageComponentInterface {
                     $this->handleAuth($from, $data);
                     break;
                     
-                case 'subscribe':
-                    $this->handleSubscribe($from, $data);
+                case 'subscribe_prices':
+                    $this->handleSubscribePrices($from, $data);
+                    break;
+                    
+                case 'unsubscribe_prices':
+                    $this->handleUnsubscribePrices($from, $data);
                     break;
                     
                 case 'subscribe_trades':
@@ -271,7 +277,7 @@ class TradingWebSocketServer implements MessageComponentInterface {
         }
     }
     
-    private function handleSubscribe(ConnectionInterface $conn, $data) {
+    private function handleSubscribePrices(ConnectionInterface $conn, $data) {
         if (!$conn->userId) {
             $conn->send(json_encode(['error' => 'Not authenticated']));
             return;
@@ -282,12 +288,48 @@ class TradingWebSocketServer implements MessageComponentInterface {
             return;
         }
         
-        $conn->subscribedPairs = $data['pairs'];
+        // Initialize if not exists
+        if (!isset($conn->subscribedPairs)) {
+            $conn->subscribedPairs = [];
+        }
+        
+        // Add new pairs to existing subscriptions (merge without duplicates)
+        $conn->subscribedPairs = array_unique(array_merge($conn->subscribedPairs, $data['pairs']));
         
         $conn->send(json_encode([
-            'type' => 'subscribed',
-            'pairs' => $data['pairs']
+            'type' => 'prices_subscribed',
+            'pairs' => $data['pairs'],
+            'total_subscribed' => count($conn->subscribedPairs)
         ]));
+        
+        echo "Client {$conn->resourceId} subscribed to " . count($data['pairs']) . " price pair(s)\n";
+    }
+    
+    private function handleUnsubscribePrices(ConnectionInterface $conn, $data) {
+        if (!$conn->userId) {
+            $conn->send(json_encode(['error' => 'Not authenticated']));
+            return;
+        }
+        
+        if (!isset($data['pairs']) || !is_array($data['pairs'])) {
+            $conn->send(json_encode(['error' => 'Invalid pairs']));
+            return;
+        }
+        
+        if (!isset($conn->subscribedPairs)) {
+            $conn->subscribedPairs = [];
+        }
+        
+        // Remove specified pairs from subscriptions
+        $conn->subscribedPairs = array_values(array_diff($conn->subscribedPairs, $data['pairs']));
+        
+        $conn->send(json_encode([
+            'type' => 'prices_unsubscribed',
+            'pairs' => $data['pairs'],
+            'total_subscribed' => count($conn->subscribedPairs)
+        ]));
+        
+        echo "Client {$conn->resourceId} unsubscribed from " . count($data['pairs']) . " price pair(s)\n";
     }
     
     private function handleSubscribeTrades(ConnectionInterface $conn, $data) {
@@ -673,8 +715,7 @@ class TradingWebSocketServer implements MessageComponentInterface {
             $trade = $result->fetch_assoc();
             
             // Get current price
-            $pairKey = str_replace(['/', 'USD'], ['', 'USDT'], $trade['pair']);
-            $pairKey = strtolower($pairKey);
+            $pairKey = ProfitCalculationService::getPairKey($trade['pair']);
             $currentPrice = isset($this->currentPrices[$pairKey]) ? $this->currentPrices[$pairKey] : null;
             
             $tradeData = [
@@ -703,7 +744,8 @@ class TradingWebSocketServer implements MessageComponentInterface {
                 
                 $profitCalc = ProfitCalculationService::calculateTradeProfit($trade, $currentPrice, $pairConfig);
                 if ($profitCalc) {
-                    $tradeData['currentPrice'] = $currentPrice;
+                    // Format currentPrice as string with correct decimals for this pair
+                    $tradeData['currentPrice'] = PriceFormatterService::formatPriceString($trade['pair'], $currentPrice);
                     $tradeData['totalProfit'] = $profitCalc['totalProfit'];
                     $tradeData['formattedProfit'] = $profitCalc['formattedProfit'];
                     $tradeData['profitStatus'] = $profitCalc['profitStatus'];
@@ -884,6 +926,36 @@ class TradingWebSocketServer implements MessageComponentInterface {
         }
     }
     
+    /**
+     * Normalize pair format for database lookup
+     * Converts: EURUSD -> EUR/USD, BTCUSDT -> BTC/USD, USDJPY -> USD/JPY
+     */
+    private function normalizePairFormat($pair) {
+        // Remove any existing slashes
+        $pair = str_replace('/', '', $pair);
+        $pair = strtoupper($pair);
+        
+        // Check if it ends with USDT (crypto pairs)
+        if (substr($pair, -4) === 'USDT') {
+            // BTCUSDT -> BTC/USD
+            return substr($pair, 0, -4) . '/USD';
+        }
+        
+        // For forex and commodity pairs, check database format
+        // Try common 6-letter forex pairs (EURUSD -> EUR/USD)
+        if (strlen($pair) === 6) {
+            return substr($pair, 0, 3) . '/' . substr($pair, 3, 3);
+        }
+        
+        // For commodity pairs with 6 letters (XAUUSD -> XAU/USD)
+        if (strlen($pair) === 6 && (substr($pair, 0, 1) === 'X' || substr($pair, 0, 3) === 'WTI' || substr($pair, 0, 5) === 'BRENT')) {
+            return substr($pair, 0, 3) . '/' . substr($pair, 3, 3);
+        }
+        
+        // Already has slash or unknown format
+        return $pair;
+    }
+    
     public function updatePrices($prices) {
         // Merge new prices
         $this->currentPrices = array_merge($this->currentPrices, $prices);
@@ -1022,8 +1094,12 @@ class TradingWebSocketServer implements MessageComponentInterface {
                         }
                         
                         if ($shouldSend) {
-                            // Convert symbol to pair format (btcusdt -> BTC/USD)
-                            $pairFormat = strtoupper(str_replace('usdt', '/USD', $symbol));
+                            // Convert matched pair to database format (add slashes)
+                            // EURUSD -> EUR/USD, BTCUSDT -> BTC/USD
+                            $pairFormat = $this->normalizePairFormat($matchedPair);
+                            
+                            // DEBUG: Log the pair format and price
+                            echo "[DEBUG] Symbol: {$symbol}, PairFormat: {$pairFormat}, Price: {$price}\n";
                             
                             // Check if there's an altered price for this user on this pair
                             $finalPrice = $price;
@@ -1061,10 +1137,17 @@ class TradingWebSocketServer implements MessageComponentInterface {
                                 echo "Sending price update to user {$userId}: {$symbol} = {$price}\n";
                             }
                             
+                            // Format price as STRING with correct decimals based on pair configuration
+                            // Must use string to preserve trailing zeros (e.g., "1.17095" not 1.17)
+                            $formattedPrice = PriceFormatterService::formatPriceString($pairFormat, $finalPrice);
+                            
+                            // DEBUG: Log formatted price
+                            echo "[DEBUG] Formatted price for {$pairFormat}: '{$formattedPrice}'\n";
+                            
                             $conn->send(json_encode([
                                 'type' => 'price_update',
                                 'symbol' => strtoupper($symbol),
-                                'price' => number_format($finalPrice, 2, '.', ''),
+                                'price' => $formattedPrice,
                                 'is_altered' => $isAltered,
                                 'timestamp' => time()
                             ]));
@@ -1304,7 +1387,9 @@ class TradingWebSocketServer implements MessageComponentInterface {
                 }
                 
                 // Send candle (real or altered based on above logic)
-                $jsonData = json_encode($candleToSend);
+                // Format candle prices with correct decimals before sending
+                $formattedCandle = PriceFormatterService::formatCandle($pair, $candleToSend);
+                $jsonData = json_encode($formattedCandle);
                 $conn->send($jsonData);
                 $sentCount++;
                 
@@ -1577,13 +1662,29 @@ if (php_sapi_name() === 'cli') {
     
     // Get active pairs from database
     $conn = Database::getConnection();
-    $result = $conn->query("SELECT name FROM pairs WHERE status = 'active'");
+    $result = $conn->query("SELECT name, type FROM pairs WHERE status = 'active'");
     $pairs = [];
+    $cryptoPairs = [];
+    $forexCommodityPairs = [];
+    
     while ($row = $result->fetch_assoc()) {
         $pairs[] = $row['name'];
+        
+        // Separate pairs by type for different data sources
+        if ($row['type'] === 'crypto') {
+            $cryptoPairs[] = $row['name'];
+        } elseif ($row['type'] === 'forex' || $row['type'] === 'commodity') {
+            $forexCommodityPairs[] = $row['name'];
+        }
     }
     
-    echo "Monitoring " . count($pairs) . " pairs\n";
+    echo "Monitoring " . count($pairs) . " pairs total\n";
+    echo "- Crypto pairs (Binance): " . count($cryptoPairs) . "\n";
+    echo "- Forex/Commodity pairs (Finnhub): " . count($forexCommodityPairs) . "\n";
+    
+    // Preload pair configurations for formatting (includes price_decimals, volume_decimals)
+    echo "Loading pair configurations for price formatting...\n";
+    PriceFormatterService::preloadPairConfigs();
     
     // Create ReactPHP event loop
     $loop = LoopFactory::create();
@@ -1601,9 +1702,20 @@ if (php_sapi_name() === 'cli') {
         $loop
     );
     
-    // Start Binance WebSocket client
-    $binanceClient = new BinanceWebSocketClient($tradingServer, $pairs, $loop);
-    $binanceClient->connect();
+    // Start Binance WebSocket client for crypto pairs
+    if (!empty($cryptoPairs)) {
+        $binanceClient = new BinanceWebSocketClient($tradingServer, $cryptoPairs, $loop);
+        $binanceClient->connect();
+    }
+    
+    // Start Finnhub WebSocket client for forex and commodity pairs
+    if (!empty($forexCommodityPairs)) {
+        $keys = require __DIR__ . '/../config/keys.php';
+        $finnhubApiKey = $keys['finnhub']['api_key'] ?? '';
+        
+        $finnhubClient = new FinnhubWebSocketClient($tradingServer, $forexCommodityPairs, $loop, $finnhubApiKey);
+        $finnhubClient->connect();
+    }
     
     // Add periodic timer to check for stop signal and send account updates (every 2 seconds)
     $stopFile = __DIR__ . '/server.stop';
@@ -1648,7 +1760,12 @@ if (php_sapi_name() === 'cli') {
     
     echo "Server running!\n";
     echo "Clients can connect to: ws://localhost:{$port}\n";
-    echo "Binance WebSocket connected and streaming prices...\n";
+    if (!empty($cryptoPairs)) {
+        echo "Binance WebSocket connected and streaming crypto prices...\n";
+    }
+    if (!empty($forexCommodityPairs)) {
+        echo "Finnhub WebSocket connected and streaming forex/commodity prices...\n";
+    }
     
     // Register shutdown handler to clean up PID file
     register_shutdown_function(function() use ($pidFile) {

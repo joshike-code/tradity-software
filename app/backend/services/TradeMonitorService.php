@@ -58,8 +58,7 @@ class TradeMonitorService
                 $stats['checked']++;
                 
                 // Get current price for this pair
-                $pairKey = str_replace(['/', 'USD'], ['', 'USDT'], $trade['pair']);
-                $pairKey = strtolower($pairKey);
+                $pairKey = ProfitCalculationService::getPairKey($trade['pair']);
                 
                 if (!isset($currentPrices[$pairKey])) {
                     // No price available for this pair yet
@@ -160,8 +159,7 @@ class TradeMonitorService
             $nearTriggers = [];
             
             while ($trade = $result->fetch_assoc()) {
-                $pairKey = str_replace(['/', 'USD'], ['', 'USDT'], $trade['pair']);
-                $pairKey = strtolower($pairKey);
+                $pairKey = ProfitCalculationService::getPairKey($trade['pair']);
                 
                 if (!isset($currentPrices[$pairKey])) {
                     continue;
@@ -332,8 +330,7 @@ class TradeMonitorService
             $closed = 0;
             
             while ($trade = $result->fetch_assoc()) {
-                $pairKey = str_replace(['/', 'USD'], ['', 'USDT'], $trade['pair']);
-                $pairKey = strtolower($pairKey);
+                $pairKey = ProfitCalculationService::getPairKey($trade['pair']);
                 
                 if (!isset($currentPrices[$pairKey])) {
                     continue;
@@ -406,8 +403,7 @@ class TradeMonitorService
             // Build trades array with profits
             $trades = [];
             while ($trade = $tradesResult->fetch_assoc()) {
-                $pairKey = str_replace(['/', 'USD'], ['', 'USDT'], $trade['pair']);
-                $pairKey = strtolower($pairKey);
+                $pairKey = ProfitCalculationService::getPairKey($trade['pair']);
                 
                 if (isset($currentPrices[$pairKey])) {
                     $currentPrice = $currentPrices[$pairKey];
@@ -444,8 +440,7 @@ class TradeMonitorService
                 }
                 
                 // Close this trade
-                $pairKey = str_replace(['/', 'USD'], ['', 'USDT'], $trade['pair']);
-                $pairKey = strtolower($pairKey);
+                $pairKey = ProfitCalculationService::getPairKey($trade['pair']);
                 
                 if (!isset($currentPrices[$pairKey])) {
                     continue;
