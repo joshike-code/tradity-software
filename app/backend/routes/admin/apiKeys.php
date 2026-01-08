@@ -22,9 +22,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
         break;
         
     case 'PUT':
-        if(isset($_GET['key'])) {
-            ApiKeysController::updateApiKeys();
-        }  
+        ApiKeysController::updateApiKeys();
         break;
 
     default:
