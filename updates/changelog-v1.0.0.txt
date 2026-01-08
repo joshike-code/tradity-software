@@ -1,0 +1,8 @@
+*First Stable build
+*Included Forex and commodity pairs
+*Trading chart now switch by resubscribing to server websocket
+*Closed trades now update immediately from backend after trade closure
+*Admin now configures swap and commission from admin
+*Improved pair categories component structure on frontend
+*Improved candlestick aggregation on backend server
+*Proper handling of active and inactive pairs
