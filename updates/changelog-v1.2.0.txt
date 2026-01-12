@@ -1,0 +1,6 @@
+*Added Pending orders (Stop/Limit) with real time websocket notification
+*Fixed mobile reports showing inconsistent tradePrice for multiple pair SL/TP
+*Added TP and SL lines on chart
+*Improved trade order submission validation on mobile
+*Added market status monitoring
+*SL/TP db columns now set to string values
