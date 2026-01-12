@@ -224,7 +224,7 @@ class TradeService
             $close_date = null;
 
             $stmt = $conn->prepare("INSERT INTO trades (userid, account, ref, pair, type, trade_price, price, margin, lot, leverage, stop_loss, take_profit, commission, swap, profit, trade_acc, date, close_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("issssssddiddddssss", $user_id, $current_account, $ref, $pair, $type, $trade_price, $price, $margin, $lot, $leverage, $stop_loss, $take_profit, $commission, $swap, $profit, $trade_acc, $date, $close_date);
+            $stmt->bind_param("issssssddissddssss", $user_id, $current_account, $ref, $pair, $type, $trade_price, $price, $margin, $lot, $leverage, $stop_loss, $take_profit, $commission, $swap, $profit, $trade_acc, $date, $close_date);
             
             if ($stmt->execute()) {
                 $trades = self::getOpenTrades($user_id);

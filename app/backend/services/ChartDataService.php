@@ -637,7 +637,9 @@ class ChartDataService
         $conn = Database::getConnection();
         $now = time();
         
-        // Check calls in the last minute (8 per minute limit)
+        // return false; // Temporarily disable rate limit checks for testing
+        
+        // Check calls in the last minute (2 per minute limit)
         $oneMinuteAgo = $now - 60;
         $stmt = $conn->prepare("
             SELECT COUNT(*) as call_count 
@@ -650,8 +652,8 @@ class ChartDataService
         $row = $result->fetch_assoc();
         $minuteCallCount = $row['call_count'];
         
-        if ($minuteCallCount >= 8) {
-            error_log("Twelve Data rate limit: {$minuteCallCount} calls in last minute (max 8)");
+        if ($minuteCallCount >= 2) {
+            error_log("Twelve Data rate limit: {$minuteCallCount} calls in last minute (max 2)");
             return false;
         }
         

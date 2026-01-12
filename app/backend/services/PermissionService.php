@@ -30,6 +30,7 @@ class PermissionService
             'manage_admins',
             'manage_payment_wallets',
             'manage_platform_settings',
+            'manage_keys',
             'manage_server',
         ];
     }

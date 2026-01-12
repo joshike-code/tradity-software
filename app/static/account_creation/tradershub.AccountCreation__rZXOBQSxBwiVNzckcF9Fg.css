@@ -153,12 +153,12 @@ body {
     font-family: 'IBM Plex Sans', sans-serif;
 }
 
-.desktop .deriv-app-logo {
+.desktop .tradity-app-logo {
     height: 96px;
 }
 
-.phone .deriv-app-logo, 
-.tablet .deriv-app-logo {
+.phone .tradity-app-logo, 
+.tablet .tradity-app-logo {
     height: 72px;
 }
 

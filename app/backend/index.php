@@ -99,6 +99,10 @@ switch($request) {
         require 'routes/trades.php';
         break;
 
+    case $host.'api/pending_trades':
+        require 'routes/pendingTrades.php';
+        break;
+
     case $host.'api/bot_trades':
         require 'routes/botTrades.php';
         break;

@@ -20,6 +20,8 @@ require_once __DIR__ . '/../services/TradeService.php';
 require_once __DIR__ . '/../services/WebSocketNotificationQueue.php';
 require_once __DIR__ . '/../services/AlteredCandleCacheService.php';
 require_once __DIR__ . '/../services/PriceFormatterService.php';
+require_once __DIR__ . '/../services/PendingTradeMonitorService.php';
+require_once __DIR__ . '/../services/PlatformService.php';
 require_once __DIR__ . '/FinnhubWebSocketClient.php';
 
 // Disable exit() in Response class for WebSocket server context
@@ -37,6 +39,7 @@ class TradingWebSocketServer implements MessageComponentInterface {
     protected $adminAccountSubscriptions; // Map of resourceId => [accountIds]
     protected $adminTradeSubscriptions; // Map of resourceId => [tradeIds]
     protected $formingCandles; // Track forming candles with high/low updates
+    protected $currentMarketStatus; // Current market status: 'open', 'closed', or 'unknown'
     
     public function __construct() {
         $this->clients = new \SplObjectStorage;
@@ -49,6 +52,7 @@ class TradingWebSocketServer implements MessageComponentInterface {
         $this->adminAccountSubscriptions = []; // Initialize admin account subscriptions
         $this->adminTradeSubscriptions = []; // Initialize admin trade subscriptions
         $this->formingCandles = []; // Initialize forming candles tracker
+        $this->currentMarketStatus = 'unknown'; // Will be determined after Finnhub connects
         
         // Load cached prices from file to prevent stale data on restart
         $this->loadCachedPrices();
@@ -59,8 +63,15 @@ class TradingWebSocketServer implements MessageComponentInterface {
             $this->notifyTradeClosed($trade);
         });
         
+        // Set up WebSocket notification callback for pending order triggers
+        // This allows PendingTradeMonitorService to notify when orders are executed
+        PendingTradeMonitorService::setNotificationCallback(function($order, $tradeData) {
+            $this->notifyOrderTriggered($order, $tradeData);
+        });
+        
         echo "WebSocket Server initialized\n";
         echo "Trade closure notifications enabled (SL/TP/Margin/Alter/Admin)\n";
+        echo "Pending order trigger notifications enabled\n";
         echo "Chart alteration system enabled\n";
     }
     
@@ -264,6 +275,9 @@ class TradingWebSocketServer implements MessageComponentInterface {
                 ]));
                 
                 echo "User {$userId} authenticated (Role: {$conn->userRole})\n";
+                
+                // Send current market status to newly authenticated client
+                $this->sendCurrentMarketStatus($conn);
                 
                 // Only send initial account data to regular users (not admins/superadmins)
                 if ($conn->userRole === 'user') {
@@ -927,6 +941,64 @@ class TradingWebSocketServer implements MessageComponentInterface {
     }
     
     /**
+     * Notify user when a pending order is triggered and trade is opened
+     * 
+     * @param array $order - Pending order data
+     * @param array $tradeData - New trade data
+     */
+    private function notifyOrderTriggered($order, $tradeData) {
+        try {
+            $userId = $order['userid'];
+            $tradeId = $tradeData['trade_id'] ?? null;
+            
+            // Map order type to user-friendly message
+            $orderTypeMessages = [
+                'buy_stop' => 'Buy Stop',
+                'sell_stop' => 'Sell Stop',
+                'buy_limit' => 'Buy Limit',
+                'sell_limit' => 'Sell Limit'
+            ];
+            
+            $orderTypeName = $orderTypeMessages[$order['order_type']] ?? $order['order_type'];
+            $message = "{$orderTypeName} order triggered for {$order['pair']}";
+            
+            // Prepare notification message
+            $notificationData = [
+                'type' => 'trade_opened',
+                'trade_id' => $tradeId,
+                'ref' => $order['ref'] ?? null,
+                'pair' => $order['pair'] ?? null,
+                'trade_type' => $order['type'] ?? null,
+                'order_type' => $order['order_type'] ?? null,
+                'trigger_price' => $order['trigger_price'] ?? null,
+                'execution_price' => $tradeData['execution_price'] ?? null,
+                'lot' => $order['lot'] ?? null,
+                'leverage' => $order['leverage'] ?? null,
+                'message' => $message,
+                'timestamp' => time(),
+                'user_id' => $userId
+            ];
+            
+            // Send notification to the user
+            if (isset($this->authenticatedClients[$userId])) {
+                echo "[NOTIFY] Sending trade_opened notification to user {$userId} (order_type: {$order['order_type']})\n";
+                
+                foreach ($this->authenticatedClients[$userId] as $conn) {
+                    $conn->send(json_encode($notificationData));
+                }
+                
+                // Force account update to refresh balance and open trades
+                $this->sendAccountUpdate($userId);
+            } else {
+                echo "[NOTIFY] User {$userId} not connected to WebSocket\n";
+            }
+            
+        } catch (Exception $e) {
+            error_log("WebSocket::notifyOrderTriggered - " . $e->getMessage());
+        }
+    }
+    
+    /**
      * Normalize pair format for database lookup
      * Converts: EURUSD -> EUR/USD, BTCUSDT -> BTC/USD, USDJPY -> USD/JPY
      */
@@ -1001,6 +1073,21 @@ class TradingWebSocketServer implements MessageComponentInterface {
             
             // Note: Notifications are automatically sent via TradeService callback
             // No need to manually notify here
+        }
+        
+        // PENDING ORDERS MONITORING: Check for pending order triggers and expiry
+        // This runs every time prices update to check if pending orders should be executed
+        $pendingResult = PendingTradeMonitorService::checkPendingOrders($this->currentPrices);
+        if ($pendingResult['success']) {
+            if ($pendingResult['triggered'] > 0) {
+                echo "[PENDING] Triggered {$pendingResult['triggered']} pending orders\n";
+            }
+            if ($pendingResult['expired'] > 0) {
+                echo "[PENDING] Expired {$pendingResult['expired']} pending orders\n";
+            }
+            if (!empty($pendingResult['errors'])) {
+                echo "[PENDING] Errors: " . implode(', ', $pendingResult['errors']) . "\n";
+            }
         }
         
         // MARGIN CALL MONITORING: Check for margin calls and stop outs
@@ -1406,6 +1493,76 @@ class TradingWebSocketServer implements MessageComponentInterface {
             echo "[BROADCAST] No clients subscribed to {$pair} {$interval}\n";
         }
         echo "=== BROADCAST CANDLE END ===\n\n";
+    }
+    
+    /**
+     * Broadcast market status to all connected clients
+     * 
+     * @param string $status - 'open' or 'closed'
+     */
+    public function broadcastMarketStatus($status) {
+        // Store current status
+        $this->currentMarketStatus = $status;
+        
+        $message = [
+            'type' => 'market_status',
+            'status' => $status,
+            'timestamp' => time(),
+            'message' => $status === 'closed' 
+                ? 'Forex and commodity markets are currently closed' 
+                : 'Forex and commodity markets are now open',
+            'affects' => 'forex_commodities' // Indicate this is only for forex/commodities, not crypto
+        ];
+        
+        $jsonMessage = json_encode($message);
+        $sentCount = 0;
+        
+        // Send to all connected clients
+        foreach ($this->clients as $conn) {
+            try {
+                $conn->send($jsonMessage);
+                $sentCount++;
+            } catch (Exception $e) {
+                error_log("Error broadcasting market status to client: " . $e->getMessage());
+            }
+        }
+        
+        echo "[MARKET] Broadcasted market status '{$status}' to {$sentCount} client(s)\n";
+    }
+    
+    /**
+     * Send current market status to a specific client (e.g., newly connected)
+     * 
+     * @param ConnectionInterface $conn - Client connection
+     */
+    private function sendCurrentMarketStatus(ConnectionInterface $conn) {
+        // If status is still unknown (server just started), send it anyway
+        // Frontend can handle 'unknown' status or we assume 'open' as default
+        $status = $this->currentMarketStatus;
+        
+        if ($status === 'unknown') {
+            // Assume open by default for better UX
+            // The real status will be broadcast once determined
+            $status = 'open';
+            echo "[MARKET] Status still unknown, sending default 'open' to client {$conn->resourceId}\n";
+        }
+        
+        $message = [
+            'type' => 'market_status',
+            'status' => $status,
+            'timestamp' => time(),
+            'message' => $status === 'closed' 
+                ? 'Forex and commodity markets are currently closed' 
+                : 'Forex and commodity markets are now open',
+            'affects' => 'forex_commodities'
+        ];
+        
+        try {
+            $conn->send(json_encode($message));
+            echo "[MARKET] Sent market status '{$status}' to client {$conn->resourceId}\n";
+        } catch (Exception $e) {
+            error_log("Error sending market status to client: " . $e->getMessage());
+        }
     }
 }
 

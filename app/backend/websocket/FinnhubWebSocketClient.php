@@ -23,6 +23,12 @@ class FinnhubWebSocketClient {
     private $intervals = ['1m', '5m', '15m']; // Supported intervals
     private $lastCandleCheck = []; // Track when we last checked for closed candles
     
+    // Market status tracking
+    private $marketStatus = 'open'; // 'open' or 'closed'
+    private $lastTradeTime = []; // Track last trade time per pair: [pair] => timestamp
+    private $marketStatusCheckInterval = 60; // Check every 60 seconds
+    private $noTradeThreshold = 300; // 5 minutes of no trades = market closed
+    
     // Map our pair format to Finnhub symbols
     private $symbolMap = [
         // Forex pairs (use OANDA format: OANDA:currency_pair)
@@ -65,6 +71,8 @@ class FinnhubWebSocketClient {
             foreach ($this->intervals as $interval) {
                 $this->candles[$pair][$interval] = null;
             }
+            // Initialize last trade time for market status detection
+            $this->lastTradeTime[$pair] = time();
         }
         
         // Set up periodic timer to check for closed candles (every second)
@@ -72,7 +80,13 @@ class FinnhubWebSocketClient {
             $this->checkAndBroadcastClosedCandles();
         });
         
+        // Set up periodic timer to check market status (every 60 seconds)
+        $this->loop->addPeriodicTimer($this->marketStatusCheckInterval, function() {
+            $this->checkMarketStatus();
+        });
+        
         echo "[CANDLE] Candle aggregation initialized for forex/commodity pairs\n";
+        echo "[MARKET] Market status monitoring initialized (threshold: {$this->noTradeThreshold}s)\n";
     }
     
     public function connect() {
@@ -102,6 +116,13 @@ class FinnhubWebSocketClient {
                 
                 // Subscribe to all forex and commodity pairs
                 $this->subscribeToPairs($conn);
+                
+                // Broadcast initial market status after connection
+                // Give it 10 seconds to receive first trades, then determine initial status
+                $this->loop->addTimer(10, function() {
+                    $this->checkMarketStatus();
+                    echo "[MARKET] Initial market status check completed\n";
+                });
                 
                 $conn->on('message', function($msg) {
                     $this->handleFinnhubMessage($msg);
@@ -217,6 +238,9 @@ class FinnhubWebSocketClient {
                 $pairKey = strtolower(str_replace('/', '', $ourPair));
                 
                 $priceUpdates[$pairKey] = $price;
+                
+                // Update last trade time for this pair (for market status detection)
+                $this->lastTradeTime[$ourPair] = time();
                 
                 // Aggregate this tick into candles for all intervals
                 $this->aggregateTick($ourPair, $price, $timestamp);
@@ -378,5 +402,70 @@ class FinnhubWebSocketClient {
         ];
         
         return $intervalMap[$interval] ?? 60 * 1000; // Default to 1 minute
+    }
+    
+    /**
+     * Check market status based on trade activity
+     * If no trades received for X minutes across all pairs, assume market is closed
+     */
+    private function checkMarketStatus() {
+        $currentTime = time();
+        $anyRecentTrades = false;
+        
+        // Check if any pair has received trades recently
+        foreach ($this->lastTradeTime as $pair => $lastTime) {
+            $timeSinceLastTrade = $currentTime - $lastTime;
+            
+            if ($timeSinceLastTrade < $this->noTradeThreshold) {
+                $anyRecentTrades = true;
+                break;
+            }
+        }
+        
+        $previousStatus = $this->marketStatus;
+        $newStatus = $anyRecentTrades ? 'open' : 'closed';
+        
+        // Market status changed - broadcast to all clients
+        if ($previousStatus !== $newStatus) {
+            $this->marketStatus = $newStatus;
+            
+            if ($newStatus === 'closed') {
+                echo "[MARKET] Market status changed: OPEN → CLOSED (no trades for {$this->noTradeThreshold}s)\n";
+            } else {
+                echo "[MARKET] Market status changed: CLOSED → OPEN (trades resumed)\n";
+            }
+            
+            // Broadcast market status to all clients
+            $this->broadcastMarketStatus($newStatus);
+        }
+        
+        // Debug: Show time since last trade for each pair
+        if ($newStatus === 'closed') {
+            foreach ($this->lastTradeTime as $pair => $lastTime) {
+                $timeSince = $currentTime - $lastTime;
+                echo "[MARKET] {$pair}: {$timeSince}s since last trade\n";
+            }
+        }
+    }
+    
+    /**
+     * Broadcast market status to all clients
+     * 
+     * @param string $status - 'open' or 'closed'
+     */
+    private function broadcastMarketStatus($status) {
+        $message = json_encode([
+            'type' => 'market_status',
+            'status' => $status,
+            'timestamp' => time(),
+            'message' => $status === 'closed' 
+                ? 'Forex and commodity markets are currently closed' 
+                : 'Forex and commodity markets are now open'
+        ]);
+        
+        // Use server's broadcast method to send to all connected clients
+        $this->server->broadcastMarketStatus($status);
+        
+        echo "[MARKET] Broadcasted market status: {$status}\n";
     }
 }
