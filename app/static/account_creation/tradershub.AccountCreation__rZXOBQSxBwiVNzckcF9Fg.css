@@ -153,12 +153,12 @@ body {
     font-family: 'IBM Plex Sans', sans-serif;
 }
 
-.desktop .tradity-app-logo {
+.desktop .traditi-app-logo {
     height: 96px;
 }
 
-.phone .tradity-app-logo, 
-.tablet .tradity-app-logo {
+.phone .traditi-app-logo, 
+.tablet .traditi-app-logo {
     height: 72px;
 }
 

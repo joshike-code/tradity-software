@@ -324,7 +324,7 @@ class MailService
             $themeColor = '#' . ($platform['platform']['theme_color'] ?? '006CBF');
             $mainLogo = $keys['platform']['main_logo'];
             $logoLink = 'https://' . $platformUrl . '/app/backend/' . $mainLogo;
-            // $logoLink = 'https://*******.live/tradity_logo.png'; // FOR LOCAL TESTING ONLY, REMOVE IN PRODUCTION
+            // $logoLink = 'https://*******.live/traditi_logo.png'; // FOR LOCAL TESTING ONLY, REMOVE IN PRODUCTION
             
             $mail = self::configureMailer();
             $mail->addAddress($toEmail);

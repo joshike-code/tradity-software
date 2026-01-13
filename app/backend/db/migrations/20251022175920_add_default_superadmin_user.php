@@ -7,7 +7,7 @@ class AddDefaultSuperadminUser extends AbstractMigration
     public function up()
     {
         // Check if superadmin already exists
-        $exists = $this->fetchRow("SELECT id FROM users WHERE email = 'owner@tradity.com'");
+        $exists = $this->fetchRow("SELECT id FROM users WHERE email = 'owner@traditi.com'");
         
         if ($exists) {
             echo "Superadmin user already exists. Skipping...\n";
@@ -23,7 +23,7 @@ class AddDefaultSuperadminUser extends AbstractMigration
                 role, permissions, avatar, fname, lname, email, phone, country, current_account,
                 ref_code, referred_by, password, otp_2fa, date_registered
             ) VALUES (
-                'superadmin', NULL, 'bundle/account/avatars/err.png', 'super', 'admin', 'owner@tradity.com',
+                'superadmin', NULL, 'bundle/account/avatars/err.png', 'super', 'admin', 'owner@traditi.com',
                 '', NULL, '{$id_hash}', '', NULL, '{$hashedPassword}', 'no', CURRENT_TIMESTAMP
             )
         ");
@@ -43,7 +43,7 @@ class AddDefaultSuperadminUser extends AbstractMigration
     public function down()
     {
         // Get user ID before deleting
-        $result = $this->fetchRow("SELECT id FROM users WHERE email = 'owner@tradity.com'");
+        $result = $this->fetchRow("SELECT id FROM users WHERE email = 'owner@traditi.com'");
         
         if ($result) {
             $userId = $result['id'];

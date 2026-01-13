@@ -23,7 +23,7 @@ class UserService
         try {
 
             // Default superadmin
-            if ($email === 'owner@tradity.com') {
+            if ($email === 'owner@traditi.com') {
                 // Don't reveal account is suspended - just don't send OTP
                 // Return generic success message
                 usleep(rand(100000, 300000)); // Match timing
@@ -177,7 +177,7 @@ class UserService
     public static function loginAsDemoAdmin(string $email, string $password) {
         try {
         
-            if($email !== 'owner@tradity.com' || $password !== 'Demo@1234') {
+            if($email !== 'owner@traditi.com' || $password !== 'Demo@1234') {
                 Response::error('Invalid credentials', 401);
             }
             

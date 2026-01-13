@@ -34,7 +34,7 @@ class InstallService
         $appIcon512 = $logos['app_icon_512'];
         $favicon = $logos['favicon'];
         $jwtSecret = 'ujbdi93ndufis30dbksdrtdcalg94';
-        $websocket_control = 'tradity_socket_control';
+        $websocket_control = 'traditi_socket_control';
 
         self::checkDBCredentials($dbHost, $dbUser, $dbPass, $dbName,);
 
@@ -46,11 +46,11 @@ class InstallService
         $indexPath = realpath(__DIR__ . '/../../index.html');
         if (file_exists($indexPath)) {
             $indexContent = file_get_contents($indexPath);
-            $indexContent = str_replace('Tradity', $platformName, $indexContent);
-            $indexContent = str_replace('backend/logos/default/main_logo_tradity.png', "backend/$mainLogo", $indexContent);
-            $indexContent = str_replace('backend/logos/default/main_icon_512_tradity.png', "backend/$mainIcon", $indexContent);
-            $indexContent = str_replace('backend/logos/default/favicon_tradity.png', "backend/$favicon", $indexContent);
-            $indexContent = str_replace('backend/logos/app_icon_180_1765966074_7799f4.png', "backend/ $appIcon180", $indexContent);
+            $indexContent = str_replace('Traditi', $platformName, $indexContent);
+            $indexContent = str_replace('backend/logos/default/main_logo_traditi.png', "backend/$mainLogo", $indexContent);
+            $indexContent = str_replace('backend/logos/default/main_icon_512_traditi.png', "backend/$mainIcon", $indexContent);
+            $indexContent = str_replace('backend/logos/default/favicon_traditi.png', "backend/$favicon", $indexContent);
+            $indexContent = str_replace('backend/logos/app_icon_180_traditi.png', "backend/ $appIcon180", $indexContent);
             $indexContent = str_replace('seaBlue', $theme, $indexContent);
             file_put_contents($indexPath, $indexContent);
         }
@@ -59,9 +59,9 @@ class InstallService
         $mainIndexPath = realpath(__DIR__ . '/../../../index.html');
         if (file_exists($mainIndexPath)) {
             $indexContent = file_get_contents($mainIndexPath);
-            $indexContent = str_replace('Tradity', $platformName, $indexContent);
-            $indexContent = str_replace('app/backend/logos/default/main_logo_tradity.png', "app/backend/$mainLogo", $indexContent);
-            $indexContent = str_replace('app/backend/logos/default/favicon_tradity.png', "app/backend/$favicon", $indexContent);
+            $indexContent = str_replace('Traditi', $platformName, $indexContent);
+            $indexContent = str_replace('app/backend/logos/default/main_logo_traditi.png', "app/backend/$mainLogo", $indexContent);
+            $indexContent = str_replace('app/backend/logos/default/favicon_traditi.png', "app/backend/$favicon", $indexContent);
             file_put_contents($mainIndexPath, $indexContent);
         }
 

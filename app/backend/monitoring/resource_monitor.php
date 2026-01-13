@@ -179,7 +179,7 @@ if ($format === 'json') {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Server Monitor - Tradity</title>
+    <title>Server Monitor - Traditi</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -326,7 +326,7 @@ if ($format === 'json') {
     <div class="container">
         <div class="header">
             <h1>
-                Tradity Server Monitor
+                Traditi Server Monitor
                 <span class="status-badge status-<?php echo $data['health']['status']; ?>">
                     <?php echo strtoupper($data['health']['status']); ?>
                 </span>

@@ -275,7 +275,10 @@ class NotificationService
      */
     public static function sendWelcomeNotification(int $userId): void
     {
-        $title = "Welcome to Tradity!";
+        $keys = require __DIR__ . '/../config/keys.php';
+        $platformName = $keys['platform']['name'];
+        
+        $title = "Welcome to $platformName!";
         $message = "Start your trading journey with confidence. Fund your account, practice with our demo mode, and explore the markets. Our platform offers real-time charts, advanced tools, and 24/7 support to help you succeed.";
         
         self::sendNotification(

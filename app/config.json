@@ -1,11 +1,11 @@
 {
-    "platformName": "Tradity",
-    "meta_description": "Tradity - Professional broker for trading financial markets",
-    "meta_keywords": "Tradity, Broker, Forex, Stocks, Crypto, Trading, Options",
-    "logo": "app/backend/logos/default/main_logo_tradity.png",
-    "icon": "app/backend/logos/logos/default/main_icon_512_tradity.png",
-    "favicon": "app/backend/logos/default/favicon_tradity.png",
-    "email": "support@tradity.com",
+    "platformName": "Traditi",
+    "meta_description": "Traditi - Professional broker for trading financial markets",
+    "meta_keywords": "Traditi, Broker, Forex, Stocks, Crypto, Trading, Options",
+    "logo": "app/backend/logos/default/main_logo_traditi.png",
+    "icon": "app/backend/logos/logos/default/main_icon_512_traditi.png",
+    "favicon": "app/backend/logos/default/favicon_traditi.png",
+    "email": "support@traditi.com",
     "address": "USA",
     "licensed_by": "The British Virgin Islands Financial Services Commission",
     "whatsapp": "+1234"

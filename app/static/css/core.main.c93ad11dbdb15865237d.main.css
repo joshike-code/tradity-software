@@ -13395,7 +13395,7 @@ html {
   padding: 0
 }
 
-.tradity-app {
+.traditi-app {
   height: 100%;
   overflow: hidden
 }
@@ -14411,7 +14411,7 @@ strong {
 @media (max-width:1279px) {
 
   .dc-mobile-drawer__overlay,
-  .tradity-app,
+  .traditi-app,
   .modal-root,
   body {
     height: 100%;
@@ -14425,7 +14425,7 @@ strong {
   @supports (-webkit-touch-callout:none) {
 
     .dc-mobile-drawer__overlay,
-    .tradity-app,
+    .traditi-app,
     .modal-root,
     body {
       position: fixed !important
@@ -14447,12 +14447,12 @@ strong {
     z-index: 1
   }
 
-  .tradity-app {
+  .traditi-app {
     overscroll-behavior: none;
     z-index: 2
   }
 
-  .tradity-app .trade-notifications {
+  .traditi-app .trade-notifications {
     bottom: auto;
     display: flex;
     flex-direction: column;
@@ -14466,7 +14466,7 @@ strong {
     z-index: 6
   }
 
-  .tradity-app .notification-messages .trade-notifications {
+  .traditi-app .notification-messages .trade-notifications {
     bottom: auto;
     left: auto;
     max-width: 32.8rem;
@@ -14477,11 +14477,11 @@ strong {
     width: calc(100% - .8rem)
   }
 
-  [dir=ltr] .tradity-app .notification-messages .trade-notifications {
+  [dir=ltr] .traditi-app .notification-messages .trade-notifications {
     margin-right: .4rem
   }
 
-  [dir=rtl] .tradity-app .notification-messages .trade-notifications {
+  [dir=rtl] .traditi-app .notification-messages .trade-notifications {
     margin-left: .4rem
   }
 
