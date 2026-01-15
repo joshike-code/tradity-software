@@ -1,0 +1,1 @@
+*Fixed kyc validation issue for non required app functions
