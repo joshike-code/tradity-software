@@ -1,0 +1,1 @@
+*Fixed desktop trade menu bar bug
