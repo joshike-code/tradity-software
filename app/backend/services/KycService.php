@@ -186,7 +186,9 @@ class KycService {
             
             // If KYC is not required for this service, allow access
             if ($kycRequired === 'false') {
-                return true;
+                return [
+                    'has_access' => true
+                ];
             }
             
             // KYC is required, check user's completion status
@@ -194,6 +196,7 @@ class KycService {
             
             // Return true only if KYC is 100% complete
             return [
+                'has_access' => $kycData['is_complete'],
                 'is_complete' => $kycData['is_complete'],
                 'incomplete_categories' => $kycData['incomplete_categories']
             ];
@@ -201,7 +204,9 @@ class KycService {
         } catch (Exception $e) {
             error_log("KycService::checkUserKycPermission - " . $e->getMessage());
             // Fail safely - if we can't check, deny access
-            return false;
+            return [
+                'has_access' => false
+            ];
         }
     }
 }

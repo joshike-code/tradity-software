@@ -81,7 +81,7 @@ class PaymentController {
         }
 
         $kycStatus = KycService::checkUserKycPermission('deposit', $user_id);
-        if(!$kycStatus['is_complete']) {
+        if(!$kycStatus['has_access']) {
             Response::error('KYC required:' . array_values($kycStatus['incomplete_categories'])[0], 403);
         }
 

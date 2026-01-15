@@ -179,6 +179,10 @@ switch($request) {
         require 'routes/websocket.php';
         break;
 
+    case $host.'api/manage_server_for_demo':
+        require 'routes/manageServerForDemo.php';
+        break;
+
     case $host.'api/admin/manage_server':
         require 'routes/admin/manageServer.php';
         break;
