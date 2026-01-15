@@ -6087,6 +6087,8 @@ html {
 }
 
 .cq-chart-title {
+    position: absolute !important;
+    left: 12px;
     display: inline-block;
     margin: .2em .8em;
     top: 1em;
