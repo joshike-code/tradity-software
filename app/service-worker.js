@@ -1,10 +1,10 @@
-const CACHE_NAME = 'traditi-v1.2.5';
+const CACHE_NAME = 'traditi-v1.2.6';
 const ASSETS_TO_CACHE = [
     'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap',
-    '/app/static/css/distv1.2.5/my-styles.css',
-    '/app/static/css/distv1.2.5/admin-more-styles.css',
-    '/app/static/css/distv1.2.5/admin-style.css',
-    '/app/static/css/distv1.2.5/loader.css',
+    '/app/static/css/distv1.2.6/my-styles.css',
+    '/app/static/css/distv1.2.6/admin-more-styles.css',
+    '/app/static/css/distv1.2.6/admin-style.css',
+    '/app/static/css/distv1.2.6/loader.css',
     '/app/static/css/core.8101.7635118be0daf6f0feff.main.css',
     '/app/static/css/core.chunk.6408.ea813ca5196078e4b5dc.css',
     '/app/static/css/core.chunk.8283.e093a20f556e53514056.css',
@@ -192,91 +192,91 @@ const ASSETS_TO_CACHE = [
     '/app/static/vendor/wnumb/wNumb.js',
     '/app/',
     '/app/index.html',
-    '/app/distv1.2.5/1018.bundle.js',
-    '/app/distv1.2.5/1069.bundle.js',
-    '/app/distv1.2.5/1118.bundle.js',
-    '/app/distv1.2.5/1174.bundle.js',
-    '/app/distv1.2.5/1233.bundle.js',
-    '/app/distv1.2.5/1323.bundle.js',
-    '/app/distv1.2.5/1400.bundle.js',
-    '/app/distv1.2.5/1598.bundle.js',
-    '/app/distv1.2.5/1765.bundle.js',
-    '/app/distv1.2.5/1793.bundle.js',
-    '/app/distv1.2.5/1796.bundle.js',
-    '/app/distv1.2.5/1855.bundle.js',
-    '/app/distv1.2.5/1856.bundle.js',
-    '/app/distv1.2.5/1861.bundle.js',
-    '/app/distv1.2.5/1906.bundle.js',
-    '/app/distv1.2.5/1938.bundle.js',
-    '/app/distv1.2.5/204.bundle.js',
-    '/app/distv1.2.5/2088.bundle.js',
-    '/app/distv1.2.5/2097.bundle.js',
-    '/app/distv1.2.5/2290.bundle.js',
-    '/app/distv1.2.5/2465.bundle.js',
-    '/app/distv1.2.5/3028.bundle.js',
-    '/app/distv1.2.5/323.bundle.js',
-    '/app/distv1.2.5/3458.bundle.js',
-    '/app/distv1.2.5/3556.bundle.js',
-    '/app/distv1.2.5/3576.bundle.js',
-    '/app/distv1.2.5/3591.bundle.js',
-    '/app/distv1.2.5/3624.bundle.js',
-    '/app/distv1.2.5/3663.bundle.js',
-    '/app/distv1.2.5/4065.bundle.js',
-    '/app/distv1.2.5/4259.bundle.js',
-    '/app/distv1.2.5/4366.bundle.js',
-    '/app/distv1.2.5/4573.bundle.js',
-    '/app/distv1.2.5/4723.bundle.js',
-    '/app/distv1.2.5/4843.bundle.js',
-    '/app/distv1.2.5/5068.bundle.js',
-    '/app/distv1.2.5/5357.bundle.js',
-    '/app/distv1.2.5/5398.bundle.js',
-    '/app/distv1.2.5/5432.bundle.js',
-    '/app/distv1.2.5/5524.bundle.js',
-    '/app/distv1.2.5/5562.bundle.js',
-    '/app/distv1.2.5/5693.bundle.js',
-    '/app/distv1.2.5/586.bundle.js',
-    '/app/distv1.2.5/6058.bundle.js',
-    '/app/distv1.2.5/6070.bundle.js',
-    '/app/distv1.2.5/6125.bundle.js',
-    '/app/distv1.2.5/6218.bundle.js',
-    '/app/distv1.2.5/625.bundle.js',
-    '/app/distv1.2.5/6314.bundle.js',
-    '/app/distv1.2.5/6342.bundle.js',
-    '/app/distv1.2.5/6496.bundle.js',
-    '/app/distv1.2.5/6502.bundle.js',
-    '/app/distv1.2.5/6679.bundle.js',
-    '/app/distv1.2.5/6783.bundle.js',
-    '/app/distv1.2.5/6856.bundle.js',
-    '/app/distv1.2.5/6869.bundle.js',
-    '/app/distv1.2.5/6880.bundle.js',
-    '/app/distv1.2.5/7149.bundle.js',
-    '/app/distv1.2.5/7157.bundle.js',
-    '/app/distv1.2.5/7277.bundle.js',
-    '/app/distv1.2.5/7297.bundle.js',
-    '/app/distv1.2.5/7314.bundle.js',
-    '/app/distv1.2.5/7361.bundle.js',
-    '/app/distv1.2.5/7393.bundle.js',
-    '/app/distv1.2.5/7523.bundle.js',
-    '/app/distv1.2.5/7540.bundle.js',
-    '/app/distv1.2.5/7571.bundle.js',
-    '/app/distv1.2.5/7615.bundle.js',
-    '/app/distv1.2.5/7634.bundle.js',
-    '/app/distv1.2.5/7722.bundle.js',
-    '/app/distv1.2.5/7871.bundle.js',
-    '/app/distv1.2.5/7970.bundle.js',
-    '/app/distv1.2.5/7997.bundle.js',
-    '/app/distv1.2.5/8398.bundle.js',
-    '/app/distv1.2.5/8670.bundle.js',
-    '/app/distv1.2.5/8902.bundle.js',
-    '/app/distv1.2.5/9001.bundle.js',
-    '/app/distv1.2.5/9159.bundle.js',
-    '/app/distv1.2.5/9524.bundle.js',
-    '/app/distv1.2.5/9592.bundle.js',
-    '/app/distv1.2.5/9652.bundle.js',
-    '/app/distv1.2.5/9655.bundle.js',
-    '/app/distv1.2.5/9667.bundle.js',
-    '/app/distv1.2.5/9755.bundle.js',
-    '/app/distv1.2.5/bundle.js'
+    '/app/distv1.2.6/1018.bundle.js',
+    '/app/distv1.2.6/1069.bundle.js',
+    '/app/distv1.2.6/1118.bundle.js',
+    '/app/distv1.2.6/1174.bundle.js',
+    '/app/distv1.2.6/1233.bundle.js',
+    '/app/distv1.2.6/1323.bundle.js',
+    '/app/distv1.2.6/1400.bundle.js',
+    '/app/distv1.2.6/1598.bundle.js',
+    '/app/distv1.2.6/1765.bundle.js',
+    '/app/distv1.2.6/1793.bundle.js',
+    '/app/distv1.2.6/1796.bundle.js',
+    '/app/distv1.2.6/1855.bundle.js',
+    '/app/distv1.2.6/1856.bundle.js',
+    '/app/distv1.2.6/1861.bundle.js',
+    '/app/distv1.2.6/1906.bundle.js',
+    '/app/distv1.2.6/1938.bundle.js',
+    '/app/distv1.2.6/204.bundle.js',
+    '/app/distv1.2.6/2088.bundle.js',
+    '/app/distv1.2.6/2097.bundle.js',
+    '/app/distv1.2.6/2290.bundle.js',
+    '/app/distv1.2.6/2465.bundle.js',
+    '/app/distv1.2.6/3028.bundle.js',
+    '/app/distv1.2.6/323.bundle.js',
+    '/app/distv1.2.6/3458.bundle.js',
+    '/app/distv1.2.6/3556.bundle.js',
+    '/app/distv1.2.6/3576.bundle.js',
+    '/app/distv1.2.6/3591.bundle.js',
+    '/app/distv1.2.6/3624.bundle.js',
+    '/app/distv1.2.6/3663.bundle.js',
+    '/app/distv1.2.6/4065.bundle.js',
+    '/app/distv1.2.6/4259.bundle.js',
+    '/app/distv1.2.6/4366.bundle.js',
+    '/app/distv1.2.6/4573.bundle.js',
+    '/app/distv1.2.6/4723.bundle.js',
+    '/app/distv1.2.6/4843.bundle.js',
+    '/app/distv1.2.6/5068.bundle.js',
+    '/app/distv1.2.6/5357.bundle.js',
+    '/app/distv1.2.6/5398.bundle.js',
+    '/app/distv1.2.6/5432.bundle.js',
+    '/app/distv1.2.6/5524.bundle.js',
+    '/app/distv1.2.6/5562.bundle.js',
+    '/app/distv1.2.6/5693.bundle.js',
+    '/app/distv1.2.6/586.bundle.js',
+    '/app/distv1.2.6/6058.bundle.js',
+    '/app/distv1.2.6/6070.bundle.js',
+    '/app/distv1.2.6/6125.bundle.js',
+    '/app/distv1.2.6/6218.bundle.js',
+    '/app/distv1.2.6/625.bundle.js',
+    '/app/distv1.2.6/6314.bundle.js',
+    '/app/distv1.2.6/6342.bundle.js',
+    '/app/distv1.2.6/6496.bundle.js',
+    '/app/distv1.2.6/6502.bundle.js',
+    '/app/distv1.2.6/6679.bundle.js',
+    '/app/distv1.2.6/6783.bundle.js',
+    '/app/distv1.2.6/6856.bundle.js',
+    '/app/distv1.2.6/6869.bundle.js',
+    '/app/distv1.2.6/6880.bundle.js',
+    '/app/distv1.2.6/7149.bundle.js',
+    '/app/distv1.2.6/7157.bundle.js',
+    '/app/distv1.2.6/7277.bundle.js',
+    '/app/distv1.2.6/7297.bundle.js',
+    '/app/distv1.2.6/7314.bundle.js',
+    '/app/distv1.2.6/7361.bundle.js',
+    '/app/distv1.2.6/7393.bundle.js',
+    '/app/distv1.2.6/7523.bundle.js',
+    '/app/distv1.2.6/7540.bundle.js',
+    '/app/distv1.2.6/7571.bundle.js',
+    '/app/distv1.2.6/7615.bundle.js',
+    '/app/distv1.2.6/7634.bundle.js',
+    '/app/distv1.2.6/7722.bundle.js',
+    '/app/distv1.2.6/7871.bundle.js',
+    '/app/distv1.2.6/7970.bundle.js',
+    '/app/distv1.2.6/7997.bundle.js',
+    '/app/distv1.2.6/8398.bundle.js',
+    '/app/distv1.2.6/8670.bundle.js',
+    '/app/distv1.2.6/8902.bundle.js',
+    '/app/distv1.2.6/9001.bundle.js',
+    '/app/distv1.2.6/9159.bundle.js',
+    '/app/distv1.2.6/9524.bundle.js',
+    '/app/distv1.2.6/9592.bundle.js',
+    '/app/distv1.2.6/9652.bundle.js',
+    '/app/distv1.2.6/9655.bundle.js',
+    '/app/distv1.2.6/9667.bundle.js',
+    '/app/distv1.2.6/9755.bundle.js',
+    '/app/distv1.2.6/bundle.js'
 ];
 
 // Install: cache assets in chunks to prevent overwhelming the browser
@@ -334,9 +334,15 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
   
-  // Skip non-GET requests and API requests
-  if (event.request.method !== 'GET' || url.pathname.includes('/api/')) {
-    return; // Don't call event.respondWith() - let browser handle it
+  // Skip non-GET requests
+  if (event.request.method !== 'GET') {
+    return;
+  }
+  
+  // Skip API requests - comprehensive patterns
+  const apiPatterns = ['/api/', '/auth/', '/user/', '/account/', '/payment/', '/transaction/', '/trade/', '/wallet/', '.php'];
+  if (apiPatterns.some(pattern => url.pathname.includes(pattern))) {
+    return; // Don't intercept API requests
   }
   
   // Allow caching for:
@@ -360,19 +366,24 @@ self.addEventListener('fetch', event => {
       
       // Clone the request because it can only be used once
       return fetch(event.request.clone()).then(fetchResponse => {
-        // Check if valid response (allow 'opaque' for cross-origin fonts)
-        if (!fetchResponse || fetchResponse.status !== 200 || 
-            (fetchResponse.type !== 'basic' && fetchResponse.type !== 'cors')) {
+        // Check if we have a valid response
+        if (!fetchResponse || !fetchResponse.ok) {
           return fetchResponse;
         }
         
-        // Clone the response because it can only be used once
-        const responseToCache = fetchResponse.clone();
-        
-        // Cache the fetched resource for next time
-        caches.open(CACHE_NAME).then(cache => {
-          cache.put(event.request, responseToCache);
-        });
+        // Only cache basic and cors responses (NOT opaque)
+        // Opaque responses can't be cached and will cause NetworkError
+        if (fetchResponse.type === 'basic' || fetchResponse.type === 'cors') {
+          // Clone the response because it can only be used once
+          const responseToCache = fetchResponse.clone();
+          
+          // Cache the fetched resource for next time
+          caches.open(CACHE_NAME).then(cache => {
+            cache.put(event.request, responseToCache).catch(err => {
+              console.warn('Failed to cache:', event.request.url, err);
+            });
+          });
+        }
         
         return fetchResponse;
       }).catch(error => {
