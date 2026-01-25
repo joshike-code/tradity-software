@@ -319,6 +319,113 @@ class ServerController {
         );
     }
     
+    public static function restartServer() {
+        // First, stop the server (internal call without Response)
+        $stopResult = self::stopServerInternal();
+        
+        if ($stopResult['success']) {
+            sleep(3); // Wait for complete shutdown
+            
+            // Now start the server
+            self::startServer();
+        } else {
+            Response::error($stopResult['message'], $stopResult['code'] ?? 500);
+        }
+    }
+    
+    /**
+     * Internal stop method that returns result instead of sending Response
+     * Used by restart functionality
+     */
+    private static function stopServerInternal() {
+        $statusFile = __DIR__ . '/../websocket/server.pid';
+        $stopScript = __DIR__ . '/../websocket/stop_websocket.sh';
+        
+        if (!file_exists($statusFile)) {
+            return ['success' => false, 'message' => 'WebSocket server is not running (PID file not found)', 'code' => 400];
+        }
+        
+        $pidData = json_decode(file_get_contents($statusFile), true);
+        $pid = $pidData['pid'] ?? null;
+        
+        if (!$pid) {
+            @unlink($statusFile);
+            return ['success' => false, 'message' => 'Invalid PID file (no PID found)', 'code' => 400];
+        }
+        
+        if (!self::isProcessRunning($pid)) {
+            @unlink($statusFile);
+            return ['success' => false, 'message' => 'Process is not running', 'code' => 400];
+        }
+        
+        // Create a stop signal file (the server checks for this)
+        $stopFile = __DIR__ . '/../websocket/server.stop';
+        file_put_contents($stopFile, time());
+        
+        $isWindows = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
+        
+        // Method 1: Graceful shutdown via signal file
+        sleep(3);
+        
+        if (!self::isProcessRunning($pid)) {
+            if (file_exists($statusFile)) @unlink($statusFile);
+            if (file_exists($stopFile)) @unlink($stopFile);
+            return ['success' => true, 'message' => 'Server stopped (graceful shutdown)', 'method' => 'signal_file'];
+        }
+        
+        // Method 2: Try using stop script if it exists (Linux/cPanel)
+        if (file_exists($stopScript) && function_exists('exec')) {
+            @exec("bash {$stopScript} 2>&1", $output, $returnCode);
+            sleep(2);
+            
+            if (!self::isProcessRunning($pid)) {
+                if (file_exists($statusFile)) @unlink($statusFile);
+                if (file_exists($stopFile)) @unlink($stopFile);
+                return ['success' => true, 'message' => 'Server stopped (shell script)', 'method' => 'shell_script'];
+            }
+        }
+        
+        // Method 3: Try posix_kill (Linux only)
+        if (!$isWindows && function_exists('posix_kill')) {
+            @posix_kill($pid, SIGTERM);
+            sleep(2);
+            
+            if (!self::isProcessRunning($pid)) {
+                if (file_exists($statusFile)) @unlink($statusFile);
+                if (file_exists($stopFile)) @unlink($stopFile);
+                return ['success' => true, 'message' => 'Server stopped (posix_kill)', 'method' => 'posix_kill'];
+            }
+            
+            @posix_kill($pid, SIGKILL);
+            sleep(1);
+        }
+        
+        // Method 4: Try exec (may be restricted)
+        if (function_exists('exec')) {
+            if ($isWindows) {
+                @exec("taskkill /F /PID {$pid} 2>&1");
+            } else {
+                @exec("kill {$pid} 2>&1");
+                sleep(1);
+                if (self::isProcessRunning($pid)) {
+                    @exec("kill -9 {$pid} 2>&1");
+                }
+            }
+            sleep(1);
+        }
+        
+        // Clean up
+        if (file_exists($statusFile)) @unlink($statusFile);
+        if (file_exists($stopFile)) @unlink($stopFile);
+        
+        // Final verification
+        if (!self::isProcessRunning($pid)) {
+            return ['success' => true, 'message' => 'Server stopped successfully', 'method' => 'forced'];
+        } else {
+            return ['success' => false, 'message' => 'Could not stop server. Use cPanel Process Manager to kill PID: ' . $pid, 'code' => 500, 'pid' => $pid];
+        }
+    }
+    
     public static function stopServer() {
         $statusFile = __DIR__ . '/../websocket/server.pid';
         $stopScript = __DIR__ . '/../websocket/stop_websocket.sh';

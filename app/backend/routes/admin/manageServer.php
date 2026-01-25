@@ -43,9 +43,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
         } elseif ($action === 'stop') {
             ServerController::stopServer();
         } elseif ($action === 'restart') {
-            ServerController::stopServer();
-            sleep(2);
-            ServerController::startServer();
+            ServerController::restartServer();
         } else {
             Response::error('Invalid action. Use: start, stop, or restart', 400);
         }

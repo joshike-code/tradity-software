@@ -1,10 +1,13 @@
-const CACHE_NAME = 'traditi-v1.2.6';
-const ASSETS_TO_CACHE = [
+// Two caches: one for static assets, one for versioned bundles
+const STATIC_CACHE_NAME = 'traditi-static-v1';
+const DYNAMIC_CACHE_NAME = 'traditi-v1.2.7';
+
+const STATIC_ASSETS = [
     'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap',
-    '/app/static/css/distv1.2.6/my-styles.css',
-    '/app/static/css/distv1.2.6/admin-more-styles.css',
-    '/app/static/css/distv1.2.6/admin-style.css',
-    '/app/static/css/distv1.2.6/loader.css',
+    '/app/static/css/distv1.2.7/my-styles.css',
+    '/app/static/css/distv1.2.7/admin-more-styles.css',
+    '/app/static/css/distv1.2.7/admin-style.css',
+    '/app/static/css/distv1.2.7/loader.css',
     '/app/static/css/core.8101.7635118be0daf6f0feff.main.css',
     '/app/static/css/core.chunk.6408.ea813ca5196078e4b5dc.css',
     '/app/static/css/core.chunk.8283.e093a20f556e53514056.css',
@@ -191,123 +194,166 @@ const ASSETS_TO_CACHE = [
     '/app/static/vendor/uicons-solid-rounded/webfonts/uicons-solid-rounded.woff2',
     '/app/static/vendor/wnumb/wNumb.js',
     '/app/',
-    '/app/index.html',
-    '/app/distv1.2.6/1018.bundle.js',
-    '/app/distv1.2.6/1069.bundle.js',
-    '/app/distv1.2.6/1118.bundle.js',
-    '/app/distv1.2.6/1174.bundle.js',
-    '/app/distv1.2.6/1233.bundle.js',
-    '/app/distv1.2.6/1323.bundle.js',
-    '/app/distv1.2.6/1400.bundle.js',
-    '/app/distv1.2.6/1598.bundle.js',
-    '/app/distv1.2.6/1765.bundle.js',
-    '/app/distv1.2.6/1793.bundle.js',
-    '/app/distv1.2.6/1796.bundle.js',
-    '/app/distv1.2.6/1855.bundle.js',
-    '/app/distv1.2.6/1856.bundle.js',
-    '/app/distv1.2.6/1861.bundle.js',
-    '/app/distv1.2.6/1906.bundle.js',
-    '/app/distv1.2.6/1938.bundle.js',
-    '/app/distv1.2.6/204.bundle.js',
-    '/app/distv1.2.6/2088.bundle.js',
-    '/app/distv1.2.6/2097.bundle.js',
-    '/app/distv1.2.6/2290.bundle.js',
-    '/app/distv1.2.6/2465.bundle.js',
-    '/app/distv1.2.6/3028.bundle.js',
-    '/app/distv1.2.6/323.bundle.js',
-    '/app/distv1.2.6/3458.bundle.js',
-    '/app/distv1.2.6/3556.bundle.js',
-    '/app/distv1.2.6/3576.bundle.js',
-    '/app/distv1.2.6/3591.bundle.js',
-    '/app/distv1.2.6/3624.bundle.js',
-    '/app/distv1.2.6/3663.bundle.js',
-    '/app/distv1.2.6/4065.bundle.js',
-    '/app/distv1.2.6/4259.bundle.js',
-    '/app/distv1.2.6/4366.bundle.js',
-    '/app/distv1.2.6/4573.bundle.js',
-    '/app/distv1.2.6/4723.bundle.js',
-    '/app/distv1.2.6/4843.bundle.js',
-    '/app/distv1.2.6/5068.bundle.js',
-    '/app/distv1.2.6/5357.bundle.js',
-    '/app/distv1.2.6/5398.bundle.js',
-    '/app/distv1.2.6/5432.bundle.js',
-    '/app/distv1.2.6/5524.bundle.js',
-    '/app/distv1.2.6/5562.bundle.js',
-    '/app/distv1.2.6/5693.bundle.js',
-    '/app/distv1.2.6/586.bundle.js',
-    '/app/distv1.2.6/6058.bundle.js',
-    '/app/distv1.2.6/6070.bundle.js',
-    '/app/distv1.2.6/6125.bundle.js',
-    '/app/distv1.2.6/6218.bundle.js',
-    '/app/distv1.2.6/625.bundle.js',
-    '/app/distv1.2.6/6314.bundle.js',
-    '/app/distv1.2.6/6342.bundle.js',
-    '/app/distv1.2.6/6496.bundle.js',
-    '/app/distv1.2.6/6502.bundle.js',
-    '/app/distv1.2.6/6679.bundle.js',
-    '/app/distv1.2.6/6783.bundle.js',
-    '/app/distv1.2.6/6856.bundle.js',
-    '/app/distv1.2.6/6869.bundle.js',
-    '/app/distv1.2.6/6880.bundle.js',
-    '/app/distv1.2.6/7149.bundle.js',
-    '/app/distv1.2.6/7157.bundle.js',
-    '/app/distv1.2.6/7277.bundle.js',
-    '/app/distv1.2.6/7297.bundle.js',
-    '/app/distv1.2.6/7314.bundle.js',
-    '/app/distv1.2.6/7361.bundle.js',
-    '/app/distv1.2.6/7393.bundle.js',
-    '/app/distv1.2.6/7523.bundle.js',
-    '/app/distv1.2.6/7540.bundle.js',
-    '/app/distv1.2.6/7571.bundle.js',
-    '/app/distv1.2.6/7615.bundle.js',
-    '/app/distv1.2.6/7634.bundle.js',
-    '/app/distv1.2.6/7722.bundle.js',
-    '/app/distv1.2.6/7871.bundle.js',
-    '/app/distv1.2.6/7970.bundle.js',
-    '/app/distv1.2.6/7997.bundle.js',
-    '/app/distv1.2.6/8398.bundle.js',
-    '/app/distv1.2.6/8670.bundle.js',
-    '/app/distv1.2.6/8902.bundle.js',
-    '/app/distv1.2.6/9001.bundle.js',
-    '/app/distv1.2.6/9159.bundle.js',
-    '/app/distv1.2.6/9524.bundle.js',
-    '/app/distv1.2.6/9592.bundle.js',
-    '/app/distv1.2.6/9652.bundle.js',
-    '/app/distv1.2.6/9655.bundle.js',
-    '/app/distv1.2.6/9667.bundle.js',
-    '/app/distv1.2.6/9755.bundle.js',
-    '/app/distv1.2.6/bundle.js'
+    '/app/index.html'
 ];
 
-// Install: cache assets in chunks to prevent overwhelming the browser
+const DYNAMIC_ASSETS = [
+    '/app/distv1.2.7/1018.bundle.js',
+    '/app/distv1.2.7/1069.bundle.js',
+    '/app/distv1.2.7/1118.bundle.js',
+    '/app/distv1.2.7/1174.bundle.js',
+    '/app/distv1.2.7/1233.bundle.js',
+    '/app/distv1.2.7/1323.bundle.js',
+    '/app/distv1.2.7/1400.bundle.js',
+    '/app/distv1.2.7/1598.bundle.js',
+    '/app/distv1.2.7/1765.bundle.js',
+    '/app/distv1.2.7/1793.bundle.js',
+    '/app/distv1.2.7/1796.bundle.js',
+    '/app/distv1.2.7/1855.bundle.js',
+    '/app/distv1.2.7/1856.bundle.js',
+    '/app/distv1.2.7/1861.bundle.js',
+    '/app/distv1.2.7/1906.bundle.js',
+    '/app/distv1.2.7/1938.bundle.js',
+    '/app/distv1.2.7/204.bundle.js',
+    '/app/distv1.2.7/2088.bundle.js',
+    '/app/distv1.2.7/2097.bundle.js',
+    '/app/distv1.2.7/2290.bundle.js',
+    '/app/distv1.2.7/2465.bundle.js',
+    '/app/distv1.2.7/3028.bundle.js',
+    '/app/distv1.2.7/323.bundle.js',
+    '/app/distv1.2.7/3458.bundle.js',
+    '/app/distv1.2.7/3556.bundle.js',
+    '/app/distv1.2.7/3576.bundle.js',
+    '/app/distv1.2.7/3591.bundle.js',
+    '/app/distv1.2.7/3624.bundle.js',
+    '/app/distv1.2.7/3663.bundle.js',
+    '/app/distv1.2.7/4065.bundle.js',
+    '/app/distv1.2.7/4259.bundle.js',
+    '/app/distv1.2.7/4366.bundle.js',
+    '/app/distv1.2.7/4573.bundle.js',
+    '/app/distv1.2.7/4723.bundle.js',
+    '/app/distv1.2.7/4843.bundle.js',
+    '/app/distv1.2.7/5068.bundle.js',
+    '/app/distv1.2.7/5357.bundle.js',
+    '/app/distv1.2.7/5398.bundle.js',
+    '/app/distv1.2.7/5432.bundle.js',
+    '/app/distv1.2.7/5524.bundle.js',
+    '/app/distv1.2.7/5562.bundle.js',
+    '/app/distv1.2.7/5693.bundle.js',
+    '/app/distv1.2.7/586.bundle.js',
+    '/app/distv1.2.7/6058.bundle.js',
+    '/app/distv1.2.7/6070.bundle.js',
+    '/app/distv1.2.7/6125.bundle.js',
+    '/app/distv1.2.7/6218.bundle.js',
+    '/app/distv1.2.7/625.bundle.js',
+    '/app/distv1.2.7/6314.bundle.js',
+    '/app/distv1.2.7/6342.bundle.js',
+    '/app/distv1.2.7/6496.bundle.js',
+    '/app/distv1.2.7/6502.bundle.js',
+    '/app/distv1.2.7/6679.bundle.js',
+    '/app/distv1.2.7/6783.bundle.js',
+    '/app/distv1.2.7/6856.bundle.js',
+    '/app/distv1.2.7/6869.bundle.js',
+    '/app/distv1.2.7/6880.bundle.js',
+    '/app/distv1.2.7/7149.bundle.js',
+    '/app/distv1.2.7/7157.bundle.js',
+    '/app/distv1.2.7/7277.bundle.js',
+    '/app/distv1.2.7/7297.bundle.js',
+    '/app/distv1.2.7/7314.bundle.js',
+    '/app/distv1.2.7/7361.bundle.js',
+    '/app/distv1.2.7/7393.bundle.js',
+    '/app/distv1.2.7/7523.bundle.js',
+    '/app/distv1.2.7/7540.bundle.js',
+    '/app/distv1.2.7/7571.bundle.js',
+    '/app/distv1.2.7/7615.bundle.js',
+    '/app/distv1.2.7/7634.bundle.js',
+    '/app/distv1.2.7/7722.bundle.js',
+    '/app/distv1.2.7/7871.bundle.js',
+    '/app/distv1.2.7/7970.bundle.js',
+    '/app/distv1.2.7/7997.bundle.js',
+    '/app/distv1.2.7/8398.bundle.js',
+    '/app/distv1.2.7/8670.bundle.js',
+    '/app/distv1.2.7/8902.bundle.js',
+    '/app/distv1.2.7/9001.bundle.js',
+    '/app/distv1.2.7/9159.bundle.js',
+    '/app/distv1.2.7/9524.bundle.js',
+    '/app/distv1.2.7/9592.bundle.js',
+    '/app/distv1.2.7/9652.bundle.js',
+    '/app/distv1.2.7/9655.bundle.js',
+    '/app/distv1.2.7/9667.bundle.js',
+    '/app/distv1.2.7/9755.bundle.js',
+    '/app/distv1.2.7/bundle.js'
+];
+
+// Install: cache assets with dual-cache strategy
 self.addEventListener('install', event => {
   self.skipWaiting();
   event.waitUntil(
-    caches.open(CACHE_NAME).then(async cache => {
-      // Split assets into chunks of 20 to avoid overwhelming the browser
-      const CHUNK_SIZE = 20;
-      const chunks = [];
-      
-      for (let i = 0; i < ASSETS_TO_CACHE.length; i += CHUNK_SIZE) {
-        chunks.push(ASSETS_TO_CACHE.slice(i, i + CHUNK_SIZE));
-      }
-      
-      // Cache each chunk sequentially with error handling
-      for (const chunk of chunks) {
-        await Promise.allSettled(
-          chunk.map(url => 
-            cache.add(url).catch(err => {
-              console.warn(`Failed to cache ${url}:`, err);
-              return Promise.resolve(); // Don't fail the entire installation
-            })
-          )
-        );
+    Promise.all([
+      // Cache static assets (only if not already cached)
+      caches.open(STATIC_CACHE_NAME).then(async cache => {
+        const CHUNK_SIZE = 20;
+        let newAssets = [];
         
-        // Small delay between chunks to give browser breathing room
-        await new Promise(resolve => setTimeout(resolve, 50));
-      }
+        // Check which static assets are already cached
+        for (const url of STATIC_ASSETS) {
+          const cached = await cache.match(url);
+          if (!cached) {
+            newAssets.push(url);
+          }
+        }
+        
+        if (newAssets.length === 0) {
+          console.log('Static cache up to date, skipping...');
+          return;
+        }
+        
+        console.log(`Caching ${newAssets.length} new static assets...`);
+        
+        // Cache new assets in chunks
+        const chunks = [];
+        for (let i = 0; i < newAssets.length; i += CHUNK_SIZE) {
+          chunks.push(newAssets.slice(i, i + CHUNK_SIZE));
+        }
+        
+        for (const chunk of chunks) {
+          await Promise.allSettled(
+            chunk.map(url => 
+              cache.add(url).catch(err => {
+                console.warn(`Failed to cache ${url}:`, err);
+                return Promise.resolve();
+              })
+            )
+          );
+          await new Promise(resolve => setTimeout(resolve, 50));
+        }
+      }),
       
-      console.log(`Service Worker installed. Cached ${ASSETS_TO_CACHE.length} assets.`);
+      // Always cache dynamic assets (versioned bundles)
+      caches.open(DYNAMIC_CACHE_NAME).then(async cache => {
+        const CHUNK_SIZE = 20;
+        const chunks = [];
+        
+        console.log(`Caching ${DYNAMIC_ASSETS.length} versioned bundle files...`);
+        
+        for (let i = 0; i < DYNAMIC_ASSETS.length; i += CHUNK_SIZE) {
+          chunks.push(DYNAMIC_ASSETS.slice(i, i + CHUNK_SIZE));
+        }
+        
+        for (const chunk of chunks) {
+          await Promise.allSettled(
+            chunk.map(url => 
+              cache.add(url).catch(err => {
+                console.warn(`Failed to cache ${url}:`, err);
+                return Promise.resolve();
+              })
+            )
+          );
+          await new Promise(resolve => setTimeout(resolve, 50));
+        }
+      })
+    ]).then(() => {
+      console.log('Service Worker installed successfully');
     }).catch(err => {
       console.error('Service Worker installation failed:', err);
       throw err;
@@ -315,15 +361,19 @@ self.addEventListener('install', event => {
   );
 });
 
-// Activate: delete old caches
+// Activate: delete old dynamic caches, keep static cache
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys =>
       Promise.all(
         keys.map(key => {
-          if (key !== CACHE_NAME) {
-            return caches.delete(key);
+          // Keep current static and dynamic caches
+          if (key === STATIC_CACHE_NAME || key === DYNAMIC_CACHE_NAME) {
+            return;
           }
+          // Delete old caches (old versions)
+          console.log('Deleting old cache:', key);
+          return caches.delete(key);
         })
       )
     ).then(() => self.clients.claim())
@@ -359,6 +409,7 @@ self.addEventListener('fetch', event => {
   
   // Only cache static assets (CSS, JS, images, fonts, etc.)
   event.respondWith(
+    // Check both caches (static and dynamic)
     caches.match(event.request).then(response => {
       if (response) {
         return response;
@@ -377,8 +428,12 @@ self.addEventListener('fetch', event => {
           // Clone the response because it can only be used once
           const responseToCache = fetchResponse.clone();
           
+          // Determine which cache to use based on URL pattern
+          const isDynamicAsset = url.pathname.includes('/dist');
+          const cacheName = isDynamicAsset ? DYNAMIC_CACHE_NAME : STATIC_CACHE_NAME;
+          
           // Cache the fetched resource for next time
-          caches.open(CACHE_NAME).then(cache => {
+          caches.open(cacheName).then(cache => {
             cache.put(event.request, responseToCache).catch(err => {
               console.warn('Failed to cache:', event.request.url, err);
             });
