@@ -1,0 +1,2 @@
+*Further improvements to service worker caching to speed up caching and browser load time
+*Improvements to server management: start, stop, restart
