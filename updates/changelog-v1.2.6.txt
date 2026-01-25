@@ -1,0 +1,1 @@
+*Fix for service worker cache bug
