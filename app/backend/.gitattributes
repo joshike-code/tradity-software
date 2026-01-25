@@ -1,0 +1,34 @@
+# Force LF line endings for shell scripts
+*.sh text eol=lf
+
+# Force LF for common Unix files
+Dockerfile text eol=lf
+.dockerignore text eol=lf
+
+# Let Git handle line endings automatically for these files
+*.php text
+*.js text
+*.css text
+*.json text
+*.md text
+*.txt text
+*.yml text
+*.yaml text
+*.xml text
+*.sql text
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.tar binary
+*.gz binary
+*.7z binary
+*.ttf binary
+*.woff binary
+*.woff2 binary
+*.eot binary

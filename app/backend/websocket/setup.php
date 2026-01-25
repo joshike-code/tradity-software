@@ -341,6 +341,14 @@ $phpCliPath = PHP_BINARY;
                 <?php endforeach; ?>
             <?php endif; ?>
             
+            <div class="warning">
+                <strong>⚠️ IMPORTANT: Fix Line Endings First!</strong><br>
+                If you uploaded these files from Windows, they may have Windows line endings that cause errors like:<br>
+                <code style="background: #fff; padding: 2px 6px; border-radius: 3px; color: #dc2626;">$'\r': command not found</code><br><br>
+                <a href="fix_line_endings.php" class="btn btn-danger" target="_blank" style="margin-top: 10px;">🔧 Fix Line Endings Now</a>
+                <p style="margin-top: 10px; font-size: 13px;">Run this BEFORE starting the server. It converts Windows (CRLF) to Unix (LF) line endings.</p>
+            </div>
+            
             <div class="section">
                 <h2>📊 Current Status</h2>
                 <div class="info-grid">
@@ -409,6 +417,8 @@ $phpCliPath = PHP_BINARY;
                 <h2>🔍 Diagnostic Tools</h2>
                 <p style="margin-bottom: 15px;">Quick access to server monitoring and testing tools:</p>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
+                    <a href="fix_line_endings.php" class="btn btn-danger" target="_blank" style="text-align: center;">🔧 Fix Line Endings</a>
+                    <a href="test_cron.php" class="btn btn-success" target="_blank" style="text-align: center;">🧪 Test Cron Setup</a>
                     <a href="view_logs.php" class="btn" target="_blank" style="text-align: center;">📊 View Server Logs</a>
                     <a href="test_binance.php" class="btn" target="_blank" style="text-align: center;">🔌 Test Binance Connection</a>
                     <a href="check_vendor.php" class="btn" target="_blank" style="text-align: center;">📦 Check Dependencies</a>
@@ -416,12 +426,20 @@ $phpCliPath = PHP_BINARY;
                     <a href="restart_and_clean.php?key=CHANGE_ME_<?= md5('your-random-string-here') ?>" class="btn btn-danger" target="_blank" style="text-align: center;">🔄 Restart & Clean Cache</a>
                 </div>
                 <p style="margin-top: 15px; font-size: 13px; color: #6b7280;">
-                    <strong>Note:</strong> Update the secret keys in restart_and_clean.php and resource_monitor.php before using
+                    <strong>Tip:</strong> Run "Fix Line Endings" first if you see <code>$'\r'</code> errors
                 </p>
             </div>
             
             <div class="section">
                 <h2>⏰ Step 3: Setup Cron Job</h2>
+                
+                <div class="success-box" style="background: #d1fae5; padding: 15px; border-radius: 6px; margin-bottom: 15px; border-left: 4px solid #10b981;">
+                    <strong>✨ Easy Mode:</strong> Click the button below to get the EXACT cron commands for your server!<br>
+                    <a href="get_cron_commands.php" class="btn btn-success" target="_blank" style="margin-top: 10px; text-decoration: none;">📋 Get My Cron Commands</a>
+                    <p style="margin-top: 10px; font-size: 13px; color: #065f46;">
+                        This tool auto-detects your PHP path and shows copy-paste ready commands for BOTH cron jobs (WebSocket + Email Queue).
+                    </p>
+                </div>
                 
                 <div class="warning">
                     <strong>⚠️ Choose ONE method below based on your cPanel capabilities:</strong>
@@ -434,10 +452,17 @@ $phpCliPath = PHP_BINARY;
                         <p>If your cPanel allows shell commands in cron jobs:</p>
                         <ol style="margin-left: 20px; margin-top: 10px;">
                             <li>Go to cPanel → <strong>Advanced → Cron Jobs</strong></li>
-                            <li>Set interval to <strong>Every 5 minutes</strong></li>
-                            <li>Use this command:</li>
+                            <li>Set interval to <strong>Every 5 minutes</strong>: <code>*/5 * * * *</code></li>
+                            <li>In the "Command" field, paste this <strong>exact command</strong>:</li>
                         </ol>
-                        <div class="code-block">/bin/bash <?= $startScript ?></div>
+                        <div class="code-block">/bin/bash <?= $startScript ?> >> <?= $websocketDir ?>/cron.log 2>&1</div>
+                        <p style="margin-top: 10px; font-size: 13px;">
+                            <strong>⚠️ Important:</strong> Copy the FULL path including <code>/bin/bash</code> at the start. 
+                            This ensures the script runs properly. The output will be saved to <code>cron.log</code>.
+                        </p>
+                        <p style="margin-top: 10px; font-size: 13px; color: #059669;">
+                            <strong>✓ Tip:</strong> After saving, wait 5 minutes then check <code>cron.log</code> to verify it's working.
+                        </p>
                     </div>
                 </div>
                 
@@ -463,9 +488,35 @@ $phpCliPath = PHP_BINARY;
                 <ol style="margin-left: 20px; margin-top: 10px;">
                     <li>Wait 5 minutes for the first cron run</li>
                     <li>Refresh this page to check if PID file exists</li>
-                    <li>Check server.log file for any errors</li>
+                    <li>Check <code>cron.log</code> in the websocket folder to see cron output</li>
+                    <li>Check <code>server.log</code> file for server startup messages</li>
                     <li>Access your admin dashboard to verify status</li>
                 </ol>
+                
+                <div class="warning" style="margin-top: 15px;">
+                    <strong>🔍 Troubleshooting:</strong><br><br>
+                    
+                    <strong>Problem: <code>$'\r': command not found</code> or <code>syntax error near unexpected token</code></strong><br>
+                    → Windows line endings detected! This is the most common issue.<br>
+                    → Fix: Click "Fix Line Endings" button above or in Diagnostic Tools<br>
+                    → After fixing, make scripts executable again (Step 1)<br><br>
+                    
+                    <strong>Problem: Cron emails me the script code instead of running it</strong><br>
+                    → You forgot <code>/bin/bash</code> at the start of the cron command<br>
+                    → Fix: Use <code>/bin/bash /full/path/to/start_websocket.sh</code><br><br>
+                    
+                    <strong>Problem: "PHP not found" error</strong><br>
+                    → The script will auto-detect PHP. Check <code>cron.log</code> for the detected path<br>
+                    → If detection fails, manually edit start_websocket.sh and set PHP_BIN<br><br>
+                    
+                    <strong>Problem: Server starts but stops immediately</strong><br>
+                    → Check <code>server.log</code> for errors (missing dependencies, DB connection, etc.)<br>
+                    → Run manually: <code>bash start_websocket.sh</code> to see errors<br><br>
+                    
+                    <strong>Problem: Permission denied</strong><br>
+                    → Run Step 1 again to make scripts executable<br>
+                    → Or via SSH: <code>chmod +x start_websocket.sh stop_websocket.sh</code>
+                </div>
             </div>
             
             <div class="section">

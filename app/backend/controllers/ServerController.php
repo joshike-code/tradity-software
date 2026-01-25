@@ -29,10 +29,9 @@ class ServerController {
             }
         }
         
-        // Get last log entry
+        // Get last log entry (use memory-efficient method to avoid loading entire file)
         if (file_exists($logFile)) {
-            $logs = file($logFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-            $lastLog = end($logs) ?: null;
+            $lastLog = self::getLastLogLine($logFile);
         }
         
         // Check for restart notification
@@ -513,5 +512,83 @@ class ServerController {
         if ($secs > 0 || empty($parts)) $parts[] = "{$secs}s";
         
         return implode(' ', $parts);
+    }
+    
+    /**
+     * Get last line from log file without loading entire file into memory
+     * Prevents memory exhaustion on large log files
+     */
+    private static function getLastLogLine($filePath) {
+        if (!file_exists($filePath) || !is_readable($filePath)) {
+            return null;
+        }
+        
+        $fileSize = @filesize($filePath);
+        if ($fileSize === false || $fileSize === 0) {
+            return null;
+        }
+        
+        // Try to open file
+        $fp = @fopen($filePath, 'r');
+        if (!$fp) {
+            return null;
+        }
+        
+        // For small files (< 1MB), just read normally
+        if ($fileSize < 1048576) {
+            $content = @file_get_contents($filePath);
+            fclose($fp);
+            if ($content !== false) {
+                $lines = explode("\n", trim($content));
+                return end($lines) ?: null;
+            }
+            return null;
+        }
+        
+        // For large files, read from the end
+        $line = '';
+        $buffer = '';
+        $chunkSize = 4096;
+        
+        // Start reading from end in chunks
+        for ($pos = -$chunkSize; abs($pos) <= $fileSize; $pos -= $chunkSize) {
+            $seekPos = max($pos, -$fileSize);
+            
+            if (@fseek($fp, $seekPos, SEEK_END) !== 0) {
+                break;
+            }
+            
+            $chunk = fread($fp, $chunkSize);
+            if ($chunk === false) {
+                break;
+            }
+            
+            $buffer = $chunk . $buffer;
+            
+            // Look for last newline
+            $lastNewline = strrpos($buffer, "\n");
+            if ($lastNewline !== false && $lastNewline < strlen($buffer) - 1) {
+                // Found the last line
+                $line = substr($buffer, $lastNewline + 1);
+                break;
+            } elseif ($lastNewline !== false && abs($pos) < $fileSize) {
+                // Found newline but it's at the end, keep looking
+                $buffer = rtrim($buffer, "\n\r");
+                $lastNewline = strrpos($buffer, "\n");
+                if ($lastNewline !== false) {
+                    $line = substr($buffer, $lastNewline + 1);
+                    break;
+                }
+            }
+            
+            // If we've read the entire file
+            if (abs($seekPos) >= $fileSize) {
+                $line = $buffer;
+                break;
+            }
+        }
+        
+        fclose($fp);
+        return trim($line) ?: null;
     }
 }

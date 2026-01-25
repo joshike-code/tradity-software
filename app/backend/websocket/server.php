@@ -1573,6 +1573,9 @@ class BinanceWebSocketClient {
     private $loop;
     private $wsConnection;
     private $klineConnection;
+    private $retryCount = 0;
+    private $maxRetries = 10; // Max retry attempts before giving up
+    private $reconnectTimer = null;
     
     public function __construct($server, $pairs, $loop) {
         $this->server = $server;
@@ -1611,12 +1614,8 @@ class BinanceWebSocketClient {
                 
                 $conn->on('close', function($code = null, $reason = null) {
                     echo "Binance WebSocket closed (Code: {$code}, Reason: {$reason})\n";
-                    echo "Reconnecting in 5 seconds...\n";
-                    
-                    // Reconnect after 5 seconds
-                    $this->loop->addTimer(5, function() {
-                        $this->connect();
-                    });
+                    $this->wsConnection = null; // Clear reference
+                    $this->scheduleReconnect('ticker');
                 });
                 
                 $conn->on('error', function($e) {
@@ -1625,14 +1624,37 @@ class BinanceWebSocketClient {
             },
             function($e) {
                 echo "Could not connect to Binance: {$e->getMessage()}\n";
-                echo "Retrying in 5 seconds...\n";
-                
-                // Retry connection after 5 seconds
-                $this->loop->addTimer(5, function() {
-                    $this->connect();
-                });
+                $this->scheduleReconnect('ticker');
             }
         );
+    }
+    
+    private function scheduleReconnect($type = 'ticker') {
+        // Limit retry attempts to prevent infinite loops
+        if ($this->retryCount >= $this->maxRetries) {
+            echo "[ERROR] Max retry attempts ({$this->maxRetries}) reached for Binance {$type}. Stopping reconnection.\n";
+            return;
+        }
+        
+        $this->retryCount++;
+        
+        // Exponential backoff: 5s, 10s, 20s, 40s... (max 60s)
+        $delay = min(5 * pow(2, $this->retryCount - 1), 60);
+        
+        echo "Retrying Binance {$type} in {$delay}s (attempt {$this->retryCount}/{$this->maxRetries})...\n";
+        
+        // Cancel any existing reconnect timer to prevent accumulation
+        if ($this->reconnectTimer) {
+            $this->loop->cancelTimer($this->reconnectTimer);
+        }
+        
+        $this->reconnectTimer = $this->loop->addTimer($delay, function() use ($type) {
+            if ($type === 'kline') {
+                $this->connectKlineStreams();
+            } else {
+                $this->connect();
+            }
+        });
         
         // Connect to kline streams for chart data (1m, 5m intervals)
         $this->connectKlineStreams();
@@ -1671,12 +1693,8 @@ class BinanceWebSocketClient {
                 
                 $conn->on('close', function($code = null, $reason = null) {
                     echo "Binance Kline WebSocket closed (Code: {$code}, Reason: {$reason})\n";
-                    echo "Reconnecting in 5 seconds...\n";
-                    
-                    // Reconnect after 5 seconds
-                    $this->loop->addTimer(5, function() {
-                        $this->connectKlineStreams();
-                    });
+                    $this->klineConnection = null; // Clear reference
+                    $this->scheduleReconnect('kline');
                 });
                 
                 $conn->on('error', function($e) {
@@ -1685,12 +1703,7 @@ class BinanceWebSocketClient {
             },
             function($e) {
                 echo "Could not connect to Binance Kline stream: {$e->getMessage()}\n";
-                echo "Retrying in 5 seconds...\n";
-                
-                // Retry connection after 5 seconds
-                $this->loop->addTimer(5, function() {
-                    $this->connectKlineStreams();
-                });
+                $this->scheduleReconnect('kline');
             }
         );
     }
@@ -1794,12 +1807,23 @@ class BinanceWebSocketClient {
     }
     
     public function close() {
+        // Cancel any pending reconnect timers
+        if ($this->reconnectTimer) {
+            $this->loop->cancelTimer($this->reconnectTimer);
+            $this->reconnectTimer = null;
+        }
+        
+        // Close connections
         if ($this->wsConnection) {
             $this->wsConnection->close();
+            $this->wsConnection = null;
         }
         if ($this->klineConnection) {
             $this->klineConnection->close();
+            $this->klineConnection = null;
         }
+        
+        echo "Binance WebSocket connections closed\n";
     }
 }
 

@@ -1,6 +1,6 @@
 # tradity-software
-**Tradity** Professional broker php software for trading financial markets. Designed to operate similarly to popular brokers like Octa Fx.
-# 💼 Tradity Software
+**Traditi** Professional broker php software for trading financial markets. Designed to operate similarly to popular brokers like Octa Fx.
+# 💼 Traditi Software
 
 This software was built by [Joshike-code](https://github.com/joshike-code) for **Degiant Software**.
 
@@ -53,22 +53,33 @@ Live demo: https://tradity.degiantstore.live
 
 6. **Default Superadmin Credentials:**
    - After installation, you'd need to login to superadmin. Use the below default credentials
-   - Email: owner@tradity.com
+   - Email: owner@traditi.com
    - Password: 1234
 
 7. **Set your Degiant Passkey**  
-You will be prompted to input the **passkey** after login.  
+You will be prompted to input a **License key** after login.  
 Obtain this from your merchant after purchasing the software.
 
 8. **Configure Mail Settings**  
 Go to **Admin Settings** and configure mail settings to enable OTP verification for new users.
 
 9. **Set Up Cron**  
-Add the script below to your server’s cron scheduler:
-app/backend/cron/cron_update.php
+Add the 2 scripts below to your server’s cron scheduler (every 5 minutes):
+   - app/backend/cron/cron_update.php (For email queue and other functional system iterations)
+   - app/backend/websocket/start_websocket.sh (To keep the websocket server alive on cpanel)
+> Get the full and correct path as well as instructions for your cron setup by visiting `https://yourdomain.com/app/backend/websocket/get_cron_commands.php`
 
-10. **Done!**  
- You can now use your Tradity platform. Be sure to update it when prompted.
+10. **Configure API Keys**  
+Configure your API keys in **Admin Settings** for realtime price data and chart history. Get them at:
+   - Finnhub: `finnhub.io`
+   - Twelve Data: `twelvedata.com`
+> **Important:** Do not use the same API keys on multiple Traditi softwares. One key per Traditi software
+
+11. **Use European Servers!**  
+The software also uses binance API which might fail if you do not use a shared hosting/VPS server located in Europe.
+
+12. **Done!**  
+ You can now use your Traditi platform. Be sure to update it when prompted.
 
 ---
 
@@ -103,7 +114,7 @@ Supports methods: `GET`, `POST`, `PUT`, `DELETE`
 
 ## 📬 Support
 
-For assistance, open an [Issue](https://github.com/joshike-code/Tradity-software/issues)  
+For assistance, open an [Issue](https://github.com/joshike-code/tradity-software/issues)  
 
 ---
 
