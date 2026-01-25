@@ -1,0 +1,6 @@
+*Server now maxes binance retries at 10 with exponential backoff as well as closes all connection before retrying
+*GET server status now reads server logs in chunks
+*Added get_cron_commands to see full cron path during installation
+*Admin UI bug fixes for empty lists
+*Restored default service worker app install prompt
+
