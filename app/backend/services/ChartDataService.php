@@ -42,7 +42,26 @@ class ChartDataService
                 return self::getBinanceHistoricalCandles($pair, $interval, $limit, $userId);
             } else {
                 // For forex and commodities, use Twelve Data with smart caching
-                return self::getTwelveDataHistoricalCandles($pair, $interval, $limit, $userId);
+                // Restrict candles to Friday 11pm and back if market is closed
+                require_once __DIR__ . '/../websocket/FinnhubWebSocketClient.php';
+                $marketStatus = 'open';
+                if (class_exists('FinnhubWebSocketClient') && method_exists('FinnhubWebSocketClient', 'isForexMarketOpen')) {
+                    $marketStatus = FinnhubWebSocketClient::isForexMarketOpen() ? 'open' : 'closed';
+                }
+                if ($marketStatus === 'closed') {
+                    // Only allow candles up to last Friday 5pm EST (forex market close time)
+                    // Friday 5pm EST = Friday 22:00 UTC (in winter) or 21:00 UTC (in summer)
+                    $fridayEst = new \DateTime('now', new \DateTimeZone('US/Eastern'));
+                    $fridayEst->modify('last friday');
+                    $fridayEst->setTime(17, 0, 0);  // 5pm EST (17:00), not 11pm
+                    // Convert to UTC
+                    $fridayEst->setTimezone(new \DateTimeZone('UTC'));
+                    $fridayUtcTimestamp = $fridayEst->getTimestamp() * 1000; // ms
+                    // Pass a maxTimestamp to getTwelveDataHistoricalCandles
+                    return self::getTwelveDataHistoricalCandles($pair, $interval, $limit, $userId, $fridayUtcTimestamp);
+                } else {
+                    return self::getTwelveDataHistoricalCandles($pair, $interval, $limit, $userId);
+                }
             }
             
         } catch (Exception $e) {
@@ -246,7 +265,7 @@ class ChartDataService
      * @param int|null $userId - User ID
      * @return array - Historical candle data from Twelve Data (or cache)
      */
-    private static function getTwelveDataHistoricalCandles($pair, $interval, $limit, $userId) {
+    private static function getTwelveDataHistoricalCandles($pair, $interval, $limit, $userId, $maxTimestamp = null) {
         try {
             $conn = Database::getConnection();
             
@@ -254,15 +273,31 @@ class ChartDataService
             $intervalSeconds = self::getIntervalSeconds($interval);
             $now = time();
             $oldestTimestamp = ($now - ($limit * $intervalSeconds)) * 1000; // Convert to milliseconds
+            // If maxTimestamp is set (market closed), restrict to candles before this time
+            if ($maxTimestamp !== null && $now * 1000 > $maxTimestamp) {
+                $now = intval($maxTimestamp / 1000);
+                $oldestTimestamp = ($now - ($limit * $intervalSeconds)) * 1000;
+            }
             
             // First, try to get candles from cache
-            $stmt = $conn->prepare("
-                SELECT timestamp, open, high, low, close, volume 
-                FROM historical_candles_cache 
-                WHERE pair = ? AND `interval` = ? AND timestamp >= ?
-                ORDER BY timestamp ASC
-            ");
-            $stmt->bind_param("ssi", $pair, $interval, $oldestTimestamp);
+            // If maxTimestamp is set (market closed), also filter by it in the query
+            if ($maxTimestamp !== null) {
+                $stmt = $conn->prepare("
+                    SELECT timestamp, open, high, low, close, volume 
+                    FROM historical_candles_cache 
+                    WHERE pair = ? AND `interval` = ? AND timestamp >= ? AND timestamp < ?
+                    ORDER BY timestamp ASC
+                ");
+                $stmt->bind_param("ssii", $pair, $interval, $oldestTimestamp, $maxTimestamp);
+            } else {
+                $stmt = $conn->prepare("
+                    SELECT timestamp, open, high, low, close, volume 
+                    FROM historical_candles_cache 
+                    WHERE pair = ? AND `interval` = ? AND timestamp >= ?
+                    ORDER BY timestamp ASC
+                ");
+                $stmt->bind_param("ssi", $pair, $interval, $oldestTimestamp);
+            }
             $stmt->execute();
             $result = $stmt->get_result();
             
@@ -284,23 +319,36 @@ class ChartDataService
             }
             
             // If we have enough cached data, use it
-            if (count($cachedCandles) >= $limit) {
-                error_log("Cache HIT for {$pair} {$interval} - " . count($cachedCandles) . " candles");
+            // When market is closed (maxTimestamp set), use whatever cache we have even if less than limit
+            $hasEnoughCache = count($cachedCandles) >= $limit;
+            $useCache = $hasEnoughCache || ($maxTimestamp !== null && count($cachedCandles) > 0);
+            
+            if ($useCache) {
+                if ($hasEnoughCache) {
+                    error_log("Cache HIT for {$pair} {$interval} - " . count($cachedCandles) . " candles");
+                } else {
+                    error_log("Cache PARTIAL HIT for {$pair} {$interval} - " . count($cachedCandles) . " candles (market closed, using available)");
+                }
                 
-                // Get most recent candles up to limit
                 $candles = array_slice($cachedCandles, -$limit);
-                
+                // If maxTimestamp is set, filter out candles at or after this time (redundant but safe)
+                if ($maxTimestamp !== null) {
+                    $candles = array_filter($candles, function($candle) use ($maxTimestamp) {
+                        return $candle['timestamp'] < $maxTimestamp;
+                    });
+                    // Re-index and get last $limit candles
+                    $candles = array_values($candles);
+                    $candles = array_slice($candles, -$limit);
+                }
                 // Format candles with correct decimal precision
                 $formattedCandles = [];
                 foreach ($candles as $candle) {
                     $formattedCandles[] = PriceFormatterService::formatCandle($pair, $candle);
                 }
-                
                 // Merge with altered candles if user is provided
                 if ($userId !== null) {
                     $formattedCandles = self::mergeWithAlteredCandles($formattedCandles, $pair, $interval, $userId);
                 }
-                
                 return [
                     'pair' => $pair,
                     'symbol' => str_replace('/', '', $pair),
@@ -374,7 +422,15 @@ class ChartDataService
             $twelveDataInterval = $intervalMap[$interval] ?? '5min';
             
             // Request more candles than limit to ensure we have enough after filtering
-            $outputSize = max($limit + 50, 100);
+            // When market is closed, we need to request many more candles because recent ones
+            // will be filtered out (they're from after market close)
+            if ($maxTimestamp !== null) {
+                // Market closed - request 3x more to account for weekend/after-hours candles
+                $outputSize = max($limit * 3, 300);
+            } else {
+                // Market open - just request a bit more than needed
+                $outputSize = max($limit + 50, 100);
+            }
             
             // Build Twelve Data API URL with timezone parameter set to UTC
             $url = 'https://api.twelvedata.com/time_series?' . http_build_query([
@@ -483,6 +539,14 @@ class ChartDataService
             // Reverse array (Twelve Data returns newest first, we want oldest first)
             $candles = array_reverse($candles);
             
+            // If maxTimestamp is set, filter out candles at or after this time
+            if ($maxTimestamp !== null) {
+                $candles = array_filter($candles, function($candle) use ($maxTimestamp) {
+                    return $candle['timestamp'] < $maxTimestamp;
+                });
+                // Re-index and get last $limit candles
+                $candles = array_values($candles);
+            }
             // Limit to requested number of candles
             $candles = array_slice($candles, -$limit);
             

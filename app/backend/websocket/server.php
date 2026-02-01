@@ -1504,10 +1504,15 @@ class TradingWebSocketServer implements MessageComponentInterface {
         // Store current status
         $this->currentMarketStatus = $status;
         
+        $nextOpen = ($status === 'closed') ? FinnhubWebSocketClient::getNextOpenTimestamp() : null;
+        $remaining = $nextOpen ? ($nextOpen - time()) : null;
+        
         $message = [
             'type' => 'market_status',
             'status' => $status,
             'timestamp' => time(),
+            'next_open' => $nextOpen,
+            'remaining' => $remaining,
             'message' => $status === 'closed' 
                 ? 'Forex and commodity markets are currently closed' 
                 : 'Forex and commodity markets are now open',
@@ -1547,10 +1552,15 @@ class TradingWebSocketServer implements MessageComponentInterface {
             echo "[MARKET] Status still unknown, sending default 'open' to client {$conn->resourceId}\n";
         }
         
+        $nextOpen = ($status === 'closed') ? FinnhubWebSocketClient::getNextOpenTimestamp() : null;
+        $remaining = $nextOpen ? ($nextOpen - time()) : null;
+        
         $message = [
             'type' => 'market_status',
             'status' => $status,
             'timestamp' => time(),
+            'next_open' => $nextOpen,
+            'remaining' => $remaining,
             'message' => $status === 'closed' 
                 ? 'Forex and commodity markets are currently closed' 
                 : 'Forex and commodity markets are now open',

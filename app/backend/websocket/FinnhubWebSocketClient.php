@@ -405,47 +405,127 @@ class FinnhubWebSocketClient {
     }
     
     /**
-     * Check market status based on trade activity
-     * If no trades received for X minutes across all pairs, assume market is closed
+     * Check market status based on actual forex market hours
+     * Forex markets are open Sunday 5 PM EST to Friday 5 PM EST
+     * Also checks trade activity as a secondary indicator
      */
     private function checkMarketStatus() {
         $currentTime = time();
-        $anyRecentTrades = false;
         
-        // Check if any pair has received trades recently
+        // Determine market status based on time and day
+        $expectedStatus = $this->isForexMarketOpen() ? 'open' : 'closed';
+        
+        // Get trade activity status
+        $anyRecentTrades = false;
         foreach ($this->lastTradeTime as $pair => $lastTime) {
             $timeSinceLastTrade = $currentTime - $lastTime;
-            
             if ($timeSinceLastTrade < $this->noTradeThreshold) {
                 $anyRecentTrades = true;
                 break;
             }
         }
         
+        // If market should be closed by hours, always report closed
+        // If market should be open by hours, but no trades received, also report closed (might be holiday)
+        $newStatus = $expectedStatus === 'open' && !$anyRecentTrades ? 'closed' : $expectedStatus;
+        
         $previousStatus = $this->marketStatus;
-        $newStatus = $anyRecentTrades ? 'open' : 'closed';
         
         // Market status changed - broadcast to all clients
         if ($previousStatus !== $newStatus) {
             $this->marketStatus = $newStatus;
             
             if ($newStatus === 'closed') {
-                echo "[MARKET] Market status changed: OPEN → CLOSED (no trades for {$this->noTradeThreshold}s)\n";
+                $reason = $expectedStatus === 'closed' ? 'outside market hours' : 'no trade activity';
+                echo "[MARKET] Market status changed: OPEN → CLOSED ({$reason})\n";
             } else {
-                echo "[MARKET] Market status changed: CLOSED → OPEN (trades resumed)\n";
+                echo "[MARKET] Market status changed: CLOSED → OPEN (market hours + trade activity detected)\n";
             }
             
             // Broadcast market status to all clients
             $this->broadcastMarketStatus($newStatus);
         }
         
-        // Debug: Show time since last trade for each pair
-        if ($newStatus === 'closed') {
-            foreach ($this->lastTradeTime as $pair => $lastTime) {
-                $timeSince = $currentTime - $lastTime;
-                echo "[MARKET] {$pair}: {$timeSince}s since last trade\n";
-            }
+        // Debug: Show market status information
+        echo "[MARKET] Expected: {$expectedStatus}, Recent trades: " . ($anyRecentTrades ? 'yes' : 'no') . ", Final: {$newStatus}\n";
+    }
+    
+    /**
+     * Check if forex market is open based on time and day
+     * Forex markets: Sunday 5 PM EST to Friday 5 PM EST
+     * 
+     * @return bool - true if market should be open
+     */
+    public static function isForexMarketOpen() {
+        // Get current time in EST timezone (forex market timezone)
+        $timezone = new \DateTimeZone('US/Eastern');
+        $now = new \DateTime('now', $timezone);
+        
+        $dayOfWeek = (int)$now->format('w'); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+        $hour = (int)$now->format('H');
+        $minute = (int)$now->format('i');
+        $time = $hour * 60 + $minute; // Convert to minutes since midnight
+        
+        // Market opens Sunday at 5 PM (17:00) = 1020 minutes
+        $openTime = 17 * 60; // 1020 minutes
+        // Market closes Friday at 5 PM (17:00) = 1020 minutes
+        $closeTime = 17 * 60;
+        
+        // Sunday: open from 5 PM onwards
+        if ($dayOfWeek === 0) {
+            return $time >= $openTime; // Sunday 5 PM or later
         }
+        
+        // Monday to Thursday: always open (assuming they don't have holidays)
+        if ($dayOfWeek >= 1 && $dayOfWeek <= 4) {
+            return true;
+        }
+        
+        // Friday: open until 5 PM
+        if ($dayOfWeek === 5) {
+            return $time < $closeTime; // Friday before 5 PM
+        }
+        
+        // Saturday: always closed
+        if ($dayOfWeek === 6) {
+            return false;
+        }
+        
+        return false; // Default to closed
+    }
+
+    /**
+     * Get the next market open time as a Unix timestamp
+     * 
+     * @return int|null - Unix timestamp of next open, or null if currently open
+     */
+    public static function getNextOpenTimestamp() {
+        $timezone = new \DateTimeZone('US/Eastern');
+        $now = new \DateTime('now', $timezone);
+        
+        if (self::isForexMarketOpen()) {
+            return null;
+        }
+        
+        $dayOfWeek = (int)$now->format('w');
+        $hour = (int)$now->format('H');
+        $minute = (int)$now->format('i');
+        $timeInMinutes = $hour * 60 + $minute;
+        $openTimeInMinutes = 17 * 60;
+        
+        $nextOpen = clone $now;
+        
+        if ($dayOfWeek === 0 && $timeInMinutes < $openTimeInMinutes) {
+            // It's Sunday before 5 PM EST
+            $nextOpen->setTime(17, 0, 0);
+        } else {
+            // It's Friday after 5 PM, Saturday, or Sunday (already open but somehow we got here)
+            // Or a holiday check could go here if we had one.
+            $nextOpen->modify('next Sunday');
+            $nextOpen->setTime(17, 0, 0);
+        }
+        
+        return $nextOpen->getTimestamp();
     }
     
     /**
@@ -454,18 +534,17 @@ class FinnhubWebSocketClient {
      * @param string $status - 'open' or 'closed'
      */
     private function broadcastMarketStatus($status) {
-        $message = json_encode([
-            'type' => 'market_status',
-            'status' => $status,
-            'timestamp' => time(),
-            'message' => $status === 'closed' 
-                ? 'Forex and commodity markets are currently closed' 
-                : 'Forex and commodity markets are now open'
-        ]);
-        
-        // Use server's broadcast method to send to all connected clients
+        // The server's broadcastMarketStatus will calculate next open time
         $this->server->broadcastMarketStatus($status);
         
-        echo "[MARKET] Broadcasted market status: {$status}\n";
+        $logMsg = "[MARKET] Broadcasted market status: {$status}";
+        if ($status === 'closed') {
+            $nextOpen = self::getNextOpenTimestamp();
+            if ($nextOpen) {
+                $remaining = $nextOpen - time();
+                $logMsg .= " (Next open in " . floor($remaining / 3600) . "h " . floor(($remaining % 3600) / 60) . "m)";
+            }
+        }
+        echo $logMsg . "\n";
     }
 }
