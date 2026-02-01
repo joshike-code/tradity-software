@@ -1,0 +1,5 @@
+*Improved market status monitoring system
+*Added next open time/time remaining to next market open
+*Blocked Forex/commodities pairs from accepting new orders during market closure
+*Freeze chart from updating from websocket during market closure
+*Added beautiful UI display on assets affected by market closure with countdown to next market open
