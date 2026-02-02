@@ -17,7 +17,7 @@ $role = $user->role;
 
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
-        UserController::getUser($user_id);
+        UserController::getUser($user_id, $role);
         break;
 
     case 'PUT':

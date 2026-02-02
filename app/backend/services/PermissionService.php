@@ -27,9 +27,9 @@ class PermissionService
             'manage_deposits',
             'manage_withdrawals',
             'view_trade_stats',
-            'manage_admins',
             'manage_payment_wallets',
             'manage_platform_settings',
+            'manage_admins',
             'manage_keys',
             'manage_server',
         ];

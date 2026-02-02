@@ -15,14 +15,18 @@ require_once __DIR__ . '/../services/TradeAccountService.php';
 
 class UserController {
 
-    public static function getUser($user_id) {
+    public static function getUser($user_id, $role) {
         $userData = UserService::getUserById($user_id);
         if($userData['status'] === 'suspended') {
             Response::error('User suspended', 400);
         }
-        $account = TradeAccountService::getAccountById($user_id, $userData['current_account']);
-        if($account['status'] === 'suspended') {
-            Response::error('Trade account suspended', 400);
+        if($role === 'user') {
+            $account = TradeAccountService::getAccountById($user_id, $userData['current_account']);
+            if($account['status'] === 'suspended') {
+                Response::error('Trade account suspended', 400);
+            }
+        } else {
+            $account = null;
         }
         Response::success(['user' => $userData, 'trade_account' => $account]);
     }

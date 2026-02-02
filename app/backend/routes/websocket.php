@@ -10,7 +10,7 @@ error_reporting(E_ALL);
 require_once __DIR__ . '/../middleware/AuthMiddleware.php';
 require_once __DIR__ . '/../controllers/WebSocketController.php';
 
-$user = AuthMiddleware::handle(['user', 'superadmin']);
+$user = AuthMiddleware::handle(['user','admin','superadmin']);
 $user_id = $user->user_id;
 
 switch ($_SERVER['REQUEST_METHOD']) {

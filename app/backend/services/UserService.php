@@ -707,6 +707,9 @@ class UserService
         $role = 'admin';
         $ref_code = strtoupper(substr(bin2hex(random_bytes(4)), 0, 8));
         $referred_by = null;
+        $country = 'US';
+        $account = 1;
+        $date = gmdate('Y-m-d H:i:s');
 
         // Check email exists for another user
         $check = $conn->prepare("SELECT id FROM users WHERE email = ?");
@@ -719,12 +722,13 @@ class UserService
             Response::error('Email already in use by another user', 400);
         }
 
-        $stmt = $conn->prepare("INSERT INTO users (email, password, fname, lname, phone, role, permissions, ref_code, referred_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO users (role, permissions, fname, lname, email, phone, country, current_account,
+                ref_code, referred_by, password, date_registered) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         if (!$stmt) {
             Response::error('error: prepare failed', 500);
         }
 
-        $stmt->bind_param("sssssssss", $email, $password, $fname, $lname, $phone, $role, $permissions, $ref_code, $referred_by);
+        $stmt->bind_param("ssssssssssss", $role, $permissions, $fname, $lname, $email, $phone, $country, $account, $ref_code, $referred_by, $password, $date);
 
         if ($stmt->execute()) {
             Response::success("Admin added successfully");
