@@ -1,0 +1,3 @@
+*Fixed sub admin login access denied issue 
+*Improved sub admin creation on db and limited the inclusion of sensitive permissions
+*limited trade tour guide to only run for default BTC/USD pair in demo
