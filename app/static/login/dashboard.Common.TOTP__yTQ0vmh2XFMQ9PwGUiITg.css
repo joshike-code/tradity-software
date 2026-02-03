@@ -1,0 +1,31 @@
+.input-field {
+    text-align: center;
+}
+
+.desktop .input-field,
+.tablet .input-field {
+    width: var(--space-xxl);
+    height: var(--space-xxl);
+    padding: 10px;
+    border-radius: var(--space-s);
+}
+
+.phone .input-field {
+    width: 100%;
+}
+
+.phone .otp-inputs .input-text {
+    flex: 1
+}
+
+.input-field--is-success, .input-field--is-success:focus, .input-field--is-success:hover, .input-field--is-success:active {
+    border: 2px solid var(--Semantic-Success-Base, #29823B) !important;
+}
+
+.form-control[data-input]:focus:not(.not-valid), .form-control[data-textarea]:focus:not(.not-valid):not(.input-field--is-success), .dropdown-container.dropdown-expanded:not(.not-valid) > div.dropdown-display {
+    border: 2px solid var(--Semantic-Success-Base, #000000) !important;
+}
+
+/* .is-rtl .otp-inputs {
+    direction: ltr; */
+/* } */

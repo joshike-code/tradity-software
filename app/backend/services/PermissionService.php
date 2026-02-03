@@ -1,0 +1,69 @@
+<?php
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+require_once __DIR__ . '/../core/response.php';
+
+class PermissionService
+{
+    public static function getAllPermissions(): array {
+        return [
+            'view_users',
+            'manage_users',
+            'mail_users',
+            'view_accounts',
+            'manage_accounts',
+            'view_trades',
+            'manage_trades',
+            'view_bot_trades',
+            'manage_bot_trades',
+            'view_pairs',
+            'manage_pairs',
+            'view_alters',
+            'manage_alters',
+            'view_payments',
+            'manage_deposits',
+            'manage_withdrawals',
+            'view_trade_stats',
+            'manage_admins',
+            'manage_payment_wallets',
+            'manage_platform_settings',
+            'manage_server',
+        ];
+    }
+
+    public static function isValidPermission(string $permission): bool {
+        return in_array($permission, self::getAllPermissions());
+    }
+
+    public static function validatePermissions(array $inputPermissions): bool {
+        foreach ($inputPermissions as $permission) {
+            if (!self::isValidPermission($permission)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static function hasPermission($user, $permission)
+    {
+        $user_role = $user->role;
+        $user_permission = $user->permissions;
+        if ($user_role === 'superadmin') {
+            return true; // superadmin has all permissions
+        }
+
+        if (!isset($user_permission)) {
+            return false;
+        }
+
+        $permissions = json_decode($user_permission, true);
+        return in_array($permission, $permissions);
+    }
+}
+
+
+
+?>

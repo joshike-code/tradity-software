@@ -1,0 +1,396 @@
+{
+    "header": {
+      "cashier": "Cashier",
+      "account_bar": {
+        "free_margin": "Free Margin",
+        "equity": "Equity",
+        "balance": "Balance"
+      }
+    },
+    "trader_hub": {
+      "kyc": {
+        "title": "Add a {{platformName}} account",
+        "nav": {
+            "account_currency": "Account currency",
+            "personal_details": "Personal details",
+            "employment_tax": "Employment and tax information",
+            "address": "Address",
+            "terms_of_use": "Terms of use"
+        },
+        "buttons": {
+            "next": "Next",
+            "previous": "Previous",
+            "add_account": "Add account"
+        },
+        "account_currency": {
+            "title": "Select your preferred currency"
+        },
+        "personal_details": {
+            "title": "Select your preferred currency",
+            "input_fname": "First Name",
+            "input_lname": "Last Name",
+            "input_dob": "Date of Birth",
+            "input_doc_identity_type": "Choose Government ID",
+            "input_doc_identity_id": "Document ID Number",
+            "input_doc_identity_country": "Place of birth",
+            "input_phone": "Phone",
+            "input_primary_objective": "Reason for trading",
+            "option_doc_identity_type": {
+                "passport": "Passport",
+                "national_id": "National ID",
+                "driver_licence": "Driver Licence"
+            },
+            "option_primary_objective": {
+                "speculation": "Speculation",
+                "hedging": "Hedging",
+                "diversification": "Diversification",
+                "other": "Other"
+            }
+        },
+        "employment_tax": {
+            "title": "Select your preferred currency",
+            "input_income_source": "Employment status",
+            "input_tax_country": "Tax residence",
+            "input_tax_id": "Tax identification number",
+            "input_confirm_tax": "I confirm that my tax information is accurate and complete.",
+            "warning_confirm_tax": "This",
+            "option_income_source": {
+                "employment": "Employment",
+                "business": "Business",
+                "investments": "Investments",
+                "other": "Other"
+            }
+        },
+        "address": {
+            "title": "Select your preferred currency",
+            "input_street": "Address",
+            "input_city": "Town/City",
+            "input_state": "State/Province",
+            "input_postal": "Postal/ZIP code"
+        },
+        "terms": {
+            "title": "Select your preferred currency",
+            "jurisdiction_and_choice_head": "Jurisdiction and choice of law",
+            "jurisdiction_and_choice_content": "Your account will be opened with {{platformName}}, and will be subject to the laws of {{platformCountry}}",
+            "risk_warning_head": "Risk warning",
+            "risk_warning_content": "The financial trading services offered on this site are only suitable for customers who accept the possibility of losing all the money they invest and who understand and have experience of the risk involved in the purchase of financial contracts. Transactions in financial contracts carry a high degree of risk. If the contracts you purchased expire as worthless, you will lose all your investment, which includes the contract premium",
+            "fatca_declaration_head": "FATCA declaration",
+            "fatca_declaration_1": "1. US citizenship or lawful permanent resident (green card) status",
+            "fatca_declaration_2": "2. A US birthplace",
+            "fatca_declaration_3": "3. A US residence address or a US correspondence address (including a US PO box)",
+            "fatca_declaration_4": "4. Standing instructions to transfer funds to an account maintained in the United States, or directions regularly received from a US address",
+            "fatca_declaration_5": "5. An “in care of” address or a “hold mail” address that is the sole address with respect to the client",
+            "fatca_declaration_6": "6. A power of attorney or signatory authority granted to a person with a US address",
+            "us_citizen_info": "If any of the above applies to you, select Yes. Otherwise, select No",
+            "real_accounts_are_not_pep_head": "Real accounts are not available to politically exposed persons (PEPs)",
+            "real_accounts_are_not_pep_content": "A politically exposed person (PEP) is someone appointed with a prominent public position. Close associates and family members of a PEP are also considered to be PEPs",
+            "input_us_citizen": "FATCA status",
+            "input_pep": "PEP",
+            "text_pep": "I am not a PEP, and I have not been a PEP in the last 12 months.",
+            "input_terms": "Terms",
+            "i_agree": "I agree to the",
+            "to_the_terms": "terms and conditions",
+            "option_us_citizen": {
+                "yes": "Yes",
+                "no": "No"
+            }
+        }
+      }
+    },
+    "reports": {
+      "nav": {
+        "open_positions": "Open positions",
+        "trade_table": "Trade table",
+        "statement": "Statement"
+      },
+      "open_positions": {
+        "table_head": {
+            "pair": "Pair",
+            "type": "Type",
+            "currency": "Currency",
+            "price": "Buy/Sell Price",
+            "current_price": "Current Price",
+            "open_time": "Open Time",
+            "take_stop": "Take profit/Stop loss",
+            "commission": "Commission",
+            "total_p_l": "Total profit/loss",
+            "action": "Action"
+        },
+        "close": "close",
+        "total": "Total"
+      },
+      "trade_table": {
+        "table_head": {
+            "type": "Type",
+            "ref": "Ref. ID",
+            "open_price": "Open Price",
+            "close_price": "Close Price",
+            "open_time": "Open Time",
+            "close_time": "Close Time",
+            "commission": "Commission",
+            "total_p_l": "Total profit/loss"
+        },
+        "p_l_8_contracts": "Profit/loss on the last 8 contracts"
+      },
+      "statement": {
+        "table_head": {
+            "type": "Type",
+            "ref": "Ref. ID",
+            "currency": "Currency",
+            "transaction_time": "Transaction time",
+            "transaction": "Transaction",
+            "credit_debit": "Credit/Debit",
+            "balance": "Balance"
+        }
+      }
+    },
+    "settings": {
+      "nav": {
+        "personal_details": "Personal details",
+        "language": "Language",
+        "trading_assessment": "Trading Assessment",
+        "financial_assessment": "Financial Assessment",
+        "identity_verification": "Proof of Identity",
+        "address_verification": "Proof of Address",
+        "income_verification": "Proof of Income",
+        "email_passwords": "Email and passwords",
+        "login_history": "Login history",
+        "close_account": "Close Account"
+      },
+      "personal_details": {
+        "main_title": "Settings",
+        "sub_title_details": "Details",
+        "sub_title_email_alerts": "Email Alerts",
+        "content_email_alerts": "I would like to receive emails",
+        "input_country": "Country",
+        "input_receive_mails": "Receive Mails",
+        "main_button": "Save Changes"
+      },
+      "language": {
+        "main_title": "Settings",
+        "sub_title_one": "Select language"
+      },
+      "trading_assessment": {
+        "main_title": "Settings",
+        "sub_title_trading_experience": "Trading Experience",
+        "input_prior_trading_experience": "Do you have prior trading experience",
+        "input_how_long_trading": "How long have you been trading",
+        "input_financial_instrument": "Which Financial Instrument have you traded",
+        "input_trade_frequency": "How frequently do you trade",
+        "input_primary_objective": "What is your primary objective of trading",
+        "input_risk_level": "What is your preferred risk level",
+        "option_prior_trading_experience": {
+            "yes": "Yes",
+            "no": "No"
+        },
+        "option_how_long_trading": {
+            "less": "Less than 1 year",
+            "mid": "1 to 3 years",
+            "more": "More than 3 years"
+        },
+        "option_financial_instrument": {
+            "forex": "Forex",
+            "stocks": "Stocks",
+            "crypto": "Crypto",
+            "commodities": "Commodities",
+            "indices": "Indices"
+        },
+        "option_trade_frequency": {
+            "daily": "Daily",
+            "weekly": "Weekly",
+            "monthly": "Monthly",
+            "rarely": "Rarely"
+        },
+        "option_primary_objective": {
+            "speculation": "Speculation",
+            "hedging": "Hedging",
+            "diversification": "Diversification",
+            "other": "Other"
+        },
+        "option_risk_level": {
+            "low": "low",
+            "medium": "medium",
+            "high": "high"
+        },
+        "main_button": "Save Changes"
+      },
+      "financial_assessment": {
+        "main_title": "Settings",
+        "sub_title_employment": "Employment/Income",
+        "sub_title_spending": "Spending/Investment",
+        "input_employment_status": "What is your employment status?",
+        "input_annual_income": "What is your annual income?",
+        "input_income_source": "What is your source of income?",
+        "input_net_worth": "What is your estimated networth?",
+        "input_invest_amount": "How much do you plan to invest or trade monthly (USD)?",
+        "input_debt": "Do you have an outstanding debt?",
+        "input_pep": "Are you a politcally exposed person (PEP)?",
+        "input_pep_relationship": "What is your relationship to the PEP?",
+        "input_pep_role": "What is the PEP's position or role?",
+        "option_employment_status": {
+            "employed": "Employed",
+            "self_employed": "Self-employed",
+            "unemployed": "Unemployed",
+            "retired": "Retired",
+            "student": "Student"
+        },
+        "option_annual_income": {
+            "below_10000": "Below $10,000",
+            "between_1000050000": "$10,000 - $50,000",
+            "between_50000100000": "$50,000 - $100,000",
+            "over_100000": "Over $100,000"
+        },
+        "option_income_source": {
+            "employment": "Employment",
+            "business": "Business",
+            "investments": "Investments",
+            "other": "Other"
+        },
+        "option_net_worth": {
+            "below_50000": "Below $50,000",
+            "between_50000250000": "$50,000 - $250,000",
+            "over_250000": "Over $250,000"
+        },
+        "option_debt": {
+            "yes": "Yes",
+            "no": "No"
+        },
+        "option_pep": {
+            "yes": "Yes",
+            "no": "No"
+        },
+        "option_pep_relationship": {
+            "self": "Self",
+            "close_family": "Close family",
+            "associate": "Associate"
+        },
+        "main_button": "Save Changes"
+      },
+      "identity_verification": {
+        "main_title": "Settings",
+        "sub_title_identity": "User Identity",
+        "input_fname": "First Name",
+        "input_lname": "Last Name",
+        "input_dob": "Date of Birth",
+        "input_gender": "Gender",
+        "input_doc_identity_type": "Choose Government ID",
+        "input_doc_identity": "Upload",
+        "input_doc_identity_id": "Document ID Number",
+        "input_doc_identity_country": "Document country of Issuance",
+        "option_gender": {
+            "male": "Male",
+            "female": "Female",
+            "other": "Other"
+        },
+        "option_doc_identity_type": {
+            "passport": "Passport",
+            "national_id": "National ID",
+            "driver_licence": "Driver Licence"
+        },
+       "main_button": "Save Changes"
+      },
+      "address_verification": {
+        "main_title": "Settings",
+        "sub_title_residential": "Residential address",
+        "sub_title_verification": "Address verification",
+        "input_street": "Street Address",
+        "input_city": "City",
+        "input_state": "State or Province or Region",
+        "input_postal": "Postal Code",
+        "input_country": "Country",
+        "input_doc_address_type": "Choose Address Proof Document",
+        "input_doc_address": "Upload",
+        "input_doc_address_date": "Document Issued date",
+        "option_doc_address_type": {
+            "utility_bill": "Utility Bill",
+            "bank_statement": "Bank Statement",
+            "tax_document": "Tax Document"
+        },
+       "main_button": "Save Changes"
+      },
+      "income_verification": {
+        "main_title": "Settings",
+        "sub_title_employment": "Income and Employment",
+        "input_income_source": "What is your source of income?",
+        "input_employer_name": "Employer name",
+        "input_business_name": "Nature of Business",
+        "input_doc_income_type": "Choose Income Proof Document",
+        "input_doc_income": "Upload",
+        "option_income_source": {
+            "employment": "Employment",
+            "business": "Business",
+            "investments": "Investments",
+            "other": "Other"
+        },
+        "option_doc_income_type": {
+            "pay_slip": "Pay Slip",
+            "bank_statement": "Bank Statement",
+            "tax_return": "Tax Return"
+        },
+       "main_button": "Save Changes"
+      },
+      "email_passwords": {
+        "main_title": "Settings",
+        "email": {
+            "title": "Email address",
+            "desc": "This is the email address associated with your {{platformName}} account."
+        },
+        "password": {
+            "title": "{{platformName}} password",
+            "desc": "Use your <strong>{{platformName}} password</strong> to log in to {{platformName}}.com, {{platformName}} GO, {{platformName}} Trader, SmartTrader, {{platformName}} Bot and {{platformName}} cTrader."
+        },
+        "mt5password": {
+            "title": "{{platformName}} MT5 password",
+            "desc": "Use your <span class='dc-text' style='--text-size: var(--text-size-s); --text-color: var(--text-general); --text-lh: var(--text-lh-m); --text-weight: var(--text-weight-bold); --text-align: var(--text-align-left);'>{{platformName}} MT5 password</span> to log in to your {{platformName}} MT5 accounts on the desktop, web and mobile apps."
+        },
+        "modal": {
+            "title" : "We’ve sent you an email",
+            "body": "Check your email and click the link in the email to proceed.",
+            "dialogue": "Didn't receive the email?"
+        }
+      },
+      "login_history": {
+        "main_title": "Settings",
+        "table_head": {
+            "date_time": "Date and time",
+            "action": "Action",
+            "browser": "Browser",
+            "ip_address": "IP address",
+            "status": "Status"
+        },
+        "status_options": {
+            "successful": "Successful",
+            "failed": "Failed"
+        },
+        "login_options": {
+            "login": "Login",
+            "register": "Register",
+            "logout": "Logout"
+        },
+        "unknown": "Unknown"
+      },
+      "close_account": {
+        "main_title": "Settings",
+        "content": {
+            "are_you_sure": "Are you sure",
+            "if_you_close": "If you close your account",
+            "you_cannot_trade": "You can't trade on {{platformName}}",
+            "you_cannot_trans": "You can't make transactions.",
+            "before_closing": "Before closing your account",
+            "close_positions": "Close all your positions",
+            "withdraw_funds": "Withdraw your funds",
+            "we_shall_delete": "We shall delete your personal information as soon as our legal obligations are met, as mentioned in the section on Data Retention in our",
+            "security_privacy": "Security and privacy policy"
+        },
+        "button": {
+            "cancel": "Cancel",
+            "close_account": "Close account"
+        }
+      }
+    },
+    "components": {
+      "input": {
+        "is_required": "is required"
+      }
+    }
+}

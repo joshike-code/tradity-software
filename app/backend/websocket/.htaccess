@@ -1,0 +1,37 @@
+# WebSocket Proxy Configuration
+# This proxies WebSocket connections through Apache on port 443
+# to the internal WebSocket server on port 8080
+
+<IfModule mod_proxy.c>
+    <IfModule mod_proxy_wstunnel.c>
+        # Enable proxy engine
+        ProxyRequests Off
+        ProxyPreserveHost On
+        ProxyVia On
+        
+        # Proxy WebSocket connections to localhost:8080
+        # Access via: wss://yourdomain.com/app/backend/websocket/
+        ProxyPass / ws://127.0.0.1:8080/
+        ProxyPassReverse / ws://127.0.0.1:8080/
+        
+        # Allow WebSocket upgrade
+        RewriteEngine On
+        RewriteCond %{HTTP:Upgrade} websocket [NC]
+        RewriteCond %{HTTP:Connection} upgrade [NC]
+        RewriteRule .* ws://127.0.0.1:8080%{REQUEST_URI} [P,L]
+    </IfModule>
+</IfModule>
+
+# CORS headers for WebSocket
+<IfModule mod_headers.c>
+    Header always set Access-Control-Allow-Origin "*"
+    Header always set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+    Header always set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With"
+</IfModule>
+
+# If proxy modules are not available, show helpful error
+<IfModule !mod_proxy_wstunnel.c>
+    # mod_proxy_wstunnel not available
+    # Contact your hosting provider to enable this Apache module
+    # Or open port 8080 in the firewall
+</IfModule>

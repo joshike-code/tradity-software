@@ -1,0 +1,417 @@
+/* ===================================================================== */
+
+/*  The following CSS was created using Theme Editor.                    */
+
+/*  To modify this CSS, click "Open Theme Editor".                       */
+
+/* ===================================================================== */
+
+
+
+/* ===================================================================== */
+
+/*  Root - CSS Variables                                                 */
+
+/* ===================================================================== */
+
+
+
+:root {
+
+	
+
+    /* Color - Brand */
+
+    --color-primary: var(--theme-color-main);
+
+    --color-secondary: var(--theme-color-main);
+
+    --color-btn-disabled: color-mix(in srgb, var(--theme-color-main) 30%, white 70%);
+
+
+
+    --color-primary-hover: var(--theme-color-dark);
+
+    --color-primary-selected: rgba(255, 68, 79, .12);
+
+	
+
+    /* App Settings */
+
+    --color-background-body: #ffffff;
+
+    --color-background-login: #ffffff;
+
+	
+
+    /* Dark Theme */
+
+    --background-dark-theme: rgba(255, 255, 255, .1);
+
+    --background-dark-theme-hover: rgba(255, 255, 255, .2);
+
+}
+
+
+
+/* Login and Splash Color */
+
+
+
+.login-screen,
+
+.layout-native .login-screen {
+
+    background-color: var(--color-background-login);
+
+}
+
+
+
+html, body {
+    overscroll-behavior: none;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;     /* Firefox */
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+:root {
+    --border-radius-s: 8px;
+    --semi-transparent-background: rgba(0, 0, 0, 0.04);
+    --subtle-text: rgba(0, 0, 0, 0.48);
+    --border-base: 16px;
+}
+
+/* Overrides */
+.form-control[data-input]:not(.not-valid), 
+.form-control[data-textarea]:not(.not-valid),
+.vscomp-toggle-button {
+    border: var(--border-size-s) solid rgba(0, 0, 0, 0.08) !important;
+}
+
+.form-control[data-input], 
+.form-control[data-textarea],
+.vscomp-toggle-button {
+    height: 56px !important;
+}
+
+.form-control[data-input][disabled], .form-control[data-textarea][disabled]{
+  background-color: rgba(0, 0, 0, 0.04);
+  color:rgba(0, 0, 0, 0.48);
+}
+
+.form-control[data-input][disabled], .form-control[data-textarea][disabled]{
+  background-color: rgba(0, 0, 0, 0.04);
+  color:rgba(0, 0, 0, 0.48);
+}
+
+
+.vscomp-toggle-button {
+    border-radius: 8px;
+}
+
+.phone .form-control[data-input], 
+.phone .form-control[data-textarea],
+.phone .vscomp-toggle-button,
+.tablet .form-control[data-input], 
+.tablet .form-control[data-textarea],
+.tablet .vscomp-toggle-button {
+    height: 48px !important;
+}
+
+#transitionContainer .screen-container {
+    /* all: unset;  */
+    overflow: hidden;
+}
+
+script {
+    display: none !important;
+}
+
+/* End Overrides */
+
+.desktop-max-width {
+    max-width: 608px;
+    margin: 0 auto;
+}
+
+.osui-tabs__header-item:hover:not(.osui-tabs--is-active){
+  color: #c0bfbf;
+}
+
+button.osui-tabs__header-item {
+    color: white;
+}
+
+html, body, select, textarea, input, button {
+  font-family: "Inter", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+input,
+textarea,
+select {
+  font-size: 16px !important;
+}
+
+.form-control[data-input], .form-control[data-textarea] {
+    border-radius: var(--border-radius-s);
+}
+
+.form-control[data-input]:not(.not-valid):focus, .form-control[data-textarea]:focus {
+    border-color: #000;;
+}
+
+label {
+    margin-bottom: var(--space-s);
+    font-size: 14px !important;
+    color: #181C25;
+}
+
+.btn[disabled] {
+    background: #FFD2D5;
+    color: #fff;
+    border: unset;
+}
+
+a:hover, a:focus {
+    color: inherit !important;
+    text-decoration: none !important;
+}
+.border-radius-base {
+    border-radius: 16px;
+}
+
+.btn-rounded, .btn.btn-rounded {
+    border-radius: 24px;
+}
+.flex-1 {
+    flex: 1;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge, and Firefox */
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.min-height-auto {
+    min-height: auto;
+}
+
+.height-auto {
+    height: auto;
+}
+
+.font-tabular-nums {
+    font-variant-numeric: tabular-nums;
+}
+
+.text-not-valid {
+    color: #C40000;
+}
+
+.text-subtle {
+    color: var(--subtle-text);
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+.main {
+  touch-action: manipulation; /* disables double-tap zoom, keeps scroll & pinch */
+}
+
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background-color: #fafafa;
+}
+
+.skeleton::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 200%;
+  background: linear-gradient(to right, #fafafa 0%, #f0f0f0 50%, #fafafa 100%);
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+#b2-ResourcesBottomSheet .osui-bottom-sheet__header::after{
+  content: none !important;
+}
+
+.popup-dialog.fullscreen-popup {
+    max-height: 100vh;
+    max-width: 100vw;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    border-radius: 0;
+}
+
+.btn-white {
+    background-color: transparent;
+    border: var(--border-size-s) solid var(--color-neutral-0);
+    color: var(--color-neutral-0);
+}
+
+.btn.btn-outline {
+    background-color: transparent;
+    border: var(--border-size-s) solid var(--color-neutral-9);
+    color: var(--color-neutral-9);
+    font-weight: var(--font-bold);
+}
+
+.btn-outline:disabled{
+    opacity: 0.5;
+}
+
+.text-disabled {
+    opacity: 0.5;
+}
+
+.skeleton-light {
+  position: relative;
+  overflow: hidden;
+  background-color: #f4f5f7;  /* light gray - base */
+  height: 45px;
+  width: 100%;
+  border-radius: 6px;
+}
+
+.skeleton-light::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 200%;
+  background: linear-gradient(
+    to right,
+    #f4f5f7 0%,
+    #e9ecef 50%,   /* shimmer - slightly lighter than base */
+    #f4f5f7 100%
+  );
+  animation: pulse 2s infinite linear;
+  opacity: 0.9;
+}
+
+.skeleton-dark {
+  position: relative;
+  overflow: hidden;
+  background-color: #adb5bd;
+}
+
+.skeleton-dark::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 200%;
+  background: linear-gradient(to right, #adb5bd 0%, #ced4da 50%, #adb5bd 100%);
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.desktop .hide-desktop {
+    display: none;
+}
+
+.phone .hide-mobile,
+.tablet .hide-mobile {
+    display: none;
+    height: unset !important;
+}
+
+.pointer-events-none {
+    pointer-events: none;
+}
+
+.w-full {
+    width: 100%
+}
+
+.gradient-popup.popup-dialog {
+    background-color: #181C25;
+    background-image: radial-gradient(108.21% 50% at 52.05% 0%, rgba(255, 68, 79, 0.24) 0%, rgba(255, 68, 79, 0.00) 100%);
+    background-size: 100% 100%;
+    background-position: center top;
+    border: none;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    animation: gradientSize 8s ease-in-out infinite;
+}
+
+@keyframes gradientSize {
+    0%, 100% {
+        background-size: 100% 100%;
+    }
+    50% {
+        background-size: 110% 110%;
+    }
+}
+
+.gradient-popup.popup-dialog .popup-content {
+    background: transparent;
+}
+
+.is-rtl .rotate-180{
+    rotate: 180deg;
+}
+
+.absolute-left{
+    inset-inline-start: 0 !important;
+}
+
+.input-with-icon.input-with-icon-right .input-with-icon-content-icon{
+  inset-inline-start:auto;
+  inset-inline-end:0;
+}
+
+.input-with-icon.input-with-icon-right .input-with-icon-content-icon:not(:empty) + .input-with-icon-input input{
+    padding-inline-start: var(--space-base);
+    padding-inline-end: var(--space-xl);
+}
+
+.vscomp-wrapper.has-value .vscomp-value{
+    margin-inline-end: var(--space-m);
+    margin-right: unset !important;
+}
+
+.is-rtl .osui-search .form-control[data-input]{
+    padding-right: var(--space-base);
+    padding-left: var(--space-xl);
+}
+
+.grecaptcha-badge {
+    visibility: hidden !important;
+}
+
+.osui-bottom-sheet__header__top-bar {
+    text-align: start;
+}
+
+.unselectable-content {
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Standard syntax */
+}
+
+.popup-dialog.fullscreen-popup > .popup-content {
+    height: 100%;
+}

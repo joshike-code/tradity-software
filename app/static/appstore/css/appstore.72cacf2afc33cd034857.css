@@ -1,0 +1,52 @@
+@import url(https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&display=swap);
+
+@media(min-width:1280px) {
+    .dashboard {
+        height: calc(100vh - 84px)
+    }
+}
+
+@media(max-width:1279px) {
+    .dashboard {
+        height: calc(100vh - 48px)
+    }
+}
+
+@media(min-width:1280px) {
+    .dashboard-onboarding {
+        height: inherit
+    }
+}
+
+@media(max-width:1279px) {
+    .dashboard-onboarding {
+        height: calc(100vh - 48px)
+    }
+}
+
+.dw-dashboard {
+    height: 100%
+}
+
+@keyframes triggerAnimation {
+    0% {
+        transform: rotate(10deg)
+    }
+
+    to {
+        transform: rotate(-10deg)
+    }
+}
+
+@media(min-width:1280px) {
+    .traders-hub .dc-button-menu__toggle:hover:not(.dc-button-menu__button--active) {
+        background-color: var(--state-normal) !important;
+        background-color: var(--state-hover) !important
+    }
+}
+
+@media(max-width:1279px) {
+    .traders-hub .dc-themed-scrollbars-wrapper li {
+        padding: 0 1.1rem
+    }
+}

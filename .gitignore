@@ -1,0 +1,4 @@
+deploy.ps1
+build-update.php
+app/.env
+app/backend/.env

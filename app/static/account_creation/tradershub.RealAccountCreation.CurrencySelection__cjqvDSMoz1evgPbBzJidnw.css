@@ -1,0 +1,11 @@
+.osui-progress-bar.cr-idv .osui-progress-bar__value:before {
+    width: 10% !important;
+}
+
+.osui-progress-bar.cr .osui-progress-bar__value:before {
+    width: 20% !important;
+}
+
+.osui-progress-bar.eu .osui-progress-bar__value:before {
+    width: 6% !important;
+}

@@ -1,0 +1,86 @@
+.osui-progress-bar.cr .osui-progress-bar__value:before {
+    width: 100% !important;
+}
+
+.osui-progress-bar.eu .osui-progress-bar__value:before {
+    width: 100% !important;
+}
+
+ol {
+    padding-left: 20px;
+}
+
+.checkbox-container span {
+    display: flex;
+}
+
+div[data-radio-group] > div {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+div[data-radio-button] {
+    width: auto;
+}
+
+.phone .checkbox-container input {
+    width: 24px !important;
+    height: 24px !important;
+}
+
+.phone .checkbox-container input::before {
+    width: 24px !important;
+    height: 24px !important;
+}
+
+.phone [data-checkbox]:checked:after {
+  left: 6px;
+  top: 8px;
+}
+
+.phone .btn-container .btn {
+    width: 100%;
+}
+
+.phone .osui-sidebar {
+    max-width: 100vw;
+}
+
+.tablet .popup_account-already-exists,
+.desktop .popup_account-already-exists {
+    max-width: 446px !important;
+}
+
+.phone .popup_account-already-exists {
+    max-width: 100% !important;
+    margin: 0;
+    height: 100%;
+    max-height: 100%;
+}
+
+.phone .popup_account-already-exists .popup-content {
+    height: 100%;
+}
+
+.chat-widget-container__hidden {
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+
+.popup-list-container {
+    padding-inline-start: 18px;
+    margin-block-start: 4px;
+    margin-block-end: 4px;
+}
+
+.popup-list-child {
+    text-align: start;
+}
+
+.account-creation-list-group {
+    max-width: 208px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}

@@ -1,0 +1,40 @@
+.back-button {
+    align-items: center;
+    background: #EFF3F5;
+    border-radius: 100%;
+    cursor: pointer;
+    display: flex;
+    height: 32px;
+    justify-content: center;
+    width: 32px;
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 200ms;
+}
+.back-button:hover {
+    background: #d5d8da;
+}
+.BackIcon-mobile_container{
+    display: flex;
+    justify-content: space-between;
+    height: 56px;
+    min-height: 56px;
+    max-height: 56px;
+    padding: 0 24px;
+    align-items: center;
+    gap: 16px;
+    align-self: stretch;
+    margin-top: 10px;
+}
+
+.BackIcon-mobile_containers{
+    display: flex;
+    justify-content: space-between;
+    height: 56px;
+    min-height: 56px;
+    max-height: 56px;
+    align-items: center;
+    gap: 16px;
+    align-self: stretch;
+    margin-top: 10px;
+}

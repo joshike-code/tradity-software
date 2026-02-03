@@ -1,0 +1,45 @@
+input,
+textarea,
+select {
+  font-size: 16px !important;
+}
+/* .main-content{
+    display: flex;  
+    flex-wrap: wrap;
+} */
+
+/* .width-full {
+    width: 100% !important;
+} */
+
+.form span.validation-message{
+    position: sticky !important;
+}
+
+.phone .phone-header{
+    margin: 24px;
+}
+
+.language-switcher-login-header .header-align{
+    padding-top: unset !important;
+    padding-inline-end: unset !important;
+    padding-bottom: 16px !important;
+}
+
+.ph-signup-layout-content-container .container-content > div > div {
+    width: 100%;
+}
+
+.no-account-bottom-sheet {
+    min-height: unset;
+    border-radius: 24px 24px 0 0;
+}
+
+.no-account-bottom-sheet .osui-bottom-sheet__content {
+    scrollbar-width: none;         /* Firefox */
+    -ms-overflow-style: none;      /* IE and Edge */
+    padding-bottom: 16px !important;
+    padding-top: unset !important;
+    min-height: unset;
+    text-align: start;
+}
