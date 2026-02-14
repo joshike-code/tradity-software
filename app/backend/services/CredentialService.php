@@ -8,6 +8,7 @@ require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../core/response.php';
 require_once __DIR__ . '/../utility/EncryptionService.php';
 require_once __DIR__ . '/../services/MailService.php';
+require_once __DIR__ . '/../services/OtpService.php';
 
 class CredentialService
 {
@@ -42,12 +43,25 @@ class CredentialService
 
             // Generate encrypted token
             $token = EncryptionService::generateCredentialToken($user_id, $change_type);
+            error_log("Generated credential change token for user_id $user_id: $token");
             
             // Create the change URL (adjust the base URL as needed)
             $keys = require __DIR__ . '/../config/keys.php';
-            $baseUrl = $keys['platform']['url'] ?? 'http://localhost';
             $host = $keys['system']['host_link'] ?? '';
+            $environment = $keys['system']['environment'] ?? 'production';
+            $baseUrl = '';
+
+            if ($environment === 'development') {
+                $baseUrl = 'http://localhost';
+            } else {
+                $baseUrl = $keys['platform']['url'];
+                // Ensure URL has protocol
+                if (!preg_match('/^https?:\/\//', $baseUrl)) {
+                    $baseUrl = 'https://' . $baseUrl;
+                }
+            }
             $changeUrl = $baseUrl . $host . "api/change_credential?action=verify&type=$change_type&token=" . urlencode($token);
+            error_log("Generated credential change URL for user_id $user_id: $changeUrl");
 
             // Send email
             $mailSent = MailService::sendCredentialChangeEmail($email, $userName, $change_type, $changeUrl);
@@ -153,6 +167,24 @@ class CredentialService
                 
                 if ($result->num_rows > 0) {
                     return ['success' => false, 'message' => 'This email address is already in use'];
+                }
+
+                // If OTP is not provided, generate and send OTP for email verification
+                if(!isset($data['otp']) || empty($data['otp'])) {
+                    // Generate OTP
+                    $otp = OtpService::generateOtp($new_email);
+
+                    if (!MailService::sendOtpEmail($new_email, $otp, 'change-email')) {
+                        Response::error('Failed to send OTP email', 500);
+                    }
+                    Response::success('OTP Sent');
+                }
+
+                // If OTP is provided, validate it before updating email
+                $otp = $data['otp'] ?? null;
+                $validateOtp = OtpService::validateOtp($new_email, $otp);
+                if(!$validateOtp) {
+                    Response::error('Invalid or expired OTP', 401);
                 }
 
                 // Update email

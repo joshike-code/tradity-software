@@ -59,7 +59,7 @@ class CredentialController {
         if ($result['success']) {
             // Redirect to frontend change credentials page with valid token
             self::redirectToFrontend('change_credentials', [
-                'token' => urlencode($token),
+                'token' => $token,
                 'type' => $result['type'],
                 'status' => 'valid'
             ]);
@@ -75,11 +75,17 @@ class CredentialController {
      */
     private static function redirectToFrontend($action, $params = []) {
         $keys = require __DIR__ . '/../config/keys.php';
-        $frontendUrl = $keys['platform']['url'] ?? 'http://localhost/tradity-frontend';
-        
-        // Ensure URL has protocol
-        if (!preg_match('/^https?:\/\//', $frontendUrl)) {
-            $frontendUrl = 'https://' . $frontendUrl;
+        $environment = $keys['system']['environment'] ?? 'production';
+
+        $frontendUrl = '';
+        if ($environment === 'development') {
+            $frontendUrl = 'http://localhost/tradity-frontend/change-cred-' . '' . $params['type'];
+        } else {
+            $frontendUrl = $keys['platform']['url'] . '/app/change-cred-' . $params['type'];
+            // Ensure URL has protocol
+            if (!preg_match('/^https?:\/\//', $frontendUrl)) {
+                $frontendUrl = 'https://' . $frontendUrl;
+            }
         }
         
         $queryString = http_build_query(array_merge(['action' => $action], $params));
@@ -94,11 +100,17 @@ class CredentialController {
      */
     private static function redirectToFrontendWithError($message, $errorType = 'error') {
         $keys = require __DIR__ . '/../config/keys.php';
-        $frontendUrl = $keys['platform']['url'] ?? 'http://localhost/tradity-frontend';
-        
-        // Ensure URL has protocol
-        if (!preg_match('/^https?:\/\//', $frontendUrl)) {
-            $frontendUrl = 'https://' . $frontendUrl;
+        $environment = $keys['system']['environment'] ?? 'production';
+
+        $frontendUrl = '';
+        if ($environment === 'development') {
+            $frontendUrl = 'http://localhost/tradity-frontend/credential_error';
+        } else {
+            $frontendUrl = $keys['platform']['url'] . '/app/credential_error';
+            // Ensure URL has protocol
+            if (!preg_match('/^https?:\/\//', $frontendUrl)) {
+                $frontendUrl = 'https://' . $frontendUrl;
+            }
         }
         
         $params = [

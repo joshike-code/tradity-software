@@ -63,6 +63,14 @@ class MailService
                     <strong>$otp</strong> <br><br>
                     This code is valid for 30 minutes. If you didn't attempt to log in, please secure your account immediately.";
                 break;
+
+            case 'change-email':
+                $subject = "Verify Your New Email Address";
+                $message = "We received a request to change the email address for your $platformName account to this email address.<br><br>
+                    To confirm that you own this email and complete the change, please use the one-time password (OTP) below:<br><br>
+                    <strong>$otp</strong><br><br>
+                    This code is valid for 30 minutes. If you did not request this email change, you can safely ignore this message and your account will remain unchanged.";
+                break;
             
             case 'register':
             default:
@@ -225,7 +233,7 @@ class MailService
         // Add CTA button if provided
         if ($cta && $ctaLink) {
             // Make link absolute if it's relative
-            $fullLink = (strpos($ctaLink, 'http') === 0) ? $ctaLink : "https://{$platformUrl}/{$ctaLink}";
+            $fullLink = (strpos($ctaLink, 'http') === 0) ? $ctaLink : "https://{$platformUrl}/app/{$ctaLink}";
 
             $buttonColor = $themeColor;
             
