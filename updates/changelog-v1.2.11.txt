@@ -1,0 +1,2 @@
+*Fixed broken email CTA link issue
+*Fixed user change email and password issue
