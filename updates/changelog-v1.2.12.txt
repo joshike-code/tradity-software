@@ -1,1 +1,1 @@
-*Stable build
+*Fixed default login route routing to install-wizard-key in app auth session
