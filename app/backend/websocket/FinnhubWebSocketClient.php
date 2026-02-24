@@ -54,10 +54,21 @@ class FinnhubWebSocketClient {
         'XAG/USD' => 'OANDA:XAG_USD',  // Silver
         'XPT/USD' => 'OANDA:XPT_USD',  // Platinum
         'XPD/USD' => 'OANDA:XPD_USD',  // Palladium
-        
-        // Oil (use futures or CFD symbols - these may need adjustment based on Finnhub availability)
-        'WTI/USD' => 'OANDA:WTICO_USD', // WTI Crude Oil
+        'WTI/USD' => 'OANDA:WTICO_USD', // WTI Crude Oil (US Oil)
         'BRENT/USD' => 'OANDA:BCO_USD', // Brent Crude Oil
+        'NAT/USD' => 'OANDA:NATGAS_USD', // Natural Gas
+        'SUGAR/USD' => 'OANDA:SUGAR_USD', // Sugar
+        
+        // Stocks (use stock symbols)
+        'MSFT/USD' => 'MSFT',  // Microsoft
+        'AAPL/USD' => 'AAPL',  // Apple
+        'AMZN/USD' => 'AMZN',  // Amazon
+        'META/USD' => 'META',  // Meta (Facebook)
+        'NVDA/USD' => 'NVDA',  // NVIDIA
+        
+        // Indices
+        'NASDAQ/USD' => 'OANDA:NAS100_USD', // NASDAQ 100
+        'SNP500/USD' => 'OANDA:SPX500_USD', // S&P 500
     ];
     
     public function __construct($server, $pairs, $loop, $apiKey) {
