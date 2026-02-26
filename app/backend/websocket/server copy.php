@@ -41,7 +41,6 @@ class TradingWebSocketServer implements MessageComponentInterface {
     protected $adminTradeSubscriptions; // Map of resourceId => [tradeIds]
     protected $formingCandles; // Track forming candles with high/low updates
     protected $currentMarketStatus; // Current market status: 'open', 'closed', or 'unknown'
-    protected $currentMarketData; // Full market data for forex and stocks
     
     public function __construct() {
         $this->clients = new \SplObjectStorage;
@@ -55,7 +54,6 @@ class TradingWebSocketServer implements MessageComponentInterface {
         $this->adminTradeSubscriptions = []; // Initialize admin trade subscriptions
         $this->formingCandles = []; // Initialize forming candles tracker
         $this->currentMarketStatus = 'unknown'; // Will be determined after Finnhub connects
-        $this->currentMarketData = null; // Will be set when market status is first broadcast
         
         // Load cached prices from file to prevent stale data on restart
         $this->loadCachedPrices();
@@ -87,7 +85,7 @@ class TradingWebSocketServer implements MessageComponentInterface {
         $cacheFile = __DIR__ . '/../cache/websocket_live_prices.json';
         
         if (!file_exists($cacheFile)) {
-            Logger::info("[CACHE] No cached prices found - starting with empty prices");
+            echo "[CACHE] No cached prices found - starting with empty prices\n";
             return;
         }
         
@@ -95,7 +93,7 @@ class TradingWebSocketServer implements MessageComponentInterface {
         $cacheData = json_decode($cacheContent, true);
         
         if (!$cacheData || !isset($cacheData['prices'])) {
-            Logger::info("[CACHE] Invalid cache format - starting with empty prices");
+            echo "[CACHE] Invalid cache format - starting with empty prices\n";
             return;
         }
         
@@ -104,20 +102,20 @@ class TradingWebSocketServer implements MessageComponentInterface {
         $priceCount = count($this->currentPrices);
         $cacheAge = isset($cacheData['timestamp']) ? (time() - $cacheData['timestamp']) : 'unknown';
         
-        Logger::info("[CACHE] ✅ Loaded $priceCount cached prices into memory");
-        Logger::info("[CACHE] Cache age: $cacheAge seconds");
+        echo "[CACHE] ✅ Loaded $priceCount cached prices into memory\n";
+        echo "[CACHE] Cache age: $cacheAge seconds\n";
         
         // List first 5 prices for debugging
         $samplePrices = array_slice($this->currentPrices, 0, 5, true);
         foreach ($samplePrices as $pair => $price) {
-            Logger::info("[CACHE]   $pair = $price");
+            echo "[CACHE]   $pair = $price\n";
         }
     }
     
     public function onOpen(ConnectionInterface $conn) {
         $this->clients->attach($conn);
         $conn->userId = null;
-        Logger::info("New connection: {$conn->resourceId}");
+        echo "New connection: {$conn->resourceId}\n";
     }
     
     public function onMessage(ConnectionInterface $from, $msg) {
@@ -130,7 +128,7 @@ class TradingWebSocketServer implements MessageComponentInterface {
             }
             
             // Log all message types
-            Logger::info("[MSG] Client {$from->resourceId} sent type: {$data['type']}");
+            echo "[MSG] Client {$from->resourceId} sent type: {$data['type']}\n";
             
             switch ($data['type']) {
                 case 'auth':
@@ -150,7 +148,7 @@ class TradingWebSocketServer implements MessageComponentInterface {
                     break;
                     
                 case 'subscribe_chart':
-                    Logger::info("[MSG] Processing subscribe_chart for client {$from->resourceId}");
+                    echo "[MSG] Processing subscribe_chart for client {$from->resourceId}\n";
                     $this->handleSubscribeChart($from, $data);
                     break;
                     
@@ -201,19 +199,19 @@ class TradingWebSocketServer implements MessageComponentInterface {
         // Clean up chart subscriptions
         if (isset($this->chartSubscriptions[$conn->resourceId])) {
             unset($this->chartSubscriptions[$conn->resourceId]);
-            Logger::info("Cleaned up chart subscriptions for client {$conn->resourceId}");
+            echo "Cleaned up chart subscriptions for client {$conn->resourceId}\n";
         }
         
         // Clean up admin account subscriptions
         if (isset($this->adminAccountSubscriptions[$conn->resourceId])) {
             unset($this->adminAccountSubscriptions[$conn->resourceId]);
-            Logger::info("Cleaned up admin account subscriptions for client {$conn->resourceId}");
+            echo "Cleaned up admin account subscriptions for client {$conn->resourceId}\n";
         }
         
         // Clean up admin trade subscriptions
         if (isset($this->adminTradeSubscriptions[$conn->resourceId])) {
             unset($this->adminTradeSubscriptions[$conn->resourceId]);
-            Logger::info("Cleaned up admin trade subscriptions for client {$conn->resourceId}");
+            echo "Cleaned up admin trade subscriptions for client {$conn->resourceId}\n";
         }
         
         if ($conn->userId) {
@@ -230,7 +228,7 @@ class TradingWebSocketServer implements MessageComponentInterface {
             }
         }
         
-        Logger::info("Connection {$conn->resourceId} disconnected");
+        echo "Connection {$conn->resourceId} disconnected\n";
     }
     
     public function onError(ConnectionInterface $conn, \Exception $e) {
@@ -278,7 +276,7 @@ class TradingWebSocketServer implements MessageComponentInterface {
                     'role' => $conn->userRole
                 ]));
                 
-                Logger::info("User {$userId} authenticated (Role: {$conn->userRole})");
+                echo "User {$userId} authenticated (Role: {$conn->userRole})\n";
                 
                 // Send current market status to newly authenticated client
                 $this->sendCurrentMarketStatus($conn);
@@ -401,7 +399,7 @@ class TradingWebSocketServer implements MessageComponentInterface {
         $pair = $data['pair'];
         $interval = $data['interval'];
         
-        Logger::info("[SUBSCRIBE_CHART] Client {$conn->resourceId} requesting: pair='{$pair}', interval='{$interval}'");
+        echo "[SUBSCRIBE_CHART] Client {$conn->resourceId} requesting: pair='{$pair}', interval='{$interval}'\n";
         echo "[SUBSCRIBE_CHART] Current chartSubscriptions count: " . count($this->chartSubscriptions) . "\n";
         
         // Store subscription in server-level array instead of connection property
@@ -414,7 +412,7 @@ class TradingWebSocketServer implements MessageComponentInterface {
         // Add to subscriptions
         $this->chartSubscriptions[$resourceId][$pair] = $interval;
         
-        Logger::info("[SUBSCRIBE_CHART] ✓ Stored subscription: chartSubscriptions[{$resourceId}]['{$pair}'] = '{$interval}'");
+        echo "[SUBSCRIBE_CHART] ✓ Stored subscription: chartSubscriptions[{$resourceId}]['{$pair}'] = '{$interval}'\n";
         echo "[SUBSCRIBE_CHART] Total subscriptions for this client: " . count($this->chartSubscriptions[$resourceId]) . "\n";
         
         $conn->send(json_encode([
@@ -424,7 +422,7 @@ class TradingWebSocketServer implements MessageComponentInterface {
             'message' => "Subscribed to {$pair} {$interval} candles"
         ]));
         
-        Logger::info("Client {$conn->resourceId} subscribed to {$pair} chart ({$interval})");
+        echo "Client {$conn->resourceId} subscribed to {$pair} chart ({$interval})\n";
     }
     
     private function handleUnsubscribeChart(ConnectionInterface $conn, $data) {
@@ -444,7 +442,7 @@ class TradingWebSocketServer implements MessageComponentInterface {
                 'pair' => $pair
             ]));
             
-            Logger::info("Client {$conn->resourceId} unsubscribed from {$pair} chart");
+            echo "Client {$conn->resourceId} unsubscribed from {$pair} chart\n";
         }
     }
     
@@ -538,7 +536,7 @@ class TradingWebSocketServer implements MessageComponentInterface {
                 'message' => "Subscribed to account {$accountId}"
             ]));
             
-            Logger::info("[ADMIN] Client {$resourceId} ({$permCheck['role']}) subscribed to account {$accountId}");
+            echo "[ADMIN] Client {$resourceId} ({$permCheck['role']}) subscribed to account {$accountId}\n";
             
             // Send initial account data
             $this->sendAdminAccountUpdate($accountId);
@@ -566,7 +564,7 @@ class TradingWebSocketServer implements MessageComponentInterface {
                     'type' => 'account_unsubscribed',
                     'account_id' => $accountId
                 ]));
-                Logger::info("[ADMIN] Client {$resourceId} unsubscribed from account {$accountId}");
+                echo "[ADMIN] Client {$resourceId} unsubscribed from account {$accountId}\n";
             }
         }
     }
@@ -624,7 +622,7 @@ class TradingWebSocketServer implements MessageComponentInterface {
                 'message' => "Subscribed to trade #{$tradeId}"
             ]));
             
-            Logger::info("[ADMIN] Client {$resourceId} ({$permCheck['role']}) subscribed to trade {$tradeId}");
+            echo "[ADMIN] Client {$resourceId} ({$permCheck['role']}) subscribed to trade {$tradeId}\n";
             echo "[DEBUG] adminTradeSubscriptions now: " . json_encode($this->adminTradeSubscriptions) . "\n";
             
             // Send initial trade data
@@ -653,7 +651,7 @@ class TradingWebSocketServer implements MessageComponentInterface {
                     'type' => 'trade_unsubscribed',
                     'trade_id' => $tradeId
                 ]));
-                Logger::info("[ADMIN] Client {$resourceId} unsubscribed from trade {$tradeId}");
+                echo "[ADMIN] Client {$resourceId} unsubscribed from trade {$tradeId}\n";
             }
         }
     }
@@ -883,7 +881,7 @@ class TradingWebSocketServer implements MessageComponentInterface {
             
             // Send notification to the trade owner (regular user)
             if (isset($this->authenticatedClients[$userId])) {
-                Logger::info("[NOTIFY] Sending trade_closed notification to user {$userId} (reason: {$reason})");
+                echo "[NOTIFY] Sending trade_closed notification to user {$userId} (reason: {$reason})\n";
                 
                 foreach ($this->authenticatedClients[$userId] as $conn) {
                     $conn->send(json_encode($notificationData));
@@ -892,14 +890,14 @@ class TradingWebSocketServer implements MessageComponentInterface {
                 // Force account update to refresh balance and open trades
                 $this->sendAccountUpdate($userId);
             } else {
-                Logger::info("[NOTIFY] User {$userId} not connected to WebSocket");
+                echo "[NOTIFY] User {$userId} not connected to WebSocket\n";
             }
             
             // Send notification to admins subscribed to this specific trade
             if ($tradeId !== null) {
                 $adminNotificationsSent = 0;
                 
-                Logger::info("[DEBUG] Checking admin subscriptions for trade {$tradeId}...");
+                echo "[DEBUG] Checking admin subscriptions for trade {$tradeId}...\n";
                 echo "[DEBUG] adminTradeSubscriptions: " . json_encode($this->adminTradeSubscriptions) . "\n";
                 echo "[DEBUG] Number of admin subscription keys: " . count($this->adminTradeSubscriptions) . "\n";
                 
@@ -908,13 +906,13 @@ class TradingWebSocketServer implements MessageComponentInterface {
                     
                     // Check if this admin is subscribed to this trade
                     if (in_array($tradeId, $subscribedTradeIds)) {
-                        Logger::info("[DEBUG] ResourceId {$resourceId} is subscribed to trade {$tradeId}. Looking for connection...");
+                        echo "[DEBUG] ResourceId {$resourceId} is subscribed to trade {$tradeId}. Looking for connection...\n";
                         
                         // Find the admin connection
                         $foundConnection = false;
                         foreach ($this->clients as $conn) {
                             if ($conn->resourceId === $resourceId) {
-                                Logger::info("[NOTIFY] Sending trade_closed notification to admin (resourceId: {$resourceId}, trade: {$tradeId})");
+                                echo "[NOTIFY] Sending trade_closed notification to admin (resourceId: {$resourceId}, trade: {$tradeId})\n";
                                 $conn->send(json_encode($notificationData));
                                 $adminNotificationsSent++;
                                 $foundConnection = true;
@@ -926,17 +924,17 @@ class TradingWebSocketServer implements MessageComponentInterface {
                         }
                         
                         if (!$foundConnection) {
-                            Logger::info("[DEBUG] Could not find connection for resourceId {$resourceId}");
+                            echo "[DEBUG] Could not find connection for resourceId {$resourceId}\n";
                         }
                     } else {
-                        Logger::info("[DEBUG] ResourceId {$resourceId} is NOT subscribed to trade {$tradeId}");
+                        echo "[DEBUG] ResourceId {$resourceId} is NOT subscribed to trade {$tradeId}\n";
                     }
                 }
                 
                 if ($adminNotificationsSent > 0) {
-                    Logger::info("[NOTIFY] Sent trade_closed to {$adminNotificationsSent} subscribed admin(s)");
+                    echo "[NOTIFY] Sent trade_closed to {$adminNotificationsSent} subscribed admin(s)\n";
                 } else {
-                    Logger::info("[DEBUG] No admins were notified for trade {$tradeId}");
+                    echo "[DEBUG] No admins were notified for trade {$tradeId}\n";
                 }
             }
         } catch (Exception $e) {
@@ -985,7 +983,7 @@ class TradingWebSocketServer implements MessageComponentInterface {
             
             // Send notification to the user
             if (isset($this->authenticatedClients[$userId])) {
-                Logger::info("[NOTIFY] Sending trade_opened notification to user {$userId} (order_type: {$order['order_type']})");
+                echo "[NOTIFY] Sending trade_opened notification to user {$userId} (order_type: {$order['order_type']})\n";
                 
                 foreach ($this->authenticatedClients[$userId] as $conn) {
                     $conn->send(json_encode($notificationData));
@@ -994,7 +992,7 @@ class TradingWebSocketServer implements MessageComponentInterface {
                 // Force account update to refresh balance and open trades
                 $this->sendAccountUpdate($userId);
             } else {
-                Logger::info("[NOTIFY] User {$userId} not connected to WebSocket");
+                echo "[NOTIFY] User {$userId} not connected to WebSocket\n";
             }
             
         } catch (Exception $e) {
@@ -1056,10 +1054,10 @@ class TradingWebSocketServer implements MessageComponentInterface {
             $this->chartAlters = $alterResult['chart_alters']; // Store chart alters for candle generation
             
             if ($alterResult['deleted_count'] > 0) {
-                Logger::info("[ALTER] Processed {$alterResult['deleted_count']} completed alter trades");
+                echo "[ALTER] Processed {$alterResult['deleted_count']} completed alter trades\n";
             }
             if ($alterResult['closed_trades'] > 0) {
-                Logger::info("[ALTER] Closed {$alterResult['closed_trades']} trades that reached target price");
+                echo "[ALTER] Closed {$alterResult['closed_trades']} trades that reached target price\n";
             }
             if (!empty($this->chartAlters)) {
                 echo "[ALTER CHART] Active chart alters: " . count($this->chartAlters) . "\n";
@@ -1073,7 +1071,7 @@ class TradingWebSocketServer implements MessageComponentInterface {
         // This runs every time prices update from Binance
         $monitorResult = TradeMonitorService::monitorAndCloseTrades($this->currentPrices);
         if ($monitorResult['success'] && $monitorResult['stats']['closed'] > 0) {
-            Logger::info("[MONITOR] Auto-closed {$monitorResult['stats']['closed']} trades (SL: {$monitorResult['stats']['stop_loss']}, TP: {$monitorResult['stats']['take_profit']})");
+            echo "[MONITOR] Auto-closed {$monitorResult['stats']['closed']} trades (SL: {$monitorResult['stats']['stop_loss']}, TP: {$monitorResult['stats']['take_profit']})\n";
             
             // Note: Notifications are automatically sent via TradeService callback
             // No need to manually notify here
@@ -1084,10 +1082,10 @@ class TradingWebSocketServer implements MessageComponentInterface {
         $pendingResult = PendingTradeMonitorService::checkPendingOrders($this->currentPrices);
         if ($pendingResult['success']) {
             if ($pendingResult['triggered'] > 0) {
-                Logger::info("[PENDING] Triggered {$pendingResult['triggered']} pending orders");
+                echo "[PENDING] Triggered {$pendingResult['triggered']} pending orders\n";
             }
             if ($pendingResult['expired'] > 0) {
-                Logger::info("[PENDING] Expired {$pendingResult['expired']} pending orders");
+                echo "[PENDING] Expired {$pendingResult['expired']} pending orders\n";
             }
             if (!empty($pendingResult['errors'])) {
                 echo "[PENDING] Errors: " . implode(', ', $pendingResult['errors']) . "\n";
@@ -1102,7 +1100,7 @@ class TradingWebSocketServer implements MessageComponentInterface {
         if ($priceUpdateCount % 10 === 0) {
             $marginResult = TradeMonitorService::monitorMarginCalls($this->currentPrices, 50, 20);
             if ($marginResult['success'] && $marginResult['stats']['trades_closed'] > 0) {
-                Logger::info("[MARGIN] Margin calls: {$marginResult['stats']['margin_calls']}, Stop outs: {$marginResult['stats']['stop_outs']}, Trades closed: {$marginResult['stats']['trades_closed']}");
+                echo "[MARGIN] Margin calls: {$marginResult['stats']['margin_calls']}, Stop outs: {$marginResult['stats']['stop_outs']}, Trades closed: {$marginResult['stats']['trades_closed']}\n";
                 
                 // Note: Notifications are automatically sent via TradeService callback
                 // No need to manually notify here
@@ -1126,7 +1124,7 @@ class TradingWebSocketServer implements MessageComponentInterface {
         foreach ($this->authenticatedClients as $userId => $connections) {
             $clientCount += count($connections);
         }
-        Logger::info("Broadcasting to {$clientCount} authenticated connections");
+        echo "Broadcasting to {$clientCount} authenticated connections\n";
         
         // Broadcast price updates to all authenticated clients
         foreach ($this->authenticatedClients as $userId => $connections) {
@@ -1190,7 +1188,7 @@ class TradingWebSocketServer implements MessageComponentInterface {
                             $pairFormat = $this->normalizePairFormat($matchedPair);
                             
                             // DEBUG: Log the pair format and price
-                            Logger::info("[DEBUG] Symbol: {$symbol}, PairFormat: {$pairFormat}, Price: {$price}");
+                            echo "[DEBUG] Symbol: {$symbol}, PairFormat: {$pairFormat}, Price: {$price}\n";
                             
                             // Check if there's an altered price for this user on this pair
                             $finalPrice = $price;
@@ -1204,7 +1202,7 @@ class TradingWebSocketServer implements MessageComponentInterface {
                                         $alter['pair'] === $pairFormat) {
                                         $finalPrice = $alter['current_price'];
                                         $isAltered = true;
-                                        Logger::info("[PRICE ALTER] User {$userId}: {$pairFormat} altered to {$finalPrice} (account_pair mode)");
+                                        echo "[PRICE ALTER] User {$userId}: {$pairFormat} altered to {$finalPrice} (account_pair mode)\n";
                                         break;
                                     }
                                 }
@@ -1217,7 +1215,7 @@ class TradingWebSocketServer implements MessageComponentInterface {
                                             $alter['pair'] === $pairFormat) {
                                             $finalPrice = $alter['current_price'];
                                             $isAltered = true;
-                                            Logger::info("[PRICE ALTER] User {$userId}: {$pairFormat} altered to {$finalPrice} (pair mode, acc_type={$accountType})");
+                                            echo "[PRICE ALTER] User {$userId}: {$pairFormat} altered to {$finalPrice} (pair mode, acc_type={$accountType})\n";
                                             break;
                                         }
                                     }
@@ -1225,7 +1223,7 @@ class TradingWebSocketServer implements MessageComponentInterface {
                             }
                             
                             if (!$isAltered) {
-                                Logger::info("Sending price update to user {$userId}: {$symbol} = {$price}");
+                                echo "Sending price update to user {$userId}: {$symbol} = {$price}\n";
                             }
                             
                             // Format price as STRING with correct decimals based on pair configuration
@@ -1233,7 +1231,7 @@ class TradingWebSocketServer implements MessageComponentInterface {
                             $formattedPrice = PriceFormatterService::formatPriceString($pairFormat, $finalPrice);
                             
                             // DEBUG: Log formatted price
-                            Logger::info("[DEBUG] Formatted price for {$pairFormat}: '{$formattedPrice}'");
+                            echo "[DEBUG] Formatted price for {$pairFormat}: '{$formattedPrice}'\n";
                             
                             $conn->send(json_encode([
                                 'type' => 'price_update',
@@ -1245,7 +1243,7 @@ class TradingWebSocketServer implements MessageComponentInterface {
                         }
                     }
                 } else {
-                    Logger::info("User {$userId} has no subscribedPairs set");
+                    echo "User {$userId} has no subscribedPairs set\n";
                 }
             }
             
@@ -1305,7 +1303,7 @@ class TradingWebSocketServer implements MessageComponentInterface {
                     'acc_type' => $accType,
                     'account' => $account
                 ];
-                Logger::info("[FORMING CANDLE] Initialized: {$candleKey} at price {$price}");
+                echo "[FORMING CANDLE] Initialized: {$candleKey} at price {$price}\n";
             } else {
                 // Update existing forming candle (like frontend updateFormingCandle)
                 $this->formingCandles[$candleKey]['close'] = $price;
@@ -1315,7 +1313,7 @@ class TradingWebSocketServer implements MessageComponentInterface {
                 // Log significant updates
                 $oldRange = $this->formingCandles[$candleKey]['high'] - $this->formingCandles[$candleKey]['low'];
                 if ($oldRange > 0) {
-                    Logger::info("[FORMING CANDLE] Updated: {$candleKey} - O:{$this->formingCandles[$candleKey]['open']} H:{$this->formingCandles[$candleKey]['high']} L:{$this->formingCandles[$candleKey]['low']} C:{$price}");
+                    echo "[FORMING CANDLE] Updated: {$candleKey} - O:{$this->formingCandles[$candleKey]['open']} H:{$this->formingCandles[$candleKey]['high']} L:{$this->formingCandles[$candleKey]['low']} C:{$price}\n";
                 }
             }
         }
@@ -1325,12 +1323,12 @@ class TradingWebSocketServer implements MessageComponentInterface {
         $pair = $candle['pair'];
         $interval = $candle['interval'];
         
-        Logger::info("\n=== BROADCAST CANDLE START ===");
-        Logger::info("[BROADCAST] Pair: {$pair}, Interval: {$interval}");
+        echo "\n=== BROADCAST CANDLE START ===\n";
+        echo "[BROADCAST] Pair: {$pair}, Interval: {$interval}\n";
         echo "[BROADCAST] Chart alters count: " . count($this->chartAlters) . "\n";
         
         if (!empty($this->chartAlters)) {
-            Logger::info("[BROADCAST] Active chart alters:");
+            echo "[BROADCAST] Active chart alters:\n";
             foreach ($this->chartAlters as $idx => $alter) {
                 echo "[BROADCAST]   #{$idx}: mode={$alter['mode']}, pair={$alter['pair']}, acc_type={$alter['acc_type']}, progress=" . round($alter['progress'] * 100, 2) . "%\n";
             }
@@ -1346,18 +1344,18 @@ class TradingWebSocketServer implements MessageComponentInterface {
         $savedCaches = [];
         
         if ($hasChartAlters) {
-            Logger::info("[BROADCAST] Checking chart alters for {$pair} {$interval}...");
+            echo "[BROADCAST] Checking chart alters for {$pair} {$interval}...\n";
         }
         
         // Broadcast to all clients subscribed to this pair's chart
         foreach ($this->clients as $conn) {
             $resourceId = $conn->resourceId;
             
-            Logger::info("[BROADCAST] Checking client {$resourceId}...");
+            echo "[BROADCAST] Checking client {$resourceId}...\n";
             
             // Check if this client has chart subscriptions
             if (!isset($this->chartSubscriptions[$resourceId])) {
-                Logger::info("[BROADCAST]   Client {$resourceId} has no chart subscriptions");
+                echo "[BROADCAST]   Client {$resourceId} has no chart subscriptions\n";
                 continue;
             }
             
@@ -1366,7 +1364,7 @@ class TradingWebSocketServer implements MessageComponentInterface {
             
             // Check if subscribed to this pair and interval
             if (isset($clientSubs[$pair]) && $clientSubs[$pair] === $interval) {
-                Logger::info("[BROADCAST]   ✓ Client {$resourceId} is subscribed to {$pair} {$interval}");
+                echo "[BROADCAST]   ✓ Client {$resourceId} is subscribed to {$pair} {$interval}\n";
                 
                 // Determine if we should send altered candle for this specific client
                 $candleToSend = $candle;
@@ -1391,7 +1389,7 @@ class TradingWebSocketServer implements MessageComponentInterface {
                             $accountType = $accountInfo['acc_type']; // 'demo' or 'real'
                             $accountId = $accountInfo['id_hash'];
                             
-                            Logger::info("[BROADCAST]   User {$userId} account: type={$accountType}, id={$accountId}");
+                            echo "[BROADCAST]   User {$userId} account: type={$accountType}, id={$accountId}\n";
                             
                             // Check if this candle should be altered for this client
                             $alterInfo = TradeAlterMonitorService::shouldAlterCandle(
@@ -1424,7 +1422,7 @@ class TradingWebSocketServer implements MessageComponentInterface {
                                         'is_altered' => true
                                     ]);
                                     
-                                    Logger::info("[BROADCAST] Using TRACKED forming candle for {$formingKey}: O:{$formingCandle['open']} H:{$formingCandle['high']} L:{$formingCandle['low']} C:{$formingCandle['close']}");
+                                    echo "[BROADCAST] Using TRACKED forming candle for {$formingKey}: O:{$formingCandle['open']} H:{$formingCandle['high']} L:{$formingCandle['low']} C:{$formingCandle['close']}\n";
                                     
                                     // Reset forming candle for next period
                                     unset($this->formingCandles[$formingKey]);
@@ -1435,11 +1433,11 @@ class TradingWebSocketServer implements MessageComponentInterface {
                                         $alterInfo,
                                         null // previousClose
                                     );
-                                    Logger::info("[BROADCAST] Using SYNTHETIC candle (no forming candle tracked)");
+                                    echo "[BROADCAST] Using SYNTHETIC candle (no forming candle tracked)\n";
                                 }
                                 
                                 $alteredCount++;
-                                Logger::info("[BROADCAST] Sending ALTERED candle to user {$userId} (account: {$accountType})");
+                                echo "[BROADCAST] Sending ALTERED candle to user {$userId} (account: {$accountType})\n";
                                 
                                 // Save altered candle to cache (once per mode+pair+account combination)
                                 // Create unique cache key to prevent duplicate saves
@@ -1463,12 +1461,12 @@ class TradingWebSocketServer implements MessageComponentInterface {
                                     
                                     if ($saved) {
                                         $savedCaches[$cacheKey] = true;
-                                        Logger::info("[BROADCAST] ✓ Saved altered candle to cache: {$cacheKey}");
+                                        echo "[BROADCAST] ✓ Saved altered candle to cache: {$cacheKey}\n";
                                     }
                                 }
                             }
                         } else {
-                            Logger::info("[BROADCAST]   ⚠ User {$userId} has no current account!");
+                            echo "[BROADCAST]   ⚠ User {$userId} has no current account!\n";
                         }
                     } catch (Exception $e) {
                         error_log("Error checking chart alter for user {$userId}: " . $e->getMessage());
@@ -1485,59 +1483,43 @@ class TradingWebSocketServer implements MessageComponentInterface {
                 $sentCount++;
                 
                 if (!isset($alterInfo) || $alterInfo === null) {
-                    Logger::info("[BROADCAST] Sent REAL candle to client {$resourceId}");
+                    echo "[BROADCAST] Sent REAL candle to client {$resourceId}\n";
                 }
             }
         }
         
         if ($sentCount > 0) {
             $alteredMsg = $alteredCount > 0 ? " ({$alteredCount} altered)" : "";
-            Logger::info("Broadcast {$pair} {$interval} candle to {$sentCount} client(s){$alteredMsg}");
+            echo "Broadcast {$pair} {$interval} candle to {$sentCount} client(s){$alteredMsg}\n";
         } else {
-            Logger::info("[BROADCAST] No clients subscribed to {$pair} {$interval}");
+            echo "[BROADCAST] No clients subscribed to {$pair} {$interval}\n";
         }
-        Logger::info("=== BROADCAST CANDLE END ===\n");
+        echo "=== BROADCAST CANDLE END ===\n\n";
     }
     
     /**
      * Broadcast market status to all connected clients
      * 
-     * @param array $marketData - Market status data for both forex and stocks
+     * @param string $status - 'open' or 'closed'
      */
-    public function broadcastMarketStatus($marketData) {
-        // Store full market data for later use
-        $this->currentMarketData = $marketData;
+    public function broadcastMarketStatus($status) {
+        // Store current status
+        $this->currentMarketStatus = $status;
         
-        // Store current status (use forex status as primary for backward compatibility)
-        $this->currentMarketStatus = is_array($marketData) ? ($marketData['forex']['status'] ?? 'unknown') : $marketData;
+        $nextOpen = ($status === 'closed') ? FinnhubWebSocketClient::getNextOpenTimestamp() : null;
+        $remaining = $nextOpen ? ($nextOpen - time()) : null;
         
-        // Handle both old format (string) and new format (array)
-        if (!is_array($marketData)) {
-            // Old format - convert to new format for forex only
-            $status = $marketData;
-            $nextOpen = ($status === 'closed') ? FinnhubWebSocketClient::getNextOpenTimestamp() : null;
-            $remaining = $nextOpen ? ($nextOpen - time()) : null;
-            
-            $message = [
-                'type' => 'market_status',
-                'status' => $status,
-                'timestamp' => time(),
-                'next_open' => $nextOpen,
-                'remaining' => $remaining,
-                'message' => $status === 'closed' 
-                    ? 'Forex and commodity markets are currently closed' 
-                    : 'Forex and commodity markets are now open',
-                'affects' => 'forex_commodities'
-            ];
-        } else {
-            // New format - include both forex and stock market data
-            $message = [
-                'type' => 'market_status',
-                'timestamp' => time(),
-                'markets' => $marketData,
-                'message' => $this->generateMarketStatusMessage($marketData)
-            ];
-        }
+        $message = [
+            'type' => 'market_status',
+            'status' => $status,
+            'timestamp' => time(),
+            'next_open' => $nextOpen,
+            'remaining' => $remaining,
+            'message' => $status === 'closed' 
+                ? 'Forex and commodity markets are currently closed' 
+                : 'Forex and commodity markets are now open',
+            'affects' => 'forex_commodities' // Indicate this is only for forex/commodities, not crypto
+        ];
         
         $jsonMessage = json_encode($message);
         $sentCount = 0;
@@ -1552,28 +1534,7 @@ class TradingWebSocketServer implements MessageComponentInterface {
             }
         }
         
-        Logger::info("[MARKET] Broadcasted market status to {$sentCount} client(s)");
-    }
-    
-    /**
-     * Generate human-readable market status message
-     * 
-     * @param array $marketData - Market data for forex and stocks
-     * @return string - Status message
-     */
-    private function generateMarketStatusMessage($marketData) {
-        $forexStatus = $marketData['forex']['status'] ?? 'unknown';
-        $stockStatus = $marketData['stocks']['status'] ?? 'unknown';
-        
-        if ($forexStatus === 'open' && $stockStatus === 'open') {
-            return 'All markets are currently open';
-        } elseif ($forexStatus === 'closed' && $stockStatus === 'closed') {
-            return 'All markets are currently closed';
-        } elseif ($forexStatus === 'open') {
-            return 'Forex & Commodity markets are open. Stock markets are closed.';
-        } else {
-            return 'Stock markets are open. Forex & Commodity markets are closed.';
-        }
+        echo "[MARKET] Broadcasted market status '{$status}' to {$sentCount} client(s)\n";
     }
     
     /**
@@ -1582,32 +1543,15 @@ class TradingWebSocketServer implements MessageComponentInterface {
      * @param ConnectionInterface $conn - Client connection
      */
     private function sendCurrentMarketStatus(ConnectionInterface $conn) {
-        // Use stored market data if available (new format)
-        if ($this->currentMarketData !== null && is_array($this->currentMarketData)) {
-            $message = [
-                'type' => 'market_status',
-                'timestamp' => time(),
-                'markets' => $this->currentMarketData,
-                'message' => $this->generateMarketStatusMessage($this->currentMarketData)
-            ];
-            
-            try {
-                $conn->send(json_encode($message));
-                Logger::info("[MARKET] Sent market status (new format) to client {$conn->resourceId}");
-            } catch (Exception $e) {
-                error_log("Error sending market status to client: " . $e->getMessage());
-            }
-            return;
-        }
-        
-        // Fallback to old format if market data not yet available
+        // If status is still unknown (server just started), send it anyway
+        // Frontend can handle 'unknown' status or we assume 'open' as default
         $status = $this->currentMarketStatus;
         
         if ($status === 'unknown') {
             // Assume open by default for better UX
             // The real status will be broadcast once determined
             $status = 'open';
-            Logger::info("[MARKET] Status still unknown, sending default 'open' to client {$conn->resourceId}");
+            echo "[MARKET] Status still unknown, sending default 'open' to client {$conn->resourceId}\n";
         }
         
         $nextOpen = ($status === 'closed') ? FinnhubWebSocketClient::getNextOpenTimestamp() : null;
@@ -1627,7 +1571,7 @@ class TradingWebSocketServer implements MessageComponentInterface {
         
         try {
             $conn->send(json_encode($message));
-            Logger::info("[MARKET] Sent market status (old format fallback) '{$status}' to client {$conn->resourceId}");
+            echo "[MARKET] Sent market status '{$status}' to client {$conn->resourceId}\n";
         } catch (Exception $e) {
             error_log("Error sending market status to client: " . $e->getMessage());
         }
@@ -1652,7 +1596,7 @@ class BinanceWebSocketClient {
     }
     
     public function connect() {
-        Logger::info("Connecting to Binance WebSocket...");
+        echo "Connecting to Binance WebSocket...\n";
         
         // Build WebSocket stream URL for multiple pairs (ticker data)
         $streams = [];
@@ -1673,7 +1617,7 @@ class BinanceWebSocketClient {
         
         $connector($wsUrl)->then(
             function($conn) {
-                Logger::info("Connected to Binance Ticker WebSocket!");
+                echo "Connected to Binance Ticker WebSocket!\n";
                 $this->wsConnection = $conn;
                 
                 $conn->on('message', function($msg) {
@@ -1681,17 +1625,17 @@ class BinanceWebSocketClient {
                 });
                 
                 $conn->on('close', function($code = null, $reason = null) {
-                    Logger::info("Binance WebSocket closed (Code: {$code}, Reason: {$reason})");
+                    echo "Binance WebSocket closed (Code: {$code}, Reason: {$reason})\n";
                     $this->wsConnection = null; // Clear reference
                     $this->scheduleReconnect('ticker');
                 });
                 
                 $conn->on('error', function($e) {
-                    Logger::info("Binance WebSocket error: {$e->getMessage()}");
+                    echo "Binance WebSocket error: {$e->getMessage()}\n";
                 });
             },
             function($e) {
-                Logger::info("Could not connect to Binance: {$e->getMessage()}");
+                echo "Could not connect to Binance: {$e->getMessage()}\n";
                 $this->scheduleReconnect('ticker');
             }
         );
@@ -1700,7 +1644,7 @@ class BinanceWebSocketClient {
     private function scheduleReconnect($type = 'ticker') {
         // Limit retry attempts to prevent infinite loops
         if ($this->retryCount >= $this->maxRetries) {
-            Logger::info("[ERROR] Max retry attempts ({$this->maxRetries}) reached for Binance {$type}. Stopping reconnection.");
+            echo "[ERROR] Max retry attempts ({$this->maxRetries}) reached for Binance {$type}. Stopping reconnection.\n";
             return;
         }
         
@@ -1709,7 +1653,7 @@ class BinanceWebSocketClient {
         // Exponential backoff: 5s, 10s, 20s, 40s... (max 60s)
         $delay = min(5 * pow(2, $this->retryCount - 1), 60);
         
-        Logger::info("Retrying Binance {$type} in {$delay}s (attempt {$this->retryCount}/{$this->maxRetries})...");
+        echo "Retrying Binance {$type} in {$delay}s (attempt {$this->retryCount}/{$this->maxRetries})...\n";
         
         // Cancel any existing reconnect timer to prevent accumulation
         if ($this->reconnectTimer) {
@@ -1729,7 +1673,7 @@ class BinanceWebSocketClient {
     }
     
     private function connectKlineStreams() {
-        Logger::info("Connecting to Binance Kline WebSocket...");
+        echo "Connecting to Binance Kline WebSocket...\n";
         
         // Build kline streams for common intervals
         $intervals = ['1m', '5m', '15m', '1h', '4h', '1d'];
@@ -1752,7 +1696,7 @@ class BinanceWebSocketClient {
         
         $connector($wsUrl)->then(
             function($conn) {
-                Logger::info("Connected to Binance Kline WebSocket!");
+                echo "Connected to Binance Kline WebSocket!\n";
                 $this->klineConnection = $conn;
                 
                 $conn->on('message', function($msg) {
@@ -1760,17 +1704,17 @@ class BinanceWebSocketClient {
                 });
                 
                 $conn->on('close', function($code = null, $reason = null) {
-                    Logger::info("Binance Kline WebSocket closed (Code: {$code}, Reason: {$reason})");
+                    echo "Binance Kline WebSocket closed (Code: {$code}, Reason: {$reason})\n";
                     $this->klineConnection = null; // Clear reference
                     $this->scheduleReconnect('kline');
                 });
                 
                 $conn->on('error', function($e) {
-                    Logger::info("Binance Kline WebSocket error: {$e->getMessage()}");
+                    echo "Binance Kline WebSocket error: {$e->getMessage()}\n";
                 });
             },
             function($e) {
-                Logger::info("Could not connect to Binance Kline stream: {$e->getMessage()}");
+                echo "Could not connect to Binance Kline stream: {$e->getMessage()}\n";
                 $this->scheduleReconnect('kline');
             }
         );
@@ -1789,7 +1733,7 @@ class BinanceWebSocketClient {
                     $price = floatval($tickerData['c']);
                     
                     // Debug: Log received price
-                    Logger::info("Binance price update: {$symbol} = {$price}");
+                    echo "Binance price update: {$symbol} = {$price}\n";
                     
                     // Update prices
                     $this->server->updatePrices([$symbol => $price]);
@@ -1863,7 +1807,7 @@ class BinanceWebSocketClient {
                     
                     // Only send closed candles to reduce noise
                     if ($k['x'] === true) {
-                        Logger::info("Kline closed: {$pair} {$interval} - O:{$k['o']} H:{$k['h']} L:{$k['l']} C:{$k['c']}");
+                        echo "Kline closed: {$pair} {$interval} - O:{$k['o']} H:{$k['h']} L:{$k['l']} C:{$k['c']}\n";
                         $this->server->broadcastCandle($candle);
                     }
                 }
@@ -1891,7 +1835,7 @@ class BinanceWebSocketClient {
             $this->klineConnection = null;
         }
         
-        Logger::info("Binance WebSocket connections closed");
+        echo "Binance WebSocket connections closed\n";
     }
 }
 
@@ -1899,7 +1843,7 @@ class BinanceWebSocketClient {
 if (php_sapi_name() === 'cli') {
     $port = 8080;
     
-    Logger::info("Starting Trading WebSocket Server on port {$port}...");
+    echo "Starting Trading WebSocket Server on port {$port}...\n";
     
     // Create PID file
     $pidFile = __DIR__ . '/server.pid';
@@ -1922,18 +1866,17 @@ if (php_sapi_name() === 'cli') {
         // Separate pairs by type for different data sources
         if ($row['type'] === 'crypto') {
             $cryptoPairs[] = $row['name'];
-        } elseif (in_array($row['type'], ['forex', 'commodity', 'stock', 'index'])) {
-            // All non-crypto pairs use Finnhub (forex, commodities, stocks, indices)
+        } elseif ($row['type'] === 'forex' || $row['type'] === 'commodity') {
             $forexCommodityPairs[] = $row['name'];
         }
     }
     
-    Logger::info("Monitoring " . count($pairs) . " pairs total");
-    Logger::info("- Crypto pairs (Binance): " . count($cryptoPairs));
-    Logger::info("- Non-crypto pairs (Finnhub - forex/commodities/stocks/indices): " . count($forexCommodityPairs));
+    echo "Monitoring " . count($pairs) . " pairs total\n";
+    echo "- Crypto pairs (Binance): " . count($cryptoPairs) . "\n";
+    echo "- Forex/Commodity pairs (Finnhub): " . count($forexCommodityPairs) . "\n";
     
     // Preload pair configurations for formatting (includes price_decimals, volume_decimals)
-    Logger::info("Loading pair configurations for price formatting...");
+    echo "Loading pair configurations for price formatting...\n";
     PriceFormatterService::preloadPairConfigs();
     
     // Create ReactPHP event loop
@@ -1971,11 +1914,11 @@ if (php_sapi_name() === 'cli') {
     $stopFile = __DIR__ . '/server.stop';
     
     // Log the stop file path once for debugging
-    Logger::info("Monitoring for stop signal at: {$stopFile}");
+    echo "Monitoring for stop signal at: {$stopFile}\n";
     
     // Check if stop file exists at startup (shouldn't exist)
     if (file_exists($stopFile)) {
-        Logger::info("WARNING: Stop file exists at startup! Removing it: {$stopFile}");
+        echo "WARNING: Stop file exists at startup! Removing it: {$stopFile}\n";
         @unlink($stopFile);
     }
     
@@ -1984,8 +1927,8 @@ if (php_sapi_name() === 'cli') {
         $stopExists = file_exists($stopFile);
         
         if ($stopExists) {
-            Logger::info("\nStop signal received. Shutting down gracefully...");
-            Logger::info("Stop file found at: {$stopFile}");
+            echo "\nStop signal received. Shutting down gracefully...\n";
+            echo "Stop file found at: {$stopFile}\n";
             @unlink($stopFile);
             
             $pidFile = __DIR__ . '/server.pid';
@@ -2003,25 +1946,25 @@ if (php_sapi_name() === 'cli') {
     
     // Clean old altered candle caches once per day (86400 seconds)
     $loop->addPeriodicTimer(86400, function() {
-        Logger::info("\n[CACHE CLEANUP] Running daily cache cleanup...");
+        echo "\n[CACHE CLEANUP] Running daily cache cleanup...\n";
         $stats = AlteredCandleCacheService::cleanOldCaches(30); // Keep 30 days
         echo "[CACHE CLEANUP] Completed: " . json_encode($stats) . "\n";
     });
     
-    Logger::info("Server running!");
-    Logger::info("Clients can connect to: ws://localhost:{$port}");
+    echo "Server running!\n";
+    echo "Clients can connect to: ws://localhost:{$port}\n";
     if (!empty($cryptoPairs)) {
-        Logger::info("Binance WebSocket connected and streaming crypto prices...");
+        echo "Binance WebSocket connected and streaming crypto prices...\n";
     }
     if (!empty($forexCommodityPairs)) {
-        Logger::info("Finnhub WebSocket connected and streaming forex/commodity prices...");
+        echo "Finnhub WebSocket connected and streaming forex/commodity prices...\n";
     }
     
     // Register shutdown handler to clean up PID file
     register_shutdown_function(function() use ($pidFile) {
         if (file_exists($pidFile)) {
             @unlink($pidFile);
-            Logger::info("\nShutdown complete. PID file removed.");
+            echo "\nShutdown complete. PID file removed.\n";
         }
     });
     

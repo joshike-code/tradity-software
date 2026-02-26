@@ -41,27 +41,62 @@ class ChartDataService
             if ($pairType === 'crypto') {
                 return self::getBinanceHistoricalCandles($pair, $interval, $limit, $userId);
             } else {
-                // For forex and commodities, use Twelve Data with smart caching
-                // Restrict candles to Friday 11pm and back if market is closed
+                // For non-crypto pairs (forex, commodities, stocks, indices), use Twelve Data
+                // Convert pair format for Twelve Data API based on type
+                $originalPair = $pair;
+                $twelveDataSymbol = self::convertToTwelveDataSymbol($pair, $pairType);
+                
+                // Check market status for restricting candles when market is closed
                 require_once __DIR__ . '/../websocket/FinnhubWebSocketClient.php';
                 $marketStatus = 'open';
-                if (class_exists('FinnhubWebSocketClient') && method_exists('FinnhubWebSocketClient', 'isForexMarketOpen')) {
-                    $marketStatus = FinnhubWebSocketClient::isForexMarketOpen() ? 'open' : 'closed';
-                }
-                if ($marketStatus === 'closed') {
-                    // Only allow candles up to last Friday 5pm EST (forex market close time)
-                    // Friday 5pm EST = Friday 22:00 UTC (in winter) or 21:00 UTC (in summer)
-                    $fridayEst = new \DateTime('now', new \DateTimeZone('US/Eastern'));
-                    $fridayEst->modify('last friday');
-                    $fridayEst->setTime(17, 0, 0);  // 5pm EST (17:00), not 11pm
-                    // Convert to UTC
-                    $fridayEst->setTimezone(new \DateTimeZone('UTC'));
-                    $fridayUtcTimestamp = $fridayEst->getTimestamp() * 1000; // ms
-                    // Pass a maxTimestamp to getTwelveDataHistoricalCandles
-                    return self::getTwelveDataHistoricalCandles($pair, $interval, $limit, $userId, $fridayUtcTimestamp);
+                $maxTimestamp = null;
+                
+                // Different market hours for stocks vs forex/commodities
+                if (in_array($pairType, ['stock', 'index'])) {
+                    // Stock market hours: Monday-Friday 2:30 PM - 9:00 PM GMT
+                    if (class_exists('FinnhubWebSocketClient') && method_exists('FinnhubWebSocketClient', 'isStockMarketOpen')) {
+                        $marketStatus = FinnhubWebSocketClient::isStockMarketOpen() ? 'open' : 'closed';
+                    }
+                    
+                    if ($marketStatus === 'closed') {
+                        // Only allow candles up to last market close (9 PM GMT)
+                        $lastClose = new \DateTime('now', new \DateTimeZone('GMT'));
+                        $dayOfWeek = (int)$lastClose->format('w');
+                        $hour = (int)$lastClose->format('H');
+                        $minute = (int)$lastClose->format('i');
+                        $timeInMinutes = $hour * 60 + $minute;
+                        
+                        // If weekend or before Monday open, go to Friday 9 PM
+                        if ($dayOfWeek === 0 || $dayOfWeek === 6 || ($dayOfWeek === 1 && $timeInMinutes < 870)) {
+                            $lastClose->modify('last Friday');
+                        }
+                        // If after market close today, use today's close
+                        // Otherwise use previous day's close
+                        elseif ($timeInMinutes < 870) {
+                            $lastClose->modify('-1 day');
+                        }
+                        
+                        $lastClose->setTime(21, 0, 0);  // 9 PM GMT
+                        $maxTimestamp = $lastClose->getTimestamp() * 1000; // ms
+                    }
                 } else {
-                    return self::getTwelveDataHistoricalCandles($pair, $interval, $limit, $userId);
+                    // Forex/Commodity market hours: Sunday 5 PM EST - Friday 5 PM EST
+                    if (class_exists('FinnhubWebSocketClient') && method_exists('FinnhubWebSocketClient', 'isForexMarketOpen')) {
+                        $marketStatus = FinnhubWebSocketClient::isForexMarketOpen() ? 'open' : 'closed';
+                    }
+                    
+                    if ($marketStatus === 'closed') {
+                        // Only allow candles up to last Friday 5 PM EST (forex market close time)
+                        $fridayEst = new \DateTime('now', new \DateTimeZone('US/Eastern'));
+                        $fridayEst->modify('last friday');
+                        $fridayEst->setTime(17, 0, 0);  // 5 PM EST (17:00)
+                        // Convert to UTC
+                        $fridayEst->setTimezone(new \DateTimeZone('UTC'));
+                        $maxTimestamp = $fridayEst->getTimestamp() * 1000; // ms
+                    }
                 }
+                
+                return self::getTwelveDataHistoricalCandles($twelveDataSymbol, $interval, $limit, $userId, $maxTimestamp);
             }
             
         } catch (Exception $e) {
@@ -187,6 +222,37 @@ class ChartDataService
             error_log("ChartDataService::getHistoricalCandles - " . $e->getMessage());
             Response::error('Failed to fetch chart data', 500);
             return null;
+        }
+    }
+    
+    /**
+     * Convert pair format to Twelve Data symbol format
+     * 
+     * @param string $pair - Original pair (e.g., 'MSFT/USD', 'EUR/USD', 'NASDAQ/USD')
+     * @param string $pairType - Pair type ('forex', 'commodity', 'stock', 'index')
+     * @return string - Twelve Data symbol format
+     */
+    private static function convertToTwelveDataSymbol($pair, $pairType) {
+        switch ($pairType) {
+            case 'stock':
+                // For stocks: MSFT/USD -> MSFT
+                $symbol = str_replace('/USD', '', $pair);
+                return $symbol;
+                
+            case 'index':
+                // For indices, use proper Twelve Data symbols
+                $indexMap = [
+                    'NASDAQ/USD' => 'NDX',      // NASDAQ 100 Index
+                    'SNP500/USD' => 'SPX',      // S&P 500 Index
+                ];
+                return $indexMap[$pair] ?? str_replace('/USD', '', $pair);
+                
+            case 'forex':
+            case 'commodity':
+            default:
+                // For forex and commodities, keep the slash format
+                // EUR/USD, XAU/USD, etc.
+                return $pair;
         }
     }
     

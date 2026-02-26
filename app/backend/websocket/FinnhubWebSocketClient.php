@@ -3,6 +3,8 @@
 use Ratchet\Client\Connector as WsConnector;
 use React\Socket\Connector;
 
+require_once __DIR__ . '/../utility/Logger.php';
+
 /**
  * Finnhub WebSocket Client
  * 
@@ -24,7 +26,8 @@ class FinnhubWebSocketClient {
     private $lastCandleCheck = []; // Track when we last checked for closed candles
     
     // Market status tracking
-    private $marketStatus = 'open'; // 'open' or 'closed'
+    private $marketStatus = 'open'; // 'open' or 'closed' (for forex/commodities)
+    private $stockMarketStatus = 'open'; // 'open' or 'closed' (for stocks)
     private $lastTradeTime = []; // Track last trade time per pair: [pair] => timestamp
     private $marketStatusCheckInterval = 60; // Check every 60 seconds
     private $noTradeThreshold = 300; // 5 minutes of no trades = market closed
@@ -96,19 +99,20 @@ class FinnhubWebSocketClient {
             $this->checkMarketStatus();
         });
         
-        echo "[CANDLE] Candle aggregation initialized for forex/commodity pairs\n";
-        echo "[MARKET] Market status monitoring initialized (threshold: {$this->noTradeThreshold}s)\n";
+        Logger::init('finnhub.log');
+        Logger::info("[CANDLE] Candle aggregation initialized for forex/commodity pairs");
+        Logger::info("[MARKET] Market status monitoring initialized (threshold: {$this->noTradeThreshold}s)");
     }
     
     public function connect() {
         if (empty($this->apiKey) || $this->apiKey === 'your_finnhub_api_key_here') {
-            echo "WARNING: Finnhub API key not configured. Skipping Finnhub connection.\n";
-            echo "Please set FINNHUB_API_KEY in your .env file to enable forex/commodity trading.\n";
-            echo "Get a free API key at: https://finnhub.io/register\n";
+            Logger::warning("Finnhub API key not configured. Skipping Finnhub connection.");
+            Logger::info("Please set FINNHUB_API_KEY in your .env file to enable forex/commodity trading.");
+            Logger::info("Get a free API key at: https://finnhub.io/register");
             return;
         }
         
-        echo "Connecting to Finnhub WebSocket...\n";
+        Logger::info("Connecting to Finnhub WebSocket...");
         
         // Finnhub WebSocket URL with API key
         $wsUrl = "wss://ws.finnhub.io?token=" . $this->apiKey;
@@ -121,7 +125,7 @@ class FinnhubWebSocketClient {
         
         $connector($wsUrl)->then(
             function($conn) {
-                echo "Connected to Finnhub WebSocket!\n";
+                Logger::info("Connected to Finnhub WebSocket!");
                 $this->wsConnection = $conn;
                 $this->reconnectAttempts = 0;
                 
@@ -132,7 +136,7 @@ class FinnhubWebSocketClient {
                 // Give it 10 seconds to receive first trades, then determine initial status
                 $this->loop->addTimer(10, function() {
                     $this->checkMarketStatus();
-                    echo "[MARKET] Initial market status check completed\n";
+                    Logger::info("[MARKET] Initial market status check completed");
                 });
                 
                 $conn->on('message', function($msg) {
@@ -140,38 +144,38 @@ class FinnhubWebSocketClient {
                 });
                 
                 $conn->on('close', function($code = null, $reason = null) {
-                    echo "Finnhub WebSocket closed (Code: {$code}, Reason: {$reason})\n";
+                    Logger::warning("Finnhub WebSocket closed (Code: {$code}, Reason: {$reason})");
                     
                     if ($this->reconnectAttempts < $this->maxReconnectAttempts) {
                         $this->reconnectAttempts++;
                         $delay = min(5 * $this->reconnectAttempts, 60); // Max 60 seconds
-                        echo "Reconnecting in {$delay} seconds... (Attempt {$this->reconnectAttempts}/{$this->maxReconnectAttempts})\n";
+                        Logger::info("Reconnecting in {$delay} seconds... (Attempt {$this->reconnectAttempts}/{$this->maxReconnectAttempts})");
                         
                         $this->loop->addTimer($delay, function() {
                             $this->connect();
                         });
                     } else {
-                        echo "Max reconnection attempts reached. Please check your API key and network connection.\n";
+                        Logger::error("Max reconnection attempts reached. Please check your API key and network connection.");
                     }
                 });
                 
                 $conn->on('error', function($e) {
-                    echo "Finnhub WebSocket error: {$e->getMessage()}\n";
+                    Logger::error("Finnhub WebSocket error: {$e->getMessage()}");
                 });
             },
             function($e) {
-                echo "Could not connect to Finnhub: {$e->getMessage()}\n";
+                Logger::error("Could not connect to Finnhub: {$e->getMessage()}");
                 
                 if ($this->reconnectAttempts < $this->maxReconnectAttempts) {
                     $this->reconnectAttempts++;
                     $delay = min(5 * $this->reconnectAttempts, 60);
-                    echo "Retrying in {$delay} seconds... (Attempt {$this->reconnectAttempts}/{$this->maxReconnectAttempts})\n";
+                    Logger::info("Retrying in {$delay} seconds... (Attempt {$this->reconnectAttempts}/{$this->maxReconnectAttempts})");
                     
                     $this->loop->addTimer($delay, function() {
                         $this->connect();
                     });
                 } else {
-                    echo "Could not establish Finnhub connection after {$this->maxReconnectAttempts} attempts.\n";
+                    Logger::error("Could not establish Finnhub connection after {$this->maxReconnectAttempts} attempts.");
                 }
             }
         );
@@ -190,9 +194,21 @@ class FinnhubWebSocketClient {
                 ]);
                 
                 $conn->send($subscribeMsg);
-                echo "Subscribed to Finnhub symbol: {$finnhubSymbol} (our pair: {$pair})\n";
+                
+                // Identify pair type for logging
+                $pairType = 'unknown';
+                if (strpos($finnhubSymbol, 'OANDA:') === 0) {
+                    $pairType = 'forex/commodity';
+                } else {
+                    $pairType = 'stock';
+                }
+                
+                Logger::info("Subscribed to Finnhub symbol: {$finnhubSymbol} ({$pairType}) -> our pair: {$pair}");
             }
         }
+        
+        Logger::warning("[FINNHUB] Note: Stock real-time trades require a paid Finnhub subscription.");
+        Logger::info("[FINNHUB] Free tier only includes forex (OANDA) data. Check https://finnhub.io/pricing");
     }
     
     private function handleFinnhubMessage($msg) {
@@ -202,8 +218,10 @@ class FinnhubWebSocketClient {
             // Finnhub sends different message types:
             // 1. {"type":"trade","data":[{"s":"OANDA:EUR_USD","p":1.0850,"t":1610087800000,"v":1},...]}
             // 2. {"type":"ping"} - heartbeat
+            // 3. {"type":"error","msg":"..."} - error message
             
             if (!isset($data['type'])) {
+                Logger::warning("[FINNHUB] Unknown message format: {$msg}");
                 return;
             }
             
@@ -215,13 +233,19 @@ class FinnhubWebSocketClient {
                 return;
             }
             
+            if ($data['type'] === 'error') {
+                Logger::error("[FINNHUB] Error message: " . ($data['msg'] ?? 'Unknown error'));
+                return;
+            }
+            
             if ($data['type'] === 'trade' && isset($data['data'])) {
                 $this->processTrades($data['data']);
+            } else {
+                Logger::debug("[FINNHUB] Unhandled message type '{$data['type']}': {$msg}");
             }
             
         } catch (Exception $e) {
-            error_log("Error processing Finnhub message: " . $e->getMessage());
-            echo "Error processing Finnhub message: " . $e->getMessage() . "\n";
+            Logger::error("Error processing Finnhub message: " . $e->getMessage());
         }
     }
     
@@ -256,7 +280,7 @@ class FinnhubWebSocketClient {
                 // Aggregate this tick into candles for all intervals
                 $this->aggregateTick($ourPair, $price, $timestamp);
                 
-                echo "Finnhub price update: {$ourPair} ({$pairKey}) = {$price}\n";
+                Logger::debug("Finnhub price update: {$ourPair} ({$pairKey}) = {$price}");
             }
         }
         
@@ -328,7 +352,7 @@ class FinnhubWebSocketClient {
                     'isClosed' => false
                 ];
                 
-                echo "[CANDLE] New {$interval} candle for {$pair}: Open={$price}\n";
+                Logger::info("[CANDLE] New {$interval} candle for {$pair}: Open={$price}");
             } else {
                 // Update existing candle
                 $candle = &$this->candles[$pair][$interval];
@@ -369,7 +393,7 @@ class FinnhubWebSocketClient {
                     // Mark candle as closed
                     $this->candles[$pair][$interval]['isClosed'] = true;
                     
-                    echo "[CANDLE] Closed {$interval} candle for {$pair}: O={$candle['open']} H={$candle['high']} L={$candle['low']} C={$candle['close']}\n";
+                    Logger::info("[CANDLE] Closed {$interval} candle for {$pair}: O={$candle['open']} H={$candle['high']} L={$candle['low']} C={$candle['close']}");
                     
                     // Broadcast closed candle to all subscribed clients
                     $this->server->broadcastCandle($this->candles[$pair][$interval]);
@@ -416,49 +440,74 @@ class FinnhubWebSocketClient {
     }
     
     /**
-     * Check market status based on actual forex market hours
-     * Forex markets are open Sunday 5 PM EST to Friday 5 PM EST
+     * Check market status based on actual market hours
+     * Forex/Commodities: Sunday 5 PM EST to Friday 5 PM EST
+     * Stocks: Monday-Friday 2:30 PM GMT to 9:00 PM GMT
      * Also checks trade activity as a secondary indicator
      */
     private function checkMarketStatus() {
         $currentTime = time();
         
-        // Determine market status based on time and day
-        $expectedStatus = $this->isForexMarketOpen() ? 'open' : 'closed';
+        // Check forex/commodity market status
+        $expectedForexStatus = $this->isForexMarketOpen() ? 'open' : 'closed';
         
-        // Get trade activity status
-        $anyRecentTrades = false;
+        // Check stock market status
+        $expectedStockStatus = $this->isStockMarketOpen() ? 'open' : 'closed';
+        
+        // Get trade activity status for forex/commodities and stocks separately
+        $anyRecentForexTrades = false;
+        $anyRecentStockTrades = false;
+        
         foreach ($this->lastTradeTime as $pair => $lastTime) {
             $timeSinceLastTrade = $currentTime - $lastTime;
             if ($timeSinceLastTrade < $this->noTradeThreshold) {
-                $anyRecentTrades = true;
-                break;
+                // Determine if this is a stock or forex/commodity pair
+                if (in_array($pair, ['MSFT/USD', 'AAPL/USD', 'AMZN/USD', 'META/USD', 'NVDA/USD'])) {
+                    $anyRecentStockTrades = true;
+                } else {
+                    $anyRecentForexTrades = true;
+                }
             }
         }
         
-        // If market should be closed by hours, always report closed
-        // If market should be open by hours, but no trades received, also report closed (might be holiday)
-        $newStatus = $expectedStatus === 'open' && !$anyRecentTrades ? 'closed' : $expectedStatus;
+        // Determine final statuses
+        $newForexStatus = $expectedForexStatus === 'open' && !$anyRecentForexTrades ? 'closed' : $expectedForexStatus;
+        $newStockStatus = $expectedStockStatus === 'open' && !$anyRecentStockTrades ? 'closed' : $expectedStockStatus;
         
-        $previousStatus = $this->marketStatus;
+        $previousForexStatus = $this->marketStatus;
+        $previousStockStatus = $this->stockMarketStatus;
         
-        // Market status changed - broadcast to all clients
-        if ($previousStatus !== $newStatus) {
-            $this->marketStatus = $newStatus;
+        // Check if forex market status changed
+        if ($previousForexStatus !== $newForexStatus) {
+            $this->marketStatus = $newForexStatus;
             
-            if ($newStatus === 'closed') {
-                $reason = $expectedStatus === 'closed' ? 'outside market hours' : 'no trade activity';
-                echo "[MARKET] Market status changed: OPEN → CLOSED ({$reason})\n";
+            if ($newForexStatus === 'closed') {
+                $reason = $expectedForexStatus === 'closed' ? 'outside market hours' : 'no trade activity';
+                Logger::warning("[FOREX] Market status changed: OPEN → CLOSED ({$reason})");
             } else {
-                echo "[MARKET] Market status changed: CLOSED → OPEN (market hours + trade activity detected)\n";
+                Logger::info("[FOREX] Market status changed: CLOSED → OPEN (market hours + trade activity detected)");
             }
+        }
+        
+        // Check if stock market status changed
+        if ($previousStockStatus !== $newStockStatus) {
+            $this->stockMarketStatus = $newStockStatus;
             
-            // Broadcast market status to all clients
-            $this->broadcastMarketStatus($newStatus);
+            if ($newStockStatus === 'closed') {
+                $reason = $expectedStockStatus === 'closed' ? 'outside market hours' : 'no trade activity';
+                Logger::warning("[STOCKS] Market status changed: OPEN → CLOSED ({$reason})");
+            } else {
+                Logger::info("[STOCKS] Market status changed: CLOSED → OPEN (market hours + trade activity detected)");
+            }
+        }
+        
+        // Broadcast market status if either changed
+        if ($previousForexStatus !== $newForexStatus || $previousStockStatus !== $newStockStatus) {
+            $this->broadcastMarketStatus($newForexStatus, $newStockStatus);
         }
         
         // Debug: Show market status information
-        echo "[MARKET] Expected: {$expectedStatus}, Recent trades: " . ($anyRecentTrades ? 'yes' : 'no') . ", Final: {$newStatus}\n";
+        Logger::debug("[MARKET] Forex: {$newForexStatus} (expected: {$expectedForexStatus}, trades: " . ($anyRecentForexTrades ? 'yes' : 'no') . "), Stocks: {$newStockStatus} (expected: {$expectedStockStatus}, trades: " . ($anyRecentStockTrades ? 'yes' : 'no') . ")");
     }
     
     /**
@@ -506,6 +555,36 @@ class FinnhubWebSocketClient {
     }
 
     /**
+     * Check if stock market is open based on time and day
+     * Stock markets: Monday-Friday 2:30 PM GMT to 9:00 PM GMT
+     * 
+     * @return bool - true if market should be open
+     */
+    public static function isStockMarketOpen() {
+        // Get current time in GMT timezone (stock market timezone)
+        $timezone = new \DateTimeZone('GMT');
+        $now = new \DateTime('now', $timezone);
+        
+        $dayOfWeek = (int)$now->format('w'); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+        $hour = (int)$now->format('H');
+        $minute = (int)$now->format('i');
+        $time = $hour * 60 + $minute; // Convert to minutes since midnight
+        
+        // Market opens at 2:30 PM (14:30) = 870 minutes
+        $openTime = 14 * 60 + 30; // 870 minutes
+        // Market closes at 9:00 PM (21:00) = 1260 minutes
+        $closeTime = 21 * 60; // 1260 minutes
+        
+        // Monday to Friday: open from 2:30 PM to 9:00 PM GMT
+        if ($dayOfWeek >= 1 && $dayOfWeek <= 5) {
+            return $time >= $openTime && $time < $closeTime;
+        }
+        
+        // Saturday and Sunday: always closed
+        return false;
+    }
+
+    /**
      * Get the next market open time as a Unix timestamp
      * 
      * @return int|null - Unix timestamp of next open, or null if currently open
@@ -540,22 +619,103 @@ class FinnhubWebSocketClient {
     }
     
     /**
+     * Get the next stock market open time as a Unix timestamp
+     * 
+     * @return int|null - Unix timestamp of next open, or null if currently open
+     */
+    public static function getNextStockOpenTimestamp() {
+        $timezone = new \DateTimeZone('GMT');
+        $now = new \DateTime('now', $timezone);
+        
+        if (self::isStockMarketOpen()) {
+            return null;
+        }
+        
+        $dayOfWeek = (int)$now->format('w');
+        $hour = (int)$now->format('H');
+        $minute = (int)$now->format('i');
+        $timeInMinutes = $hour * 60 + $minute;
+        $openTimeInMinutes = 14 * 60 + 30; // 2:30 PM
+        
+        $nextOpen = clone $now;
+        
+        // If it's a weekday before 2:30 PM, market opens today
+        if ($dayOfWeek >= 1 && $dayOfWeek <= 5 && $timeInMinutes < $openTimeInMinutes) {
+            $nextOpen->setTime(14, 30, 0);
+        }
+        // If it's Friday after market close or Saturday/Sunday, market opens next Monday
+        elseif ($dayOfWeek === 5 || $dayOfWeek === 6 || $dayOfWeek === 0) {
+            $nextOpen->modify('next Monday');
+            $nextOpen->setTime(14, 30, 0);
+        }
+        // If it's a weekday after market close, market opens tomorrow
+        else {
+            $nextOpen->modify('+1 day');
+            $nextOpen->setTime(14, 30, 0);
+        }
+        
+        return $nextOpen->getTimestamp();
+    }
+    
+    /**
      * Broadcast market status to all clients
      * 
-     * @param string $status - 'open' or 'closed'
+     * @param string $forexStatus - 'open' or 'closed' for forex/commodities
+     * @param string $stockStatus - 'open' or 'closed' for stocks
      */
-    private function broadcastMarketStatus($status) {
-        // The server's broadcastMarketStatus will calculate next open time
-        $this->server->broadcastMarketStatus($status);
+    private function broadcastMarketStatus($forexStatus, $stockStatus) {
+        // Prepare market status data with next open times
+        $marketData = [
+            'forex' => [
+                'status' => $forexStatus,
+                'market_type' => 'Forex & Commodities',
+                'hours' => 'Sunday 5:00 PM EST - Friday 5:00 PM EST'
+            ],
+            'stocks' => [
+                'status' => $stockStatus,
+                'market_type' => 'Stocks & Indices',
+                'hours' => 'Monday-Friday 2:30 PM - 9:00 PM GMT'
+            ]
+        ];
         
-        $logMsg = "[MARKET] Broadcasted market status: {$status}";
-        if ($status === 'closed') {
+        // Add next open time for forex if closed
+        if ($forexStatus === 'closed') {
             $nextOpen = self::getNextOpenTimestamp();
             if ($nextOpen) {
                 $remaining = $nextOpen - time();
-                $logMsg .= " (Next open in " . floor($remaining / 3600) . "h " . floor(($remaining % 3600) / 60) . "m)";
+                $marketData['forex']['next_open'] = $nextOpen;
+                $marketData['forex']['next_open_formatted'] = date('Y-m-d H:i:s T', $nextOpen);
+                $marketData['forex']['remaining'] = $remaining; // seconds until open
+                $marketData['forex']['remaining_formatted'] = floor($remaining / 3600) . "h " . floor(($remaining % 3600) / 60) . "m";
             }
         }
-        echo $logMsg . "\n";
+        
+        // Add next open time for stocks if closed
+        if ($stockStatus === 'closed') {
+            $nextOpen = self::getNextStockOpenTimestamp();
+            if ($nextOpen) {
+                $remaining = $nextOpen - time();
+                $marketData['stocks']['next_open'] = $nextOpen;
+                $marketData['stocks']['next_open_formatted'] = date('Y-m-d H:i:s T', $nextOpen);
+                $marketData['stocks']['remaining'] = $remaining; // seconds until open
+                $marketData['stocks']['remaining_formatted'] = floor($remaining / 3600) . "h " . floor(($remaining % 3600) / 60) . "m";
+            }
+        }
+        
+        // The server's broadcastMarketStatus will send this to clients
+        $this->server->broadcastMarketStatus($marketData);
+        
+        // Log the broadcast
+        $logMsg = "[MARKET] Broadcasted status - Forex: {$forexStatus}";
+        if ($forexStatus === 'closed' && isset($marketData['forex']['next_open'])) {
+            $remaining = $marketData['forex']['next_open'] - time();
+            $logMsg .= " (opens in " . floor($remaining / 3600) . "h " . floor(($remaining % 3600) / 60) . "m)";
+        }
+        $logMsg .= ", Stocks: {$stockStatus}";
+        if ($stockStatus === 'closed' && isset($marketData['stocks']['next_open'])) {
+            $remaining = $marketData['stocks']['next_open'] - time();
+            $logMsg .= " (opens in " . floor($remaining / 3600) . "h " . floor(($remaining % 3600) / 60) . "m)";
+        }
+        Logger::info($logMsg);
     }
 }
