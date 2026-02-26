@@ -1,0 +1,2 @@
+*Improvement to stocks assets and proper parsing to twelveData
+*Added market status (open/close time) monitoring for stocks trading
