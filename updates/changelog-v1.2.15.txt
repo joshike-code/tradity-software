@@ -1,0 +1,1 @@
+*Fixed market status error by sending market data on initial connect to websocket
