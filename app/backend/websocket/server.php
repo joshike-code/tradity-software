@@ -77,6 +77,60 @@ class TradingWebSocketServer implements MessageComponentInterface {
         Logger::info("Trade closure notifications enabled (SL/TP/Margin/Alter/Admin)");
         Logger::info("Pending order trigger notifications enabled");
         Logger::info("Chart alteration system enabled");
+        
+        // Initialize market status immediately (don't wait for Finnhub)
+        $this->initializeMarketStatus();
+    }
+    
+    /**
+     * Initialize market status based on current time
+     * Called during server startup to avoid "unknown" status
+     */
+    private function initializeMarketStatus() {
+        $forexStatus = FinnhubWebSocketClient::isForexMarketOpen() ? 'open' : 'closed';
+        $stockStatus = FinnhubWebSocketClient::isStockMarketOpen() ? 'open' : 'closed';
+        
+        $marketData = [
+            'forex' => [
+                'status' => $forexStatus,
+                'market_type' => 'Forex & Commodities',
+                'hours' => 'Sunday 5:00 PM EST - Friday 5:00 PM EST'
+            ],
+            'stocks' => [
+                'status' => $stockStatus,
+                'market_type' => 'Stocks & Indices',
+                'hours' => 'Monday-Friday 2:30 PM - 9:00 PM GMT'
+            ]
+        ];
+        
+        // Add next open times if closed
+        if ($forexStatus === 'closed') {
+            $nextOpen = FinnhubWebSocketClient::getNextOpenTimestamp();
+            if ($nextOpen) {
+                $remaining = $nextOpen - time();
+                $marketData['forex']['next_open'] = $nextOpen;
+                $marketData['forex']['next_open_formatted'] = date('Y-m-d H:i:s T', $nextOpen);
+                $marketData['forex']['remaining'] = $remaining;
+                $marketData['forex']['remaining_formatted'] = floor($remaining / 3600) . "h " . floor(($remaining % 3600) / 60) . "m";
+            }
+        }
+        
+        if ($stockStatus === 'closed') {
+            $nextOpen = FinnhubWebSocketClient::getNextStockOpenTimestamp();
+            if ($nextOpen) {
+                $remaining = $nextOpen - time();
+                $marketData['stocks']['next_open'] = $nextOpen;
+                $marketData['stocks']['next_open_formatted'] = date('Y-m-d H:i:s T', $nextOpen);
+                $marketData['stocks']['remaining'] = $remaining;
+                $marketData['stocks']['remaining_formatted'] = floor($remaining / 3600) . "h " . floor(($remaining % 3600) / 60) . "m";
+            }
+        }
+        
+        // Set the market data
+        $this->currentMarketData = $marketData;
+        $this->currentMarketStatus = $forexStatus; // Use forex as primary for backward compatibility
+        
+        Logger::info("[MARKET] Initial status - Forex: {$forexStatus}, Stocks: {$stockStatus}");
     }
     
     /**
