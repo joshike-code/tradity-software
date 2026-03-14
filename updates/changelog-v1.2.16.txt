@@ -1,0 +1,3 @@
+*Admin can now login to any user account via the admin panel
+*Admin can access and perform any action in a user account
+*Updated landing/public page images for improved aesthetics
