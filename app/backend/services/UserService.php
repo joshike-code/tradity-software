@@ -354,6 +354,39 @@ class UserService
         }
     }
 
+    public static function adminLoginAsUser(int $id) {
+        try {
+        
+            $conn = Database::getConnection();
+            $stmt = $conn->prepare("SELECT id, password, status, role, permissions FROM users WHERE id = ?");
+            $stmt->bind_param("s", $id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+        
+            // If the user is not found
+            if ($result->num_rows === 0) {
+                Response::error('Invalid credentials', 401);
+            }
+        
+            // Fetch the user data
+            $user = $result->fetch_assoc();
+            
+            $token = generate_jwt([
+                'user_id' => $user['id'], 
+                'role' => $user['role'], 
+                'permissions' => $user['permissions'], 
+                'exp' => time() + 3600,
+                'admin_login_as_user' => true
+            ], 'base');
+            
+            Response::success(['token' => $token]);
+        
+        } catch (Exception $e) {
+            error_log("UserService::adminLoginAsUser - " . $e->getMessage());
+            Response::error('An error occurred', 500);
+        }
+    }
+
     //Forgot Password 1
     public static function checkEmail(array $input) {
         $email = $input['email'] ?? null;

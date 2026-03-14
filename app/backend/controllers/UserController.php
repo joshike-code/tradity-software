@@ -58,6 +58,10 @@ class UserController {
         UserService::deleteUser($user_id, 'admin');
     }
 
+    public static function loginAsUser($user_id) {
+        UserService::adminLoginAsUser($user_id);
+    }
+
     public static function searchUsersByEmail($email) {
         UserService::searchUsersByEmail($email);
     }

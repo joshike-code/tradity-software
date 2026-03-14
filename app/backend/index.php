@@ -187,6 +187,10 @@ switch($request) {
         require 'routes/admin/manageServer.php';
         break;
 
+    case $host.'api/admin/login_as_user':
+        require 'routes/admin/loginAsUser.php';
+        break;
+
     case $host.'api/admin/user':
         require 'routes/admin/user.php';
         break;
