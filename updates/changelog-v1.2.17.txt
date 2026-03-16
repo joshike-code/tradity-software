@@ -1,0 +1,1 @@
+*Fixed double websocket connection when login as user is used
