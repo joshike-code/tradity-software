@@ -93,7 +93,7 @@ class PaymentService
                 payments p
             INNER JOIN 
                 users u ON p.user_id = u.id
-        WHERE p.method != 'order'");
+        WHERE p.method != 'bot_trade' AND p.method != 'order'");
         $stmt->execute();
         $result = $stmt->get_result();
         $payments = [];
@@ -107,7 +107,7 @@ class PaymentService
         // }
 
         // Total referral earnings
-        $stmtTotal = $conn->query("SELECT COUNT(*) AS total_payments FROM payments WHERE method != 'order'");
+        $stmtTotal = $conn->query("SELECT COUNT(*) AS total_payments FROM payments WHERE method != 'bot_trade' AND method != 'order'");
         $total_payments_count = intval($stmtTotal->fetch_assoc()['total_payments']);
 
         Response::success([

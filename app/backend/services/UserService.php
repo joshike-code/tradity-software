@@ -365,7 +365,7 @@ class UserService
         
             // If the user is not found
             if ($result->num_rows === 0) {
-                Response::error('Invalid credentials', 401);
+                Response::error('Invalid credentials', 400);
             }
         
             // Fetch the user data
