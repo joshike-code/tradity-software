@@ -1,0 +1,1 @@
+*Removed bot_trade logs in admin payments history
