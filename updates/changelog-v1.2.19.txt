@@ -1,0 +1,1 @@
+*Fix for homepage name & logo reset bug (caused by previous update v1.2.16)
