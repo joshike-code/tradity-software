@@ -390,6 +390,22 @@ return [
         'status' => 'inactive',
         'date_updated' => gmdate('Y-m-d H:i:s')
     ],
+    [
+        'name' => 'SPCX/USD',
+        'type' => 'stock',
+        'pair1' => 'SPCX',
+        'pair2' => 'USD',
+        'digits' => 2,
+        'lot_size' => 1,
+        'pip_price' => 10,
+        'pip_value' => 0.01,
+        'spread' => 0.10,
+        'min_volume' => 0.01,
+        'max_volume' => 100.00,
+        'margin_percent' => 500,
+        'status' => 'inactive',
+        'date_updated' => gmdate('Y-m-d H:i:s')
+    ],
     
     // ============= INDICES =============
     [

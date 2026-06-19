@@ -68,6 +68,7 @@ class FinnhubWebSocketClient {
         'AMZN/USD' => 'AMZN',  // Amazon
         'META/USD' => 'META',  // Meta (Facebook)
         'NVDA/USD' => 'NVDA',  // NVIDIA
+        'SPCX/USD' => 'SPCX',  // The SPAC and New Issue ETF
         
         // Indices
         'NASDAQ/USD' => 'OANDA:NAS100_USD', // NASDAQ 100
@@ -462,7 +463,7 @@ class FinnhubWebSocketClient {
             $timeSinceLastTrade = $currentTime - $lastTime;
             if ($timeSinceLastTrade < $this->noTradeThreshold) {
                 // Determine if this is a stock or forex/commodity pair
-                if (in_array($pair, ['MSFT/USD', 'AAPL/USD', 'AMZN/USD', 'META/USD', 'NVDA/USD'])) {
+                if (in_array($pair, ['MSFT/USD', 'AAPL/USD', 'AMZN/USD', 'META/USD', 'NVDA/USD', 'SPCX/USD'])) {
                     $anyRecentStockTrades = true;
                 } else {
                     $anyRecentForexTrades = true;
