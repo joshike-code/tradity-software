@@ -1,0 +1,2 @@
+*Added SPCX stock as a new available stock.
+*Minor UI improvements.
