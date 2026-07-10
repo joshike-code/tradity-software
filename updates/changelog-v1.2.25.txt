@@ -1,0 +1,3 @@
+*Social login (Google, Facebook and Apple) now functional.
+*Add your auth keys in settings > Social authentication keys.
+*Enable or disable any social login provider by filling its auth keys or leaving it empty.
