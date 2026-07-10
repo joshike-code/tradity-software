@@ -11,7 +11,7 @@ class ApiKeysService {
     private static string $envFile = __DIR__ . '/../.env';
 
     // Read API keys from .env - returns true/false for keys that have values or not
-    public static function getApiKeys($keyNames = ['FINNHUB_API_KEY'])
+    public static function getApiKeys($keyNames = ['FINNHUB_API_KEY', 'TWELVE_DATA_API_KEY', 'GOOGLE_CLIENT_ID', 'GOOGLE_CLIENT_SECRET', 'FACEBOOK_APP_ID', 'FACEBOOK_APP_SECRET', 'APPLE_CLIENT_ID', 'APPLE_TEAM_ID', 'APPLE_KEY_ID', 'APPLE_PRIVATE_KEY'])
     {
         if (!file_exists(self::$envFile)) {
             Response::error(".env file not found", 500);
@@ -72,7 +72,7 @@ class ApiKeysService {
 
         // Return updated settings - get the keys that were just updated
         $updatedKeys = array_keys($input);
-        $updatedSettings = self::getApiKeys($updatedKeys);
+        $updatedSettings = self::getApiKeys();
         Response::success($updatedSettings);
     }
 }

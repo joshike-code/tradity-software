@@ -1,0 +1,28 @@
+<?php
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+require_once __DIR__ . '/../controllers/SocialAuthController.php';
+
+$action = $_GET['action'] ?? '';
+
+switch ($_SERVER['REQUEST_METHOD']) {
+
+    case 'GET':
+        SocialAuthController::getSocialKeys();
+        break;
+
+    case 'POST':
+        SocialAuthController::socialLogin();
+        break;
+
+    default:
+        http_response_code(405);
+        echo json_encode(['status' => 'error', 'message' => 'Method not allowed']);
+        break;
+}

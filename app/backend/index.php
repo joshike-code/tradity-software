@@ -62,7 +62,11 @@ switch($request) {
     case $host.'api/register':
         require 'routes/register.php';
         break;
-        
+
+    case $host.'api/social_auth':
+        require 'routes/socialAuth.php';
+        break;
+
     case $host.'api/user':
         require 'routes/user.php';
         break;

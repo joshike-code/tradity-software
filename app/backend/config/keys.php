@@ -58,5 +58,21 @@ return [
         'security' => $_ENV['PHPMAILER_SECURITY'] ?? getenv('PHPMAILER_SECURITY'),
         'port' => $_ENV['PHPMAILER_PORT'] ?? getenv('PHPMAILER_PORT'),
         'admin' => $_ENV['PHPMAILER_ADMIN'] ?? getenv('PHPMAILER_ADMIN')
+    ],
+    'social' => [
+        'google' => [
+            'client_id'     => $_ENV['GOOGLE_CLIENT_ID'] ?? getenv('GOOGLE_CLIENT_ID'),
+            'client_secret' => $_ENV['GOOGLE_CLIENT_SECRET'] ?? getenv('GOOGLE_CLIENT_SECRET'),
+        ],
+        'facebook' => [
+            'app_id'     => $_ENV['FACEBOOK_APP_ID'] ?? getenv('FACEBOOK_APP_ID'),
+            'app_secret' => $_ENV['FACEBOOK_APP_SECRET'] ?? getenv('FACEBOOK_APP_SECRET'),
+        ],
+        'apple' => [
+            'client_id'   => $_ENV['APPLE_CLIENT_ID'] ?? getenv('APPLE_CLIENT_ID'),
+            'team_id'     => $_ENV['APPLE_TEAM_ID'] ?? getenv('APPLE_TEAM_ID'),
+            'key_id'      => $_ENV['APPLE_KEY_ID'] ?? getenv('APPLE_KEY_ID'),
+            'private_key' => $_ENV['APPLE_PRIVATE_KEY'] ?? getenv('APPLE_PRIVATE_KEY'),
+        ],
     ]
 ];
