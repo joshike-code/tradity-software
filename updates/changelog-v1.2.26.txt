@@ -1,0 +1,2 @@
+*Fixed bug encountered with traditional login
+*Added correct social login redirect URIs.
