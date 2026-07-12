@@ -370,10 +370,10 @@ class MailService
                 '{{privacy}}' => 'https://' . $platformUrl . '/privacy',
                 
                 // Social Media Links (customize these in config/keys.php or hardcode)
-                '{{facebook_link}}' => 'https://facebook.com/' . ($keys['social']['facebook'] ?? 'yourpage'),
-                '{{twitter_link}}' => 'https://twitter.com/' . ($keys['social']['twitter'] ?? 'yourhandle'),
-                '{{instagram_link}}' => 'https://instagram.com/' . ($keys['social']['instagram'] ?? 'yourpage'),
-                '{{linkedin_link}}' => 'https://linkedin.com/company/' . ($keys['social']['linkedin'] ?? 'yourcompany'),
+                '{{facebook_link}}' => 'https://facebook.com/' . ($keys['social_handle']['facebook'] ?? 'yourpage'),
+                '{{twitter_link}}' => 'https://twitter.com/' . ($keys['social_handle']['twitter'] ?? 'yourhandle'),
+                '{{instagram_link}}' => 'https://instagram.com/' . ($keys['social_handle']['instagram'] ?? 'yourpage'),
+                '{{linkedin_link}}' => 'https://linkedin.com/company/' . ($keys['social_handle']['linkedin'] ?? 'yourcompany'),
                 
                 // Footer Links
                 '{{unsubscribe_link}}' => 'https://' . $platformUrl . '/app/account/settings',
