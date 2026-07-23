@@ -204,6 +204,7 @@ class UpdateService
     private static string $extractTo = __DIR__ . '/../../../'; // root directory
     private static string $versionFile = __DIR__ . '/../version.txt';
     private static string $statusFile = __DIR__ . '/../update_status.json';
+    private static string $changelogFile = __DIR__ . '/../changelog.txt';
 
     public static function getAvailableUpdates(string $currentVersion): array {
         $config = self::getConfig();
@@ -231,7 +232,7 @@ class UpdateService
         return array_values($updates); // Return as indexed array
     }
 
-    public static function applyUpdate(array $input) {
+    public static function applyUpdate(array $input = []) {
         $currentVersionLine = file_get_contents(self::$versionFile);
         if (preg_match('/version=([\d\.]+)/', $currentVersionLine, $matches)) {
             $currentVersion = $matches[1];
@@ -415,6 +416,12 @@ class UpdateService
             }
 
             self::setStatus('completed', "v$version applied.");
+        }
+
+        // Save the latest update's changelog to changelog.txt in the root folder
+        $lastUpdate = end($updates);
+        if ($lastUpdate && isset($lastUpdate['changelog'])) {
+            file_put_contents(self::$changelogFile, $lastUpdate['changelog']);
         }
 
         Response::success("All updates installed successfully.");

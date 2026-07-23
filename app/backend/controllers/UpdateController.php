@@ -29,20 +29,31 @@ class UpdateController {
         Response::success($result);
     }
 
+    public static function getCurrentChangelog() {
+        $changelogFile = __DIR__ . '/../changelog.txt';
+        
+        if(file_exists($changelogFile)) {
+            $fileContent = file_get_contents($changelogFile);
+            Response::success($fileContent);
+        } else {
+            Response::error('Changelog not found', 404);
+        }
+    }
+
+    public static function removeCurrentChangelog() {
+        $changelogFile = __DIR__ . '/../changelog.txt';
+        
+        if (file_exists($changelogFile)) {
+            @unlink($changelogFile);
+        }
+        Response::success("Changelog removed successfully");
+    }
+
     public static function applyUpdate() {
         $rawInput = json_decode(file_get_contents("php://input"), true);
         $input = SanitizationService::sanitize($rawInput);
-        
-        // Validate Input
-        $rules = [
-            'version' => 'required|string',
-        ];
-        $input_errors = Validator::validate($input, $rules);
-        if(!empty($input_errors)) {
-            Response::error(['validation_errors' => $input_errors], 422);
-        }
 
-        UpdateService::applyUpdate($input);
+        UpdateService::applyUpdate([]);
     }
 }
 

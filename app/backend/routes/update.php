@@ -13,6 +13,9 @@ require_once __DIR__ . '/../controllers/UpdateController.php';
 require_once __DIR__ . '/../core/SanitizationService.php';
 require_once __DIR__ . '/../middleware/AuthMiddleware.php';
 
+$user = AuthMiddleware::handle(['superadmin']);
+$user_id = $user->user_id;
+
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
         $raw_action = $_GET['action'] ?? '';
@@ -21,20 +24,17 @@ switch ($_SERVER['REQUEST_METHOD']) {
             Response::error('Action is required', 400);
         }
         if($action === 'latest') {
-            $user = AuthMiddleware::handle(['superadmin']);
-            $user_id = $user->user_id;
             UpdateController::getLatestUpdate();
         } else if($action === 'changelogs') {
             UpdateController::getAllChangelogs();
+        } else if($action === 'current_changelog') {
+            UpdateController::getCurrentChangelog();
         } else {
             Response::error('Method not allowed', 405);
         }
         break;
 
     case 'POST':
-        $user = AuthMiddleware::handle(['superadmin']);
-        $user_id = $user->user_id;
-
         $raw_action = $_GET['action'] ?? '';
         $action = SanitizationService::sanitizeParam($raw_action);
         if(!$action) {
@@ -48,6 +48,10 @@ switch ($_SERVER['REQUEST_METHOD']) {
         } else {
             Response::error('Method not allowed', 405);
         }
+        break;
+
+    case 'DELETE':
+        UpdateController::removeCurrentChangelog();
         break;
 
     default:
