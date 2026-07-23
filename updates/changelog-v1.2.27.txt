@@ -1,0 +1,4 @@
+*Security vulnerability patched: XSS vulnerability fixed in trade_account/account_statement
+*KYC mobile UI bug fixed - now scrollable
+*Updated multiple backend dependencies - Security updates
+*Added new software updater features
