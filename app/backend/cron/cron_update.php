@@ -18,6 +18,7 @@ try {
     require_once __DIR__ . '/../services/MailService.php';
     require_once __DIR__ . '/../services/PlatformService.php';
     require_once __DIR__ . '/../services/UpdateService.php';
+    require_once __DIR__ . '/../controllers/ServerController.php';
     require_once __DIR__ . '/../config/db.php';
     
     // -------------------------------------------------------------
@@ -153,4 +154,20 @@ try {
     error_log("Cron Auto-Update Error: " . $e->getMessage());
 }
 
-echo "Cron update job finished at " . date('Y-m-d H:i:s') . "\n";
+// -------------------------------------------------------------
+// 3. WebSocket Server Restart Check
+// -------------------------------------------------------------
+try {
+    $restartFile = __DIR__ . '/../restartserver.txt';
+    if (file_exists($restartFile)) {
+        echo "\nRestart notification file detected (restartserver.txt). Restarting WebSocket server...\n";
+        Response::disableExit();
+        ServerController::restartServer();
+        echo "WebSocket server restart sequence completed.\n";
+    }
+} catch (Throwable $e) {
+    echo "ERROR during WebSocket server restart: " . $e->getMessage() . "\n";
+    error_log("Cron Server Restart Error: " . $e->getMessage());
+}
+
+echo "Cron update job finished at " . date('Y-m-d H:i:s') . "\n";
