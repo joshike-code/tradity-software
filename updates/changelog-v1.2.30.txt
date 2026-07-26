@@ -1,0 +1,2 @@
+*More colors added to admin piechart
+*Minor bug fixes to trade sockets
