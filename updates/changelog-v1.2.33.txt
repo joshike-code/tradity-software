@@ -1,0 +1,2 @@
+*Add user directly from admin panel
+*Add multiple/bulk users via CSV in admin panel
