@@ -15,6 +15,10 @@ require_once __DIR__ . '/../services/KycService.php';
 require_once __DIR__ . '/../services/OnlineActivityService.php';
 require_once __DIR__ . '/../services/PlatformService.php';
 require_once __DIR__ . '/../services/NotificationService.php';
+require_once __DIR__ . '/../core/SanitizationService.php';
+require_once __DIR__ . '/../middleware/Validator.php';
+
+use Core\SanitizationService;
 
 class UserService
 {
@@ -352,6 +356,311 @@ class UserService
         } else {
             Response::error('Registration failed. Email may already be in use.', 400);
         }
+    }
+
+    public static function createNewUser(array $input)
+    {
+        $conn = Database::getConnection();
+
+        $email = $input['email'];
+        $country = $input['country'];
+
+        // Check if email already exists
+        $check = $conn->prepare("SELECT id FROM users WHERE email = ?");
+        $check->bind_param("s", $email);
+        $check->execute();
+        $checkResult = $check->get_result();
+
+        if ($checkResult->num_rows > 0) {
+            Response::error('Email already in use', 400);
+        }
+        $check->close();
+
+        $id = uniqid('usr_', true);
+        $password = password_hash($input['password'], PASSWORD_DEFAULT);
+        $fname = $input['fname'];
+        $lname = $input['lname'];
+        $role = 'user';
+
+        // Generate unique referral code
+        $ref_code = strtoupper(substr(bin2hex(random_bytes(4)), 0, 8));
+
+        $kycConfig = KycService::fetchAllKycConfig();
+        $personal_details_isRequired = $kycConfig['personal_details_isRequired'];
+        $trading_assessment_isRequired = $kycConfig['trading_assessment_isRequired'];
+        $financial_assessment_isRequired = $kycConfig['financial_assessment_isRequired'];
+        $identity_verification_isRequired = $kycConfig['identity_verification_isRequired'];
+        $income_verification_isRequired = $kycConfig['income_verification_isRequired'];
+        $address_verification_isRequired = $kycConfig['address_verification_isRequired'];
+        
+        $stmt = $conn->prepare("INSERT INTO users (id, email, password, fname, lname, reg_country, country, role, ref_code, personal_details_isRequired, trading_assessment_isRequired, financial_assessment_isRequired, identity_verification_isRequired, income_verification_isRequired, address_verification_isRequired) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        if (!$stmt) {
+            Response::error('error: prepare failed', 500);
+        }
+
+        $stmt->bind_param("sssssssssssssss", $id, $email, $password, $fname, $lname, $country, $country, $role, $ref_code, $personal_details_isRequired, $trading_assessment_isRequired, $financial_assessment_isRequired, $identity_verification_isRequired, $income_verification_isRequired, $address_verification_isRequired);
+
+        if ($stmt->execute()) {
+
+            // Create Demo Trade Account for user and switch to demo
+            $user_id = $conn->insert_id;
+            $default_balance = PlatformService::getSetting('demo_account_balance', 10000);
+            $account = TradeAccountService::createAccount($user_id, 'demo', $default_balance);
+            TradeAccountService::switchCurrentAccount($user_id, $account['id_hash']);
+
+            NotificationService::sendWelcomeNotification($user_id);
+            Response::success('User created successfully');
+            return true;
+        } else {
+            Response::error('User creation failed', 500);
+        }
+    }
+
+    public static function createUsersFromCsv(array $users)
+    {
+        $conn = Database::getConnection();
+
+        $kycConfig = KycService::fetchAllKycConfig();
+        $personal_details_isRequired = $kycConfig['personal_details_isRequired'] ?? 0;
+        $trading_assessment_isRequired = $kycConfig['trading_assessment_isRequired'] ?? 0;
+        $financial_assessment_isRequired = $kycConfig['financial_assessment_isRequired'] ?? 0;
+        $identity_verification_isRequired = $kycConfig['identity_verification_isRequired'] ?? 0;
+        $income_verification_isRequired = $kycConfig['income_verification_isRequired'] ?? 0;
+        $address_verification_isRequired = $kycConfig['address_verification_isRequired'] ?? 0;
+
+        $default_balance = PlatformService::getSetting('demo_account_balance', 10000);
+
+        $checkStmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
+        $insertStmt = $conn->prepare("INSERT INTO users (id, email, password, fname, lname, reg_country, country, role, ref_code, personal_details_isRequired, trading_assessment_isRequired, financial_assessment_isRequired, identity_verification_isRequired, income_verification_isRequired, address_verification_isRequired) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+        if (!$checkStmt || !$insertStmt) {
+            Response::error('Database prepare statement failed', 500);
+        }
+
+        $createdUsers = [];
+        $failedUsers = [];
+        $seenEmails = [];
+
+        $rules = [
+            'fname'     => 'required|string',
+            'lname'     => 'required|string',
+            'email'     => 'required|email',
+            'country'   => 'required|string',
+            'password'  => 'required|password',
+        ];
+
+        foreach ($users as $index => $rawUser) {
+            $rowNum = $rawUser['_row'] ?? ($index + 2);
+            $user = SanitizationService::sanitize($rawUser);
+
+            if (!empty($user['country'])) {
+                $user['country'] = self::normalizeCountryCode((string)$user['country']);
+            }
+
+            if (empty($user['country']) || strlen($user['country']) !== 2) {
+                $failedUsers[] = [
+                    'row' => $rowNum,
+                    'email' => $user['email'] ?? 'N/A',
+                    'error' => 'Invalid country code: Must be a valid 2-letter country code'
+                ];
+                continue;
+            }
+
+            // Validate fields
+            $errors = Validator::validate($user, $rules);
+            if (!empty($errors)) {
+                $errorMsg = '';
+                if (isset($errors['password'])) {
+                    $errorMsg = 'Password must be at least 8 characters with uppercase, lowercase, and a number';
+                } elseif (isset($errors['email'])) {
+                    $errorMsg = 'Invalid email format';
+                } else {
+                    $firstKey = array_key_first($errors);
+                    $errorMsg = $firstKey . ': ' . $errors[$firstKey][0];
+                }
+                $failedUsers[] = [
+                    'row' => $rowNum,
+                    'email' => $user['email'] ?? 'N/A',
+                    'error' => $errorMsg
+                ];
+                continue;
+            }
+
+            $emailLower = strtolower($user['email']);
+
+            // Check if duplicate in current CSV file batch
+            if (isset($seenEmails[$emailLower])) {
+                $failedUsers[] = [
+                    'row' => $rowNum,
+                    'email' => $user['email'],
+                    'error' => "Duplicate email in CSV (same as row {$seenEmails[$emailLower]})"
+                ];
+                continue;
+            }
+            $seenEmails[$emailLower] = $rowNum;
+
+            // Check if email already in database
+            $checkStmt->bind_param("s", $user['email']);
+            $checkStmt->execute();
+            $checkResult = $checkStmt->get_result();
+
+            if ($checkResult->num_rows > 0) {
+                $failedUsers[] = [
+                    'row' => $rowNum,
+                    'email' => $user['email'],
+                    'error' => 'Email already in use'
+                ];
+                continue;
+            }
+
+            // Generate user data
+            $id = uniqid('usr_', true);
+            $hashedPassword = password_hash($user['password'], PASSWORD_DEFAULT);
+            $fname = $user['fname'];
+            $lname = $user['lname'];
+            $country = $user['country'];
+            $email = $user['email'];
+            $role = 'user';
+            $ref_code = strtoupper(substr(bin2hex(random_bytes(4)), 0, 8));
+
+            $insertStmt->bind_param(
+                "sssssssssssssss",
+                $id,
+                $email,
+                $hashedPassword,
+                $fname,
+                $lname,
+                $country,
+                $country,
+                $role,
+                $ref_code,
+                $personal_details_isRequired,
+                $trading_assessment_isRequired,
+                $financial_assessment_isRequired,
+                $identity_verification_isRequired,
+                $income_verification_isRequired,
+                $address_verification_isRequired
+            );
+
+            if ($insertStmt->execute()) {
+                $userId = $conn->insert_id;
+                try {
+                    $account = TradeAccountService::createAccount($userId, 'demo', $default_balance);
+                    if ($account && isset($account['id_hash'])) {
+                        TradeAccountService::switchCurrentAccount($userId, $account['id_hash']);
+                    }
+                    NotificationService::sendWelcomeNotification($userId);
+                } catch (Exception $e) {
+                    error_log("Error initializing user account or welcome notification: " . $e->getMessage());
+                }
+
+                $createdUsers[] = [
+                    'id' => $userId,
+                    'email' => $email,
+                    'fname' => $fname,
+                    'lname' => $lname,
+                    'row' => $rowNum
+                ];
+            } else {
+                $failedUsers[] = [
+                    'row' => $rowNum,
+                    'email' => $email,
+                    'error' => 'Database error: ' . $insertStmt->error
+                ];
+            }
+        }
+
+        $checkStmt->close();
+        $insertStmt->close();
+
+        $createdCount = count($createdUsers);
+        $failedCount = count($failedUsers);
+
+        if ($createdCount === 0) {
+            Response::error([
+                'message' => 'No users could be created.',
+                'created_count' => 0,
+                'failed_count' => $failedCount,
+                'failed' => $failedUsers
+            ], 400);
+        } elseif ($failedCount > 0) {
+            Response::success([
+                'message' => "Successfully imported {$createdCount} user(s). {$failedCount} user(s) failed.",
+                'created_count' => $createdCount,
+                'failed_count' => $failedCount,
+                'created' => $createdUsers,
+                'failed' => $failedUsers
+            ], 200);
+        } else {
+            Response::success([
+                'message' => "Successfully imported all {$createdCount} user(s).",
+                'created_count' => $createdCount,
+                'failed_count' => 0,
+                'created' => $createdUsers,
+                'failed' => []
+            ], 200);
+        }
+    }
+
+    public static function normalizeCountryCode(string $country): string
+    {
+        $country = trim($country);
+
+        // All 224 ISO-2 country codes matching countriesData.js exactly
+        static $validCodes = [
+            'AD'=>1,'AE'=>1,'AF'=>1,'AG'=>1,'AI'=>1,'AL'=>1,'AM'=>1,'AN'=>1,'AO'=>1,'AR'=>1,
+            'AS'=>1,'AT'=>1,'AU'=>1,'AW'=>1,'AZ'=>1,'BA'=>1,'BB'=>1,'BD'=>1,'BE'=>1,'BF'=>1,
+            'BG'=>1,'BH'=>1,'BI'=>1,'BJ'=>1,'BM'=>1,'BN'=>1,'BO'=>1,'BR'=>1,'BS'=>1,'BT'=>1,
+            'BW'=>1,'BY'=>1,'BZ'=>1,'CA'=>1,'CD'=>1,'CF'=>1,'CG'=>1,'CH'=>1,'CI'=>1,'CK'=>1,
+            'CL'=>1,'CM'=>1,'CN'=>1,'CO'=>1,'CR'=>1,'CU'=>1,'CV'=>1,'CY'=>1,'CZ'=>1,'DE'=>1,
+            'DJ'=>1,'DK'=>1,'DM'=>1,'DO'=>1,'DZ'=>1,'EC'=>1,'EE'=>1,'EG'=>1,'EH'=>1,'ER'=>1,
+            'ES'=>1,'ET'=>1,'FI'=>1,'FJ'=>1,'FK'=>1,'FM'=>1,'FO'=>1,'FR'=>1,'GA'=>1,'GB'=>1,
+            'GD'=>1,'GE'=>1,'GH'=>1,'GI'=>1,'GL'=>1,'GM'=>1,'GN'=>1,'GQ'=>1,'GR'=>1,'GT'=>1,
+            'GU'=>1,'HK'=>1,'HN'=>1,'HR'=>1,'HT'=>1,'HU'=>1,'ID'=>1,'IE'=>1,'IL'=>1,'IM'=>1,
+            'IN'=>1,'IQ'=>1,'IR'=>1,'IS'=>1,'IT'=>1,'JE'=>1,'JM'=>1,'JO'=>1,'JP'=>1,'KE'=>1,
+            'KG'=>1,'KH'=>1,'KI'=>1,'KM'=>1,'KN'=>1,'KR'=>1,'KW'=>1,'KY'=>1,'KZ'=>1,'LA'=>1,
+            'LB'=>1,'LC'=>1,'LI'=>1,'LK'=>1,'LR'=>1,'LS'=>1,'LT'=>1,'LU'=>1,'LV'=>1,'LY'=>1,
+            'MA'=>1,'MC'=>1,'MD'=>1,'ME'=>1,'MF'=>1,'MG'=>1,'MH'=>1,'MK'=>1,'ML'=>1,'MM'=>1,
+            'MN'=>1,'MO'=>1,'MP'=>1,'MQ'=>1,'MR'=>1,'MS'=>1,'MT'=>1,'MU'=>1,'MV'=>1,'MW'=>1,
+            'MX'=>1,'MY'=>1,'MZ'=>1,'NA'=>1,'NC'=>1,'NE'=>1,'NG'=>1,'NI'=>1,'NL'=>1,'NO'=>1,
+            'NP'=>1,'NR'=>1,'NU'=>1,'NZ'=>1,'OM'=>1,'PA'=>1,'PE'=>1,'PF'=>1,'PG'=>1,'PH'=>1,
+            'PK'=>1,'PL'=>1,'PN'=>1,'PR'=>1,'PT'=>1,'PW'=>1,'PY'=>1,'QA'=>1,'RO'=>1,'RS'=>1,
+            'RU'=>1,'RW'=>1,'SA'=>1,'SB'=>1,'SC'=>1,'SD'=>1,'SE'=>1,'SG'=>1,'SH'=>1,'SI'=>1,
+            'SK'=>1,'SL'=>1,'SM'=>1,'SN'=>1,'SO'=>1,'SR'=>1,'ST'=>1,'SV'=>1,'SY'=>1,'SZ'=>1,
+            'TC'=>1,'TD'=>1,'TG'=>1,'TH'=>1,'TJ'=>1,'TK'=>1,'TL'=>1,'TM'=>1,'TN'=>1,'TO'=>1,
+            'TR'=>1,'TT'=>1,'TV'=>1,'TW'=>1,'TZ'=>1,'UA'=>1,'UG'=>1,'US'=>1,'UY'=>1,'UZ'=>1,
+            'VA'=>1,'VC'=>1,'VE'=>1,'VG'=>1,'VI'=>1,'VN'=>1,'VU'=>1,'WF'=>1,'WS'=>1,'YE'=>1,
+            'YT'=>1,'ZA'=>1,'ZM'=>1,'ZW'=>1
+        ];
+
+        $upper = strtoupper($country);
+        if (isset($validCodes[$upper])) {
+            return $upper;
+        }
+
+        static $countryMap = [
+            'united states' => 'US', 'united states of america' => 'US', 'usa' => 'US', 'u.s.' => 'US', 'u.s.a.' => 'US',
+            'united kingdom' => 'GB', 'great britain' => 'GB', 'uk' => 'GB', 'england' => 'GB', 'u.k.' => 'GB',
+            'canada' => 'CA', 'nigeria' => 'NG', 'germany' => 'DE', 'france' => 'FR',
+            'australia' => 'AU', 'italy' => 'IT', 'spain' => 'ES', 'netherlands' => 'NL',
+            'switzerland' => 'CH', 'sweden' => 'SE', 'norway' => 'NO', 'denmark' => 'DK',
+            'brazil' => 'BR', 'india' => 'IN', 'china' => 'CN', 'japan' => 'JP',
+            'south africa' => 'ZA', 'singapore' => 'SG', 'united arab emirates' => 'AE',
+            'uae' => 'AE', 'u.a.e.' => 'AE', 'mexico' => 'MX', 'russia' => 'RU', 'turkey' => 'TR',
+            'ghana' => 'GH', 'kenya' => 'KE', 'egypt' => 'EG', 'argentina' => 'AR',
+            'new zealand' => 'NZ', 'ireland' => 'IE', 'poland' => 'PL', 'portugal' => 'PT',
+            'belgium' => 'BE', 'austria' => 'AT', 'finland' => 'FI', 'greece' => 'GR',
+            'philippines' => 'PH', 'indonesia' => 'ID', 'malaysia' => 'MY', 'vietnam' => 'VN',
+            'thailand' => 'TH', 'pakistan' => 'PK', 'bangladesh' => 'BD', 'colombia' => 'CO',
+            'chile' => 'CL', 'peru' => 'PE', 'venezuela' => 'VE', 'saudi arabia' => 'SA',
+            'israel' => 'IL', 'ukraine' => 'UA', 'czech republic' => 'CZ', 'czechia' => 'CZ',
+            'romania' => 'RO', 'hungary' => 'HU', 'south korea' => 'KR'
+        ];
+        $lower = strtolower($country);
+        if (isset($countryMap[$lower]) && isset($validCodes[$countryMap[$lower]])) {
+            return $countryMap[$lower];
+        }
+        return '';
     }
 
     public static function adminLoginAsUser(int $id) {

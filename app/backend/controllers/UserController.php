@@ -191,6 +191,126 @@ class UserController {
         UserService::updateUserProfile($user_id, $input);
     }
 
+    public static function createNewUser() {
+        $rawInput = json_decode(file_get_contents("php://input"), true);
+        $input = SanitizationService::sanitize($rawInput);
+        
+        // Validate Input
+        $rules = [
+            'fname'  => 'required|string',
+            'lname'  => 'required|string',
+            'email'  => 'required|email',
+            'country'  => 'required|string',
+            'password'  => 'required|password',
+        ];
+        $input_errors = Validator::validate($input, $rules);
+        if(!empty($input_errors)) {
+            Response::error(['validation_errors' => $input_errors], 422);
+        }
+
+        UserService::createNewUser($input);
+    }
+
+    public static function createUsersFromCsv() {
+        $users = [];
+
+        if (isset($_FILES['csv_file']) && $_FILES['csv_file']['error'] === UPLOAD_ERR_OK) {
+            $content = file_get_contents($_FILES['csv_file']['tmp_name']);
+            $users = self::parseCsvContent($content);
+        } elseif (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
+            $content = file_get_contents($_FILES['file']['tmp_name']);
+            $users = self::parseCsvContent($content);
+        } else {
+            $rawBody = file_get_contents("php://input");
+            $rawInput = json_decode($rawBody, true);
+
+            if (isset($rawInput['users']) && is_array($rawInput['users'])) {
+                $users = $rawInput['users'];
+            } elseif (isset($rawInput['csv_content']) && is_string($rawInput['csv_content'])) {
+                $users = self::parseCsvContent($rawInput['csv_content']);
+            } elseif (isset($rawInput['csv_file']) && is_string($rawInput['csv_file'])) {
+                $fileData = $rawInput['csv_file'];
+                if (preg_match('/^data:([^;]+);base64,(.*)$/', $fileData, $matches)) {
+                    $users = self::parseCsvContent(base64_decode($matches[2]));
+                } else {
+                    $users = self::parseCsvContent($fileData);
+                }
+            } elseif (!empty($rawBody) && strpos($rawBody, ',') !== false) {
+                $users = self::parseCsvContent($rawBody);
+            } else {
+                Response::error('No CSV file or user data received', 400);
+            }
+        }
+
+        if (empty($users)) {
+            Response::error('No valid user records found in CSV', 400);
+        }
+
+        UserService::createUsersFromCsv($users);
+    }
+
+    public static function parseCsvContent(string $content): array {
+        // Strip BOM if present
+        $content = preg_replace('/^\xEF\xBB\xBF/', '', $content);
+        if (trim($content) === '') {
+            Response::error('Uploaded CSV file is empty', 400);
+        }
+
+        $stream = fopen('php://temp', 'r+');
+        fwrite($stream, $content);
+        rewind($stream);
+
+        $headerRow = fgetcsv($stream);
+        if (!$headerRow) {
+            fclose($stream);
+            Response::error('Could not parse CSV header row', 400);
+        }
+
+        $headerMap = [];
+        foreach ($headerRow as $index => $colName) {
+            $cleaned = strtolower(trim(str_replace([' ', '_', '-', '.', '"', "'"], '', (string)$colName)));
+            if (in_array($cleaned, ['fname', 'firstname', 'first', 'givenname'])) {
+                $headerMap[$index] = 'fname';
+            } elseif (in_array($cleaned, ['lname', 'lastname', 'last', 'surname', 'familyname'])) {
+                $headerMap[$index] = 'lname';
+            } elseif (in_array($cleaned, ['email', 'emailaddress', 'useremail', 'mail'])) {
+                $headerMap[$index] = 'email';
+            } elseif (in_array($cleaned, ['country', 'regcountry', 'countrycode', 'countryofregistration'])) {
+                $headerMap[$index] = 'country';
+            } elseif (in_array($cleaned, ['password', 'pass', 'newpassword', 'userpassword'])) {
+                $headerMap[$index] = 'password';
+            }
+        }
+
+        $requiredCols = ['fname', 'lname', 'email', 'country', 'password'];
+        $mappedCols = array_values($headerMap);
+        $missingCols = array_diff($requiredCols, $mappedCols);
+
+        if (!empty($missingCols)) {
+            fclose($stream);
+            Response::error('CSV header is missing required column(s): ' . implode(', ', $missingCols) . '. Expected: First Name, Last Name, Email, Country, Password.', 422);
+        }
+
+        $rows = [];
+        $rowNumber = 1;
+        while (($row = fgetcsv($stream)) !== false) {
+            $rowNumber++;
+            $nonEmpty = array_filter($row, fn($cell) => trim((string)$cell) !== '');
+            if (empty($nonEmpty)) {
+                continue;
+            }
+
+            $user = ['_row' => $rowNumber];
+            foreach ($headerMap as $idx => $key) {
+                $user[$key] = isset($row[$idx]) ? trim((string)$row[$idx]) : '';
+            }
+            $rows[] = $user;
+        }
+
+        fclose($stream);
+        return $rows;
+    }
+
     public static function updateAdmin($user_id) {
         $rawInput = json_decode(file_get_contents("php://input"), true);
         $input = SanitizationService::sanitize($rawInput);

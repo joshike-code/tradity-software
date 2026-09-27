@@ -64,6 +64,14 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 $user = AuthMiddleware::requirePermission('mail_users');
                 $user_id = $user->user_id;
                 MailerController::mailUser($id);
+            } elseif($action === 'create') {
+                $user = AuthMiddleware::requirePermission('create_users');
+                $user_id = $user->user_id;
+                UserController::createNewUser();
+            } elseif($action === 'create-csv' || $action === 'csv') {
+                $user = AuthMiddleware::requirePermission('create_users');
+                $user_id = $user->user_id;
+                UserController::createUsersFromCsv();
             } else {
                 Response::error('Invalid action', 400);
             }
