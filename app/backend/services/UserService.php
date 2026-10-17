@@ -792,6 +792,8 @@ class UserService
                 u.identity_verification_isFilled, 
                 u.income_verification_isFilled, 
                 u.address_verification_isFilled, 
+                u.kyc_status,
+                u.kyc_reject_reason,
                 u.date_registered,
                 CASE 
                     WHEN EXISTS (
@@ -847,6 +849,7 @@ class UserService
                 u.status, 
                 u.reg_country, 
                 u.permissions, 
+                u.kyc_status,
                 u.date_registered,
                 CASE 
                     WHEN EXISTS (
@@ -955,28 +958,81 @@ class UserService
     {
         $conn = Database::getConnection();
 
-        $status = $input['status'];
-        $category = $input['category'];
-        if($status !== 'reject') {
-            Response::error('Invalid input', 422);
-        };
+        $status = strtolower($input['status'] ?? '');
+        $category = $input['category'] ?? null;
+        $reason = $input['reason'] ?? '';
 
-        $status_value = 'false';
+        if ($status === 'approve' || $status === 'approved') {
+            $stmt = $conn->prepare("UPDATE users SET kyc_status = 'approved', kyc_reject_reason = NULL WHERE id = ?");
+            $stmt->bind_param("i", $user_id);
 
-        $stmt = $conn->prepare("UPDATE users SET $category = ? WHERE id = ?");
-        $stmt->bind_param("si", $status_value, $user_id);
+            if (!$stmt->execute()) {
+                Response::error('Failed to approve KYC', 500);
+            }
 
-        if (!$stmt->execute()) {
-            Response::error('Status update failed', 500);
-        };
+            NotificationService::sendKYCApprovedNotification($user_id);
+            return true;
+        } elseif ($status === 'reject' || $status === 'rejected') {
+            // Only verification categories can be rejected: identity, income, address
+            $allowedVerificationCategories = [
+                'identity_verification', 'identity_verification_isFilled',
+                'income_verification', 'income_verification_isFilled',
+                'address_verification', 'address_verification_isFilled'
+            ];
 
-        // $kycCategoryName = str_replace('-', ' ', preg_replace('/_[^_]+$/', '', $category));
-        $kycCategoryCamel = str_replace('_isFilled', '', $category);
-        if($status === 'reject') {
-            NotificationService::sendKYCRejectedNotification($user_id, $kycCategoryCamel);
+            if (!empty($category)) {
+                if (!in_array($category, $allowedVerificationCategories)) {
+                    Response::error('This category does not require or support rejection', 400);
+                }
+
+                $column = (strpos($category, '_isFilled') !== false) ? $category : $category . '_isFilled';
+                $kycCategoryCamel = str_replace('_isFilled', '', $column);
+
+                $docColumnMap = [
+                    'identity_verification_isFilled' => 'doc_identity',
+                    'income_verification_isFilled' => 'doc_income',
+                    'address_verification_isFilled' => 'doc_address',
+                ];
+                $docColumn = $docColumnMap[$column] ?? null;
+
+                $sql = "UPDATE users SET 
+                    kyc_status = 'rejected',
+                    kyc_reject_reason = ?,
+                    $column = 'false'" . ($docColumn ? ", $docColumn = NULL" : "") . "
+                WHERE id = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("si", $reason, $user_id);
+
+                if (!$stmt->execute()) {
+                    Response::error('Failed to reject KYC category', 500);
+                }
+
+                NotificationService::sendKYCRejectedNotification($user_id, $kycCategoryCamel, $reason);
+                return true;
+            } else {
+                // Global rejection resets only identity, income, and address verification and un-fills their documents
+                $stmt = $conn->prepare("UPDATE users SET 
+                    kyc_status = 'rejected',
+                    kyc_reject_reason = ?,
+                    identity_verification_isFilled = 'false',
+                    income_verification_isFilled = 'false',
+                    address_verification_isFilled = 'false',
+                    doc_identity = NULL,
+                    doc_income = NULL,
+                    doc_address = NULL
+                WHERE id = ?");
+                $stmt->bind_param("si", $reason, $user_id);
+
+                if (!$stmt->execute()) {
+                    Response::error('Failed to reject KYC', 500);
+                }
+
+                NotificationService::sendKYCRejectedNotification($user_id, 'all', $reason);
+                return true;
+            }
+        } else {
+            Response::error('Invalid KYC status provided. Must be approve or reject.', 422);
         }
-
-        return true;
     }
 
     public static function updateKycConfig($user_id, $input)
@@ -1149,6 +1205,7 @@ class UserService
                 u.status, 
                 u.reg_country, 
                 u.permissions, 
+                u.kyc_status,
                 u.date_registered,
                 CASE 
                     WHEN EXISTS (

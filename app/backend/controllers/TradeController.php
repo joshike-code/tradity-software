@@ -71,7 +71,7 @@ class TradeController {
         if($account['type'] === 'real') {
             $kycStatus = KycService::checkUserKycPermission('trade', $user_id);
             if(!$kycStatus['has_access']) {
-                Response::error('KYC required:' . array_values($kycStatus['incomplete_categories'])[0], 403);
+                Response::error($kycStatus['error_message'] ?? 'KYC verification required', 403);
             }
         }
 

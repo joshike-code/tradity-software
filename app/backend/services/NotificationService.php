@@ -594,10 +594,49 @@ class NotificationService
     }
     
     /**
+     * Send KYC approved notification
+     */
+    public static function sendKYCApprovedNotification(int $userId): void
+    {
+        $title = "KYC Verification Approved!";
+        $message = "Your KYC verification has been reviewed and approved by an administrator. You now have full access to trading, deposits, and withdrawals.";
+        
+        self::sendNotification(
+            $userId,
+            'success',
+            $title,
+            $message,
+            true,
+            'Start Trading',
+            'trade'
+        );
+    }
+
+    /**
      * Send KYC rejected notification
      */
-    public static function sendKYCRejectedNotification(int $userId, string $kycCategoryCamel, string $reason = ''): void
+    public static function sendKYCRejectedNotification(int $userId, string $kycCategoryCamel = 'all', string $reason = ''): void
     {
+        if ($kycCategoryCamel === 'all') {
+            $title = "KYC Verification Rejected";
+            $message = "Your KYC verification was not approved.";
+            if (!empty($reason)) {
+                $message .= " Reason: " . $reason . ".";
+            }
+            $message .= " Please review and refill your verification details to continue.";
+
+            self::sendNotification(
+                $userId,
+                'warning',
+                $title,
+                $message,
+                true,
+                'Refill KYC',
+                'account'
+            );
+            return;
+        }
+
         $kycCategoryName = str_replace('_', ' ', $kycCategoryCamel);
         $kycCategoryDash = str_replace('_', '-', $kycCategoryCamel);
         $page = $kycCategoryDash === 'personal-details' ? 'account' : $kycCategoryDash;

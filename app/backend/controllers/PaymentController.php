@@ -82,7 +82,7 @@ class PaymentController {
 
         $kycStatus = KycService::checkUserKycPermission('deposit', $user_id);
         if(!$kycStatus['has_access']) {
-            Response::error('KYC required:' . array_values($kycStatus['incomplete_categories'])[0], 403);
+            Response::error($kycStatus['error_message'] ?? 'KYC verification required', 403);
         }
 
         CryptoPaymentService::createCryptoPayment($user_id, $input);
@@ -100,6 +100,11 @@ class PaymentController {
         $input_errors = Validator::validate($input, $rules);
         if(!empty($input_errors)) {
             Response::error(['validation_errors' => $input_errors], 422);
+        }
+
+        $kycStatus = KycService::checkUserKycPermission('deposit', $user_id);
+        if(!$kycStatus['has_access']) {
+            Response::error($kycStatus['error_message'] ?? 'KYC verification required', 403);
         }
 
         BankPaymentService::createBankPayment($user_id, $input);
@@ -151,6 +156,11 @@ class PaymentController {
             Response::error(['validation_errors' => $input_errors], 422);
         }
 
+        $kycStatus = KycService::checkUserKycPermission('deposit', $user_id);
+        if(!$kycStatus['has_access']) {
+            Response::error($kycStatus['error_message'] ?? 'KYC verification required', 403);
+        }
+
         FlutterwaveService::createFlutterwavePayment($user_id, $input);
     }
 
@@ -190,6 +200,11 @@ class PaymentController {
             Response::error(['validation_errors' => $input_errors], 422);
         }
 
+        $kycStatus = KycService::checkUserKycPermission('deposit', $user_id);
+        if(!$kycStatus['has_access']) {
+            Response::error($kycStatus['error_message'] ?? 'KYC verification required', 403);
+        }
+
         PaystackService::createPaystackPayment($user_id, $input);
     }
 
@@ -205,6 +220,11 @@ class PaymentController {
             Response::error(['validation_errors' => $input_errors], 422);
         }
 
+        $kycStatus = KycService::checkUserKycPermission('deposit', $user_id);
+        if(!$kycStatus['has_access']) {
+            Response::error($kycStatus['error_message'] ?? 'KYC verification required', 403);
+        }
+
         OpayService::createOpayPayment($user_id, $input);
     }
 
@@ -218,6 +238,11 @@ class PaymentController {
         $input_errors = Validator::validate($input, $rules);
         if(!empty($input_errors)) {
             Response::error(['validation_errors' => $input_errors], 422);
+        }
+
+        $kycStatus = KycService::checkUserKycPermission('deposit', $user_id);
+        if(!$kycStatus['has_access']) {
+            Response::error($kycStatus['error_message'] ?? 'KYC verification required', 403);
         }
 
         SafehavenService::createVirtualAccount($user_id, $input);

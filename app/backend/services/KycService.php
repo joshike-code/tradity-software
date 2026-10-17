@@ -99,7 +99,9 @@ class KycService {
                     income_verification_isRequired,
                     income_verification_isFilled,
                     address_verification_isRequired,
-                    address_verification_isFilled
+                    address_verification_isFilled,
+                    kyc_status,
+                    kyc_reject_reason
                 FROM users 
                 WHERE id = ?
             ");
@@ -124,21 +126,42 @@ class KycService {
                 'address_verification'
             ];
             
+            // Verification categories that require admin approval
+            $verificationCategories = [
+                'identity_verification',
+                'income_verification',
+                'address_verification'
+            ];
+
             $requiredCount = 0;
             $completedCount = 0;
             $incompleteCategories = [];
+
+            $verificationRequiredCount = 0;
+            $verificationCompletedCount = 0;
+            $incompleteVerificationCategories = [];
             
             foreach ($categories as $category) {
                 $isRequired = $user[$category . '_isRequired'] === 'true';
                 $isFilled = $user[$category . '_isFilled'] === 'true';
+                $isVerificationCat = in_array($category, $verificationCategories);
                 
                 if ($isRequired) {
                     $requiredCount++;
+                    if ($isVerificationCat) {
+                        $verificationRequiredCount++;
+                    }
                     
                     if ($isFilled) {
                         $completedCount++;
+                        if ($isVerificationCat) {
+                            $verificationCompletedCount++;
+                        }
                     } else {
                         $incompleteCategories[] = $category;
+                        if ($isVerificationCat) {
+                            $incompleteVerificationCategories[] = $category;
+                        }
                     }
                 }
             }
@@ -147,23 +170,32 @@ class KycService {
             $completionPercentage = $requiredCount > 0 
                 ? round(($completedCount / $requiredCount) * 100, 2) 
                 : 100; // If nothing is required, consider it 100% complete
+
+            $isComplete = $completionPercentage === 100.0;
+            $hasVerificationRequired = ($verificationRequiredCount > 0);
+            $currentStatus = $user['kyc_status'] ?? 'unsubmitted';
+
+            // Auto-transition to pending if all required categories are filled and verification approval is needed
+            if ($isComplete && $hasVerificationRequired && ($currentStatus === 'unsubmitted' || $currentStatus === 'rejected' || empty($currentStatus))) {
+                $currentStatus = 'pending';
+                $updateStmt = $conn->prepare("UPDATE users SET kyc_status = 'pending', kyc_reject_reason = NULL WHERE id = ?");
+                $updateStmt->bind_param("i", $user_id);
+                $updateStmt->execute();
+            }
             
-                // [
-                //     'completion_percentage' => 66.67,
-                //     'completed_count' => 2,
-                //     'required_count' => 3,
-                //     'incomplete_categories' => [
-                //         'identity_verification',
-                //         'income_verification'
-                //     ],
-                //     'is_complete' => false
-                // ]
             return [
                 'completion_percentage' => $completionPercentage,
                 'completed_count' => $completedCount,
                 'required_count' => $requiredCount,
                 'incomplete_categories' => $incompleteCategories,
-                'is_complete' => $completionPercentage === 100.0
+                'incomplete_verification_categories' => $incompleteVerificationCategories,
+                'has_verification_required' => $hasVerificationRequired,
+                'is_complete' => $isComplete,
+                'kyc_status' => $currentStatus,
+                'kyc_reject_reason' => $user['kyc_reject_reason'] ?? null,
+                'is_approved' => ($currentStatus === 'approved' || (!$hasVerificationRequired && $isComplete)),
+                'is_rejected' => ($currentStatus === 'rejected'),
+                'is_pending' => ($currentStatus === 'pending' && $hasVerificationRequired)
             ];
             
         } catch (Exception $e) {
@@ -173,7 +205,14 @@ class KycService {
                 'completed_count' => 0,
                 'required_count' => 0,
                 'incomplete_categories' => [],
-                'is_complete' => false
+                'incomplete_verification_categories' => [],
+                'has_verification_required' => false,
+                'is_complete' => false,
+                'kyc_status' => 'unsubmitted',
+                'kyc_reject_reason' => null,
+                'is_approved' => false,
+                'is_rejected' => false,
+                'is_pending' => false
             ];
         }
     }
@@ -193,19 +232,68 @@ class KycService {
             
             // KYC is required, check user's completion status
             $kycData = self::getKycCompletionData($user_id);
+
+            // 1. If KYC was rejected by admin -> user must refill
+            if ($kycData['kyc_status'] === 'rejected') {
+                $refillCategory = !empty($kycData['incomplete_verification_categories'])
+                    ? array_values($kycData['incomplete_verification_categories'])[0]
+                    : (!empty($kycData['incomplete_categories'])
+                        ? array_values($kycData['incomplete_categories'])[0]
+                        : 'identity_verification');
+
+                return [
+                    'has_access' => false,
+                    'status' => 'rejected',
+                    'error_message' => 'KYC rejected:' . $refillCategory,
+                    'incomplete_categories' => $kycData['incomplete_categories'],
+                    'is_complete' => $kycData['is_complete']
+                ];
+            }
             
-            // Return true only if KYC is 100% complete
+            // 2. If KYC is incomplete (less than 100%)
+            if (!$kycData['is_complete']) {
+                $firstIncomplete = !empty($kycData['incomplete_categories'])
+                    ? array_values($kycData['incomplete_categories'])[0]
+                    : 'personal_details';
+                return [
+                    'has_access' => false,
+                    'status' => 'incomplete',
+                    'error_message' => 'KYC required:' . $firstIncomplete,
+                    'incomplete_categories' => $kycData['incomplete_categories'],
+                    'is_complete' => false
+                ];
+            }
+
+            // 3. Admin approval check:
+            // Only identity, income, and address verification require admin approval.
+            // Other categories (personal details, trading assessment, financial assessment) do NOT need approval.
+            if ($kycData['has_verification_required']) {
+                if ($kycData['kyc_status'] !== 'approved') {
+                    return [
+                        'has_access' => false,
+                        'status' => 'pending',
+                        'error_message' => 'KYC pending approval',
+                        'incomplete_categories' => [],
+                        'is_complete' => true
+                    ];
+                }
+            }
+            
+            // 4. Either verification is approved or no verification documents were required -> allow access
             return [
-                'has_access' => $kycData['is_complete'],
-                'is_complete' => $kycData['is_complete'],
-                'incomplete_categories' => $kycData['incomplete_categories']
+                'has_access' => true,
+                'status' => 'approved',
+                'is_complete' => true,
+                'incomplete_categories' => []
             ];
             
         } catch (Exception $e) {
             error_log("KycService::checkUserKycPermission - " . $e->getMessage());
             // Fail safely - if we can't check, deny access
             return [
-                'has_access' => false
+                'has_access' => false,
+                'status' => 'error',
+                'error_message' => 'Access denied'
             ];
         }
     }

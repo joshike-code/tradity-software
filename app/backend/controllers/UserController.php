@@ -135,8 +135,7 @@ class UserController {
         
         // Validate Input
         $rules = [
-            'status'  => 'required|string',
-            'category' => 'required|string'
+            'status'  => 'required|string'
         ];
         $input_errors = Validator::validate($input, $rules);
         if(!empty($input_errors)) {

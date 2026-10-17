@@ -49,7 +49,7 @@ class WithdrawController {
 
         $kycStatus = KycService::checkUserKycPermission('withdrawal', $user_id);
         if(!$kycStatus['has_access']) {
-            Response::error('KYC required:' . array_values($kycStatus['incomplete_categories'])[0], 403);
+            Response::error($kycStatus['error_message'] ?? 'KYC verification required', 403);
         }
 
         WithdrawService::createWithdrawal($user_id, $input, $method);
@@ -69,6 +69,11 @@ class WithdrawController {
         $input_errors = Validator::validate($input, $rules);
         if(!empty($input_errors)) {
             Response::error(['validation_errors' => $input_errors], 422);
+        }
+
+        $kycStatus = KycService::checkUserKycPermission('withdrawal', $user_id);
+        if(!$kycStatus['has_access']) {
+            Response::error($kycStatus['error_message'] ?? 'KYC verification required', 403);
         }
 
         WithdrawService::createWithdrawal($user_id, $input, $method);
