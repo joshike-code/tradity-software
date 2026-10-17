@@ -1,0 +1,2 @@
+*Added approve/reject KYC for docs
+*Fixed docs upload/display issues
