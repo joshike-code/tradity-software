@@ -3,8 +3,8 @@ $keys = require __DIR__ . '/config/keys.php';
 
 return [
     'paths' => [
-        'migrations' => 'db/migrations',
-        'seeds' => 'db/seeds'
+        'migrations' => __DIR__ . '/db/migrations',
+        'seeds' => __DIR__ . '/db/seeds'
     ],
     'environments' => [
         'default_migration_table' => 'phinxlog',

@@ -245,6 +245,7 @@ class UpdateService
         if (empty($updates)) {
             self::setStatus('idle', "Software is up-to-date.");
             Response::success("You are already on the latest version.");
+            return;
         }
 
         foreach ($updates as $update) {
@@ -266,23 +267,27 @@ class UpdateService
             if (!$zipContent) {
                 self::setStatus('error', "Failed to download update v$version.");
                 Response::error("Failed to download update v$version.", 400);
+                return;
             }
 
             if (file_put_contents(self::$tempZip, $zipContent) === false) {
                 self::setStatus('error', "Failed to save update v$version.");
                 Response::error("Failed to write ZIP file v$version.", 400);
+                return;
             }
 
             self::setStatus('downloading', "Downloaded v$version. Extracting update...");
 
             if(!class_exists('ZipArchive')) {
                 Response::error('No Zip extension.', 400);
+                return;
             }
 
             $zip = new ZipArchive();
             if ($zip->open(self::$tempZip) !== true) {
                 unlink(self::$tempZip);
                 Response::error("Failed to open ZIP for v$version", 400);
+                return;
             }
 
             $zip->extractTo(self::$extractTo);
@@ -344,6 +349,7 @@ class UpdateService
                     self::setStatus('error', "Migration failed: " . $result['error']);
                     error_log("Update migrations error: {$result['error']}");
                     Response::error("Migration failed.", 400);
+                    return;
                 }
                 // Success - continue
                 self::setStatus('migrating', "Migrations completed. Finalizing v$version...");
@@ -351,6 +357,7 @@ class UpdateService
                 // If not an array, something went wrong with the include
                 self::setStatus('error', "Migration script returned unexpected result.");
                 Response::error("Unknown migration error.", 400);
+                return;
             }
 
             //Update .env from .env-example if new keys are added
@@ -361,6 +368,7 @@ class UpdateService
                 self::setStatus('error', "Environment synchronization failed: " . $envSyncResult['message']);
                 error_log("ENV sync error: {$envSyncResult['message']}");
                 Response::error("Environment synchronization failed: " . $envSyncResult['message'], 400);
+                return;
             }
             
             if (!empty($envSyncResult['added_keys'])) {
@@ -406,6 +414,7 @@ class UpdateService
                             error_log("Update script error in $runScript: " . $e->getMessage());
                             self::setStatus('error', "Script execution failed: " . basename($runScript));
                             Response::error("Update script execution failed", 400);
+                            return;
                         }
                     } else {
                         error_log("Update script not found: $scriptPath");
