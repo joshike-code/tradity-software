@@ -1,0 +1,2 @@
+*Added Paypal payment gateway
+*Added optional payment system for admin
