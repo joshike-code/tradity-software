@@ -74,5 +74,57 @@ return [
             'key_id'      => $_ENV['APPLE_KEY_ID'] ?? getenv('APPLE_KEY_ID'),
             'private_key' => $_ENV['APPLE_PRIVATE_KEY'] ?? getenv('APPLE_PRIVATE_KEY'),
         ],
+    ],
+    'paystack' => [
+        'public_key' => $_ENV['PAYSTACK_PUBLIC_KEY'] ?? getenv('PAYSTACK_PUBLIC_KEY'),
+        'secret_key' => $_ENV['PAYSTACK_SECRET_KEY'] ?? getenv('PAYSTACK_SECRET_KEY'),
+    ],
+    'stripe' => [
+        'public_key'     => $_ENV['STRIPE_PUBLIC_KEY'] ?? getenv('STRIPE_PUBLIC_KEY'),
+        'secret_key'     => $_ENV['STRIPE_SECRET_KEY'] ?? getenv('STRIPE_SECRET_KEY'),
+        'webhook_secret' => $_ENV['STRIPE_WEBHOOK_SECRET'] ?? getenv('STRIPE_WEBHOOK_SECRET'),
+    ],
+    'razorpay' => [
+        'key_id'         => $_ENV['RAZORPAY_KEY_ID'] ?? getenv('RAZORPAY_KEY_ID'),
+        'key_secret'     => $_ENV['RAZORPAY_KEY_SECRET'] ?? getenv('RAZORPAY_KEY_SECRET'),
+        'webhook_secret' => $_ENV['RAZORPAY_WEBHOOK_SECRET'] ?? getenv('RAZORPAY_WEBHOOK_SECRET'),
+        'merchant_upi'   => $_ENV['RAZORPAY_MERCHANT_UPI'] ?? getenv('RAZORPAY_MERCHANT_UPI'),
+    ],
+    'airtm' => [
+        'api_key'     => $_ENV['AIRTM_API_KEY'] ?? getenv('AIRTM_API_KEY'),
+        'api_secret'  => $_ENV['AIRTM_API_SECRET'] ?? getenv('AIRTM_API_SECRET'),
+        'environment' => $_ENV['AIRTM_ENVIRONMENT'] ?? getenv('AIRTM_ENVIRONMENT') ?? 'sandbox',
+    ],
+    'skrill' => [
+        'merchant_email' => $_ENV['SKRILL_MERCHANT_EMAIL'] ?? getenv('SKRILL_MERCHANT_EMAIL'),
+        'merchant_id'    => $_ENV['SKRILL_MERCHANT_ID'] ?? getenv('SKRILL_MERCHANT_ID'),
+        'secret_word'    => $_ENV['SKRILL_SECRET_WORD'] ?? getenv('SKRILL_SECRET_WORD'),
+        'api_key'        => $_ENV['SKRILL_API_KEY'] ?? getenv('SKRILL_API_KEY'),
+    ],
+    'neteller' => [
+        'client_id'      => $_ENV['NETELLER_CLIENT_ID'] ?? getenv('NETELLER_CLIENT_ID'),
+        'client_secret'  => $_ENV['NETELLER_CLIENT_SECRET'] ?? getenv('NETELLER_CLIENT_SECRET'),
+        'merchant_email' => $_ENV['NETELLER_MERCHANT_EMAIL'] ?? getenv('NETELLER_MERCHANT_EMAIL'),
+        'webhook_secret' => $_ENV['NETELLER_WEBHOOK_SECRET'] ?? getenv('NETELLER_WEBHOOK_SECRET'),
+    ],
+    'jeton' => [
+        'api_key'         => $_ENV['JETON_API_KEY'] ?? getenv('JETON_API_KEY'),
+        'merchant_secret' => $_ENV['JETON_MERCHANT_SECRET'] ?? getenv('JETON_MERCHANT_SECRET'),
+        'merchant_id'     => $_ENV['JETON_MERCHANT_ID'] ?? getenv('JETON_MERCHANT_ID'),
+    ],
+    'polygon' => [
+        'rpc_url'         => $_ENV['POLYGON_RPC_URL'] ?? getenv('POLYGON_RPC_URL') ?? 'https://polygon-rpc.com',
+        'polygonscan_key' => $_ENV['POLYGONSCAN_API_KEY'] ?? getenv('POLYGONSCAN_API_KEY'),
+        'deposit_address' => $_ENV['POLYGON_DEPOSIT_ADDRESS'] ?? getenv('POLYGON_DEPOSIT_ADDRESS') ?? '0x71C8fb962B28bA10d65b1d5A25cAf08722420999',
+    ],
+    'icashone' => [
+        'merchant_id' => $_ENV['ICASHONE_MERCHANT_ID'] ?? getenv('ICASHONE_MERCHANT_ID'),
+        'api_key'     => $_ENV['ICASHONE_API_KEY'] ?? getenv('ICASHONE_API_KEY'),
+        'secret_key'  => $_ENV['ICASHONE_SECRET_KEY'] ?? getenv('ICASHONE_SECRET_KEY'),
+    ],
+    'voucherry' => [
+        'merchant_id' => $_ENV['VOUCHERRY_MERCHANT_ID'] ?? getenv('VOUCHERRY_MERCHANT_ID'),
+        'api_key'     => $_ENV['VOUCHERRY_API_KEY'] ?? getenv('VOUCHERRY_API_KEY'),
+        'secret_key'  => $_ENV['VOUCHERRY_SECRET_KEY'] ?? getenv('VOUCHERRY_SECRET_KEY'),
     ]
 ];

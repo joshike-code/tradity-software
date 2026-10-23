@@ -1,2 +1,2 @@
-version=1.2.37
-updated_at=2026-10-19T12:01:40Z
+version=1.2.40
+updated_at=2026-10-23T16:25:08Z

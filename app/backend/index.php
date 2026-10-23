@@ -151,6 +151,10 @@ switch($request) {
         require 'routes/payment.php';
         break;
 
+    case $host.'api/upi-checkout':
+        require 'routes/upiCheckout.php';
+        break;
+
     case $host.'api/payment-verify':
         require 'routes/paymentVerify.php';
         break;

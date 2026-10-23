@@ -25,6 +25,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 WithdrawController::createCryptoWithdrawal($user_id, $method);
             } elseif($method === 'bank') {
                 WithdrawController::createBankWithdrawal($user_id, $method);
+            } elseif($method === 'upi') {
+                WithdrawController::createUpiWithdrawal($user_id, $method);
             } else {
                 Response::error('Invalid withdrawal method', 400);
             };

@@ -47,7 +47,8 @@ class WithdrawService
         $conn = Database::getConnection();
         $stmt = $conn->prepare("
             SELECT 
-                w.id AS withdrawal_id, w.payment_ref, w.amount, w.coin, w.network, w.address, w.bank_name, w.account_name, w.account_number, w.date,
+                w.id AS withdrawal_id, w.payment_ref, w.amount, w.coin, w.network, w.address, 
+                w.bank_name, w.account_name, w.account_number, w.ifsc_code, w.branch, w.upi_id, w.date,
                 u.id AS user_id, u.fname, u.lname, u.email
             FROM 
                 pending_withdrawals w
@@ -72,13 +73,21 @@ class WithdrawService
     public static function createWithdrawal(int $user_id, array $input, string $method) {
         $conn = Database::getConnection();
     
-        $amount = $input['amount'] ?? null;
+        $amount = isset($input['amount']) ? floatval($input['amount']) : 0;
         $bank_name = $input['bank_name'] ?? null;
         $account_number = $input['account_number'] ?? null;
         $account_name = $input['account_name'] ?? null;
+        $ifsc_code = $input['ifsc_code'] ?? null;
+        $branch = $input['branch'] ?? null;
+        $upi_id = $input['upi_id'] ?? null;
         $coin = $input['coin'] ?? null;
         $network = $input['network'] ?? null;
         $address = $input['address'] ?? null;
+
+        if ($method === 'upi') {
+            $bank_name = 'UPI';
+            $account_number = $upi_id;
+        }
 
         $tx_ref = uniqid("tx_");
         $date = gmdate('Y-m-d H:i:s');
@@ -90,6 +99,9 @@ class WithdrawService
 
         // Get user trade account
         $account = TradeAccountService::getUserCurrentAccount($user_id);
+        if (!$account) {
+            Response::error('Trading account not found.', 404);
+        }
         $account_id = $account['id_hash'];
 
         // Check if pending withdrawals exists for trading account
@@ -97,6 +109,7 @@ class WithdrawService
         $check->bind_param("s", $account_id);
         $check->execute();
         $pending_withdrawal = $check->get_result()->fetch_assoc();
+        $check->close();
         if($pending_withdrawal) {
             Response::error('Pending withdrawal exists for account', 400);
         };
@@ -110,14 +123,15 @@ class WithdrawService
         $conn->begin_transaction();
 
         try {
-            $stmt = $conn->prepare("INSERT INTO pending_withdrawals (user_id, account, payment_ref, amount, coin, network, address, bank_name, account_name, account_number, date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt = $conn->prepare("INSERT INTO pending_withdrawals (user_id, account, payment_ref, amount, coin, network, address, bank_name, account_name, account_number, ifsc_code, branch, upi_id, date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             if (!$stmt) {
                 throw new Exception('Prepare failed');
             }
-            $stmt->bind_param("sssdsssssss", $user_id, $account_id, $tx_ref, $amount, $coin, $network, $address, $bank_name, $account_name, $account_number, $date);
+            $stmt->bind_param("sssdssssssssss", $user_id, $account_id, $tx_ref, $amount, $coin, $network, $address, $bank_name, $account_name, $account_number, $ifsc_code, $branch, $upi_id, $date);
             if (!$stmt->execute()) {
                 throw new Exception('Failed to create pending withdrawal');
             }
+            $stmt->close();
 
             // Update user balance 
             $update = $conn->prepare("UPDATE accounts SET balance = balance - ? WHERE id_hash = ?");
@@ -126,6 +140,7 @@ class WithdrawService
             if (!$update->execute()) {
                 throw new Exception('Failed to update balance');
             }
+            $update->close();
 
             // Fetch updated user balance
             $balanceStmt = $conn->prepare("SELECT balance FROM accounts WHERE id = ?");
@@ -133,19 +148,21 @@ class WithdrawService
             $balanceStmt->execute();
             $balanceResult = $balanceStmt->get_result();
             $updatedBalance = $balanceResult->fetch_assoc()['balance'] ?? null;
+            $balanceStmt->close();
 
             // Log to payments table
-            $insert = $conn->prepare("INSERT INTO payments (user_id, account, amount, tx_ref, method, coin, address, bank_name, account_number, type, status, date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $method = "withdrawal";
+            $insert = $conn->prepare("INSERT INTO payments (user_id, account, amount, tx_ref, method, coin, address, bank_name, account_number, ifsc_code, branch, upi_id, type, status, date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $payMethod = "withdrawal";
             $type = "debit";
             $status = "pending";
-            $insert->bind_param("ssdsssssssss", $user_id, $account_id, $amount, $tx_ref, $method, $coin, $address, $bank_name, $account_number, $type, $status, $date);
+            $insert->bind_param("ssdssssssssssss", $user_id, $account_id, $amount, $tx_ref, $payMethod, $coin, $address, $bank_name, $account_number, $ifsc_code, $branch, $upi_id, $type, $status, $date);
             $insert->execute();
+            $insert->close();
 
             // Commit the transaction
             $conn->commit();
 
-            NotificationService::sendWithdrawalPendingNotification($user_id, $amount, $coin || $bank_name);
+            NotificationService::sendWithdrawalPendingNotification($user_id, $amount, $coin ?: ($bank_name ?: 'Bank Transfer'));
 
             // Fetch and return payment data
             $payments = PaymentService::getUserPayments($user_id);
@@ -211,7 +228,8 @@ class WithdrawService
 
             // Commit the transaction
             $conn->commit();
-            NotificationService::sendWithdrawalApprovedNotification($user_id, $amount, 'crypto');
+            $methodName = !empty($pending_withdrawal['coin']) ? $pending_withdrawal['coin'] : (!empty($pending_withdrawal['bank_name']) ? $pending_withdrawal['bank_name'] : 'Withdrawal');
+            NotificationService::sendWithdrawalApprovedNotification($user_id, $amount, $methodName);
 
             Response::success('Withdrawal approved');
 
@@ -247,7 +265,7 @@ class WithdrawService
         try {
             // Update user balance 
             $update = $conn->prepare("UPDATE accounts SET balance = balance + ? WHERE id_hash = ?");
-            $update->bind_param("di", $amount, $account_id);
+            $update->bind_param("ds", $amount, $account_id);
 
             if (!$update->execute()) {
                 throw new Exception('Failed to update balance');

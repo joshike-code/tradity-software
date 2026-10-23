@@ -13,7 +13,10 @@ require_once __DIR__ . '/../../middleware/AuthMiddleware.php';
 require_once __DIR__ . '/../../core/SanitizationService.php';
 require_once __DIR__ . '/../../controllers/BankAccountsController.php';
 
-$user = AuthMiddleware::requirePermission('manage_bank_accounts');
+$user = AuthMiddleware::handle(['admin', 'superadmin']);
+if (!PermissionService::hasPermission($user, 'manage_bank_accounts') && !PermissionService::hasPermission($user, 'manage_payment_wallets')) {
+    Response::error('Permission denied', 403);
+}
 $user_id = $user->user_id;
 
 $raw_id = $_GET['id'] ?? '';

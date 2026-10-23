@@ -59,12 +59,35 @@ class WithdrawController {
         $rawInput = json_decode(file_get_contents("php://input"), true);
         $input = SanitizationService::sanitize($rawInput);
         
-        // Validate Input
+        // Validate Input: User submits Bank Name, Account Number, IFSC Code, Branch, and Account Name
         $rules = [
             'amount' => 'required|float',
             'bank_name' => 'required|string',
             'account_name' => 'required|string',
-            'account_number' => 'required|string',
+            'account_number' => 'required|stringOrNumeric',
+            'ifsc_code' => 'required|stringOrNumeric',
+            'branch' => 'required|string',
+        ];
+        $input_errors = Validator::validate($input, $rules);
+        if(!empty($input_errors)) {
+            Response::error(['validation_errors' => $input_errors], 422);
+        }
+
+        $kycStatus = KycService::checkUserKycPermission('withdrawal', $user_id);
+        if(!$kycStatus['has_access']) {
+            Response::error($kycStatus['error_message'] ?? 'KYC verification required', 403);
+        }
+
+        WithdrawService::createWithdrawal($user_id, $input, $method);
+    }
+
+    public static function createUpiWithdrawal($user_id, $method) {
+        $rawInput = json_decode(file_get_contents("php://input"), true);
+        $input = SanitizationService::sanitize($rawInput);
+        
+        $rules = [
+            'amount' => 'required|float',
+            'upi_id' => 'required|string',
         ];
         $input_errors = Validator::validate($input, $rules);
         if(!empty($input_errors)) {

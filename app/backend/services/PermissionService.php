@@ -28,6 +28,7 @@ class PermissionService
             'manage_withdrawals',
             'view_trade_stats',
             'manage_payment_wallets',
+            'manage_bank_accounts',
             'manage_platform_settings',
             'manage_admins',
             'manage_keys',

@@ -45,6 +45,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 PaymentController::updateCryptoPaymentStatus($id);
             } elseif($action === 'bank') {
                 PaymentController::updateBankPaymentStatus($id);
+            } elseif($action === 'upi') {
+                PaymentController::updateUpiPaymentStatus($id);
             } elseif($action === 'edit-record') {
                 PaymentController::editPaymentRecord($id);
             } else {

@@ -120,7 +120,7 @@ class PaymentService
         $conn = Database::getConnection();
         $stmt = $conn->prepare("
             SELECT 
-                p.id AS payment_id, p.tx_ref, p.method, p.coin, p.address, p.bank_name, p.account_number, p.amount, p.status, p.date,
+                p.id AS payment_id, p.tx_ref, p.method, p.coin, p.address, p.bank_name, p.account_number, p.upi_id, p.ifsc_code, p.branch, p.amount, p.status, p.date,
                 u.id AS user_id, u.fname, u.lname, u.email
             FROM 
                 payments p
@@ -147,13 +147,13 @@ class PaymentService
         $conn = Database::getConnection();
         $stmt = $conn->prepare("
             SELECT 
-                p.id AS payment_id, p.tx_ref, p.method, p.amount, p.coin, p.bank_name, p.account_number, p.date,
+                p.id AS payment_id, p.tx_ref, p.method, p.amount, p.coin, p.bank_name, p.account_number, p.upi_id, p.date,
                 u.id AS user_id, u.fname, u.lname, u.email
             FROM 
                 payments p
             INNER JOIN 
                 users u ON p.user_id = u.id
-            WHERE (p.method = 'crypto' OR p.method = 'bank') AND p.status = 'pending' AND p.type = 'credit'
+            WHERE (p.method = 'crypto' OR p.method = 'bank' OR p.method = 'upi') AND p.status = 'pending' AND p.type = 'credit'
         ");
         $stmt->execute();
         $result = $stmt->get_result();
@@ -164,7 +164,7 @@ class PaymentService
         }
 
         // Total pending deposits count
-        $stmtTotal = $conn->query("SELECT COUNT(*) AS pending_deposits_count FROM payments WHERE (method = 'crypto' OR method = 'bank') AND status = 'pending' AND type = 'credit'");
+        $stmtTotal = $conn->query("SELECT COUNT(*) AS pending_deposits_count FROM payments WHERE (method = 'crypto' OR method = 'bank' OR method = 'upi') AND status = 'pending' AND type = 'credit'");
         $pending_deposits_count = intval($stmtTotal->fetch_assoc()['pending_deposits_count']);
 
         Response::success([

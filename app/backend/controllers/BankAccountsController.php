@@ -35,7 +35,7 @@ class BankAccountsController {
         $rules = [
             'account_name'  => 'required|string',
             'bank_name'     => 'required|string',
-            'account_number' => 'required|string'
+            'account_number' => 'required|stringOrNumeric'
         ];
         $validator = new Validator();
         $input_errors = Validator::validate($input, $rules);
@@ -54,7 +54,7 @@ class BankAccountsController {
         $rules = [
             'account_name'  => 'required|string',
             'bank_name'     => 'required|string',
-            'account_number' => 'required|string'
+            'account_number' => 'required|stringOrNumeric'
         ];
         $validator = new Validator();
         $input_errors = Validator::validate($input, $rules);
