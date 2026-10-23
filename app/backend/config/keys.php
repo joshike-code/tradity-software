@@ -84,6 +84,12 @@ return [
         'secret_key'     => $_ENV['STRIPE_SECRET_KEY'] ?? getenv('STRIPE_SECRET_KEY'),
         'webhook_secret' => $_ENV['STRIPE_WEBHOOK_SECRET'] ?? getenv('STRIPE_WEBHOOK_SECRET'),
     ],
+    'paypal' => [
+        'client_id'      => $_ENV['PAYPAL_CLIENT_ID'] ?? getenv('PAYPAL_CLIENT_ID'),
+        'client_secret'  => $_ENV['PAYPAL_CLIENT_SECRET'] ?? getenv('PAYPAL_CLIENT_SECRET'),
+        'environment'    => $_ENV['PAYPAL_ENVIRONMENT'] ?? getenv('PAYPAL_ENVIRONMENT') ?? 'sandbox',
+        'webhook_id'     => $_ENV['PAYPAL_WEBHOOK_ID'] ?? getenv('PAYPAL_WEBHOOK_ID'),
+    ],
     'razorpay' => [
         'key_id'         => $_ENV['RAZORPAY_KEY_ID'] ?? getenv('RAZORPAY_KEY_ID'),
         'key_secret'     => $_ENV['RAZORPAY_KEY_SECRET'] ?? getenv('RAZORPAY_KEY_SECRET'),

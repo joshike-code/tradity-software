@@ -65,6 +65,9 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 case 'paystack':
                     PaymentController::confirmPaystackPayment($user_id, $input);
                     break;
+                case 'paypal':
+                    PaymentController::confirmPayPalPayment($user_id, $input);
+                    break;
                 default:
                     Response::error('Unsupported payment method for confirmation', 400);
                     break;
@@ -82,6 +85,9 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 break;
             case 'paystack':
                 PaymentController::initiatePaystackPayment($user_id, $input);
+                break;
+            case 'paypal':
+                PaymentController::initiatePayPalPayment($user_id, $input);
                 break;
             case 'opay':
                 PaymentController::initiateOpayPayment($user_id, $input);

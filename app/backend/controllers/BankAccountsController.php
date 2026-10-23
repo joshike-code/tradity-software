@@ -15,7 +15,22 @@ require_once __DIR__ . '/../middleware/Validator.php';
 class BankAccountsController {
 
     public static function getBankAccounts() {
-        BankAccountsService::getAllBankAccounts();
+        $accounts = BankAccountsService::getAllBankAccounts(true);
+        $keys = require __DIR__ . '/../config/keys.php';
+        $keyId = !empty($keys['razorpay']['key_id']) ? trim($keys['razorpay']['key_id']) : '';
+        $keySecret = !empty($keys['razorpay']['key_secret']) ? trim($keys['razorpay']['key_secret']) : '';
+        $merchantUpi = !empty($keys['razorpay']['merchant_upi']) ? trim($keys['razorpay']['merchant_upi']) : '';
+        $upiAvailable = (!empty($keyId) && !empty($keySecret)) || !empty($merchantUpi);
+
+        $paypalClientId = !empty($keys['paypal']['client_id']) ? trim($keys['paypal']['client_id']) : '';
+        $paypalClientSecret = !empty($keys['paypal']['client_secret']) ? trim($keys['paypal']['client_secret']) : '';
+        $paypalAvailable = (!empty($paypalClientId) && !empty($paypalClientSecret));
+
+        Response::success([
+            'accounts' => $accounts,
+            'upi_available' => $upiAvailable,
+            'paypal_available' => $paypalAvailable
+        ]);
     }
 
     public static function getSelectBankAccount($id) {

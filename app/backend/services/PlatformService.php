@@ -21,6 +21,15 @@ class PlatformService {
         $settings['whatsapp_number'] = $keys['platform']['whatsapp_number'];
         $settings['passkey'] = $keys['degiant']['passkey'];
 
+        $keyId = !empty($keys['razorpay']['key_id']) ? trim($keys['razorpay']['key_id']) : '';
+        $keySecret = !empty($keys['razorpay']['key_secret']) ? trim($keys['razorpay']['key_secret']) : '';
+        $merchantUpi = !empty($keys['razorpay']['merchant_upi']) ? trim($keys['razorpay']['merchant_upi']) : '';
+        $settings['upi_available'] = (!empty($keyId) && !empty($keySecret)) || !empty($merchantUpi);
+
+        $paypalClientId = !empty($keys['paypal']['client_id']) ? trim($keys['paypal']['client_id']) : '';
+        $paypalClientSecret = !empty($keys['paypal']['client_secret']) ? trim($keys['paypal']['client_secret']) : '';
+        $settings['paypal_available'] = (!empty($paypalClientId) && !empty($paypalClientSecret));
+
         Response::success($settings);
     }
 

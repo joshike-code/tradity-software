@@ -21,6 +21,7 @@ require_once __DIR__ . '/../services/NetellerPaymentService.php';
 require_once __DIR__ . '/../services/JetonPaymentService.php';
 require_once __DIR__ . '/../services/PolPaymentService.php';
 require_once __DIR__ . '/../services/IcashonePaymentService.php';
+require_once __DIR__ . '/../services/PayPalService.php';
 require_once __DIR__ . '/../services/VoucherryPaymentService.php';
 require_once __DIR__ . '/../core/response.php';
 require_once __DIR__ . '/../core/SanitizationService.php';
@@ -205,6 +206,32 @@ class PaymentController {
             Response::error(['validation_errors' => $input_errors], 422);
         }
         PaystackService::confirmPaystackPayment($user_id, $input);
+    }
+
+    public static function initiatePayPalPayment($user_id, $rawInput) {
+        $input = SanitizationService::sanitize($rawInput);
+        $rules = ['amount' => 'required|float'];
+        $input_errors = Validator::validate($input, $rules);
+        if(!empty($input_errors)) {
+            Response::error(['validation_errors' => $input_errors], 422);
+        }
+
+        $kycStatus = KycService::checkUserKycPermission('deposit', $user_id);
+        if(!$kycStatus['has_access']) {
+            Response::error($kycStatus['error_message'] ?? 'KYC verification required', 403);
+        }
+
+        PayPalService::createPayPalPayment($user_id, $input);
+    }
+
+    public static function confirmPayPalPayment($user_id, $rawInput) {
+        $input = SanitizationService::sanitize($rawInput);
+        $rules = ['tx_ref' => 'required|string'];
+        $input_errors = Validator::validate($input, $rules);
+        if(!empty($input_errors)) {
+            Response::error(['validation_errors' => $input_errors], 422);
+        }
+        PayPalService::confirmPayPalPayment($user_id, $input);
     }
 
     public static function initiateOpayPayment($user_id, $rawInput) {

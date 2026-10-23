@@ -175,6 +175,11 @@ switch($request) {
         require 'routes/safehavenWebhook.php';
         break;
 
+    case $host.'api/webhook/paypal':
+    case $host.'api/paypalwebhook':
+        require 'routes/paypalWebhook.php';
+        break;
+
     case $host.'api/config':
         require 'routes/config.php';
         break;

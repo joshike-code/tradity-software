@@ -18,7 +18,7 @@ class WithdrawService
         $conn = Database::getConnection();
         $stmt = $conn->prepare("
             SELECT 
-                w.id AS withdrawal_id, w.payment_ref, w.amount, w.coin, w.bank_name, w.date,
+                w.id AS withdrawal_id, w.payment_ref, w.amount, w.coin, w.bank_name, w.branch, w.account_number, w.date,
                 u.id AS user_id, u.fname, u.lname, u.email
             FROM 
                 pending_withdrawals w
@@ -85,8 +85,34 @@ class WithdrawService
         $address = $input['address'] ?? null;
 
         if ($method === 'upi') {
+            $keys = require __DIR__ . '/../config/keys.php';
+            $keyId = !empty($keys['razorpay']['key_id']) ? trim($keys['razorpay']['key_id']) : '';
+            $keySecret = !empty($keys['razorpay']['key_secret']) ? trim($keys['razorpay']['key_secret']) : '';
+            $merchantUpi = !empty($keys['razorpay']['merchant_upi']) ? trim($keys['razorpay']['merchant_upi']) : '';
+            $upiAvailable = (!empty($keyId) && !empty($keySecret)) || !empty($merchantUpi);
+            if (!$upiAvailable) {
+                Response::error('UPI withdrawals are currently unavailable. Merchant configuration is missing.', 400);
+            }
             $bank_name = 'UPI';
             $account_number = $upi_id;
+        }
+
+        if ($method === 'paypal') {
+            $keys = require __DIR__ . '/../config/keys.php';
+            $paypalClientId = !empty($keys['paypal']['client_id']) ? trim($keys['paypal']['client_id']) : '';
+            $paypalClientSecret = !empty($keys['paypal']['client_secret']) ? trim($keys['paypal']['client_secret']) : '';
+            $paypalAvailable = (!empty($paypalClientId) && !empty($paypalClientSecret));
+            if (!$paypalAvailable) {
+                Response::error('PayPal withdrawals are currently unavailable. Merchant credentials are not configured.', 400);
+            }
+            $paypalEmail = trim($input['account_number'] ?? ($input['paypal_email'] ?? ''));
+            if (empty($paypalEmail) || !filter_var($paypalEmail, FILTER_VALIDATE_EMAIL)) {
+                Response::error('A valid PayPal email address is required for withdrawal.', 422);
+            }
+            $bank_name = 'PayPal';
+            $branch = 'paypal';
+            $account_number = $paypalEmail;
+            $account_name = $input['account_name'] ?? 'PayPal User';
         }
 
         $tx_ref = uniqid("tx_");
@@ -179,7 +205,7 @@ class WithdrawService
         $conn = Database::getConnection();
 
         // Find pending payment
-        $check = $conn->prepare("SELECT user_id, amount, account, payment_ref FROM pending_withdrawals WHERE id = ?");
+        $check = $conn->prepare("SELECT id, user_id, amount, account, payment_ref, bank_name, branch, account_number, address FROM pending_withdrawals WHERE id = ?");
         $check->bind_param("s", $id);
         if (!$check->execute()) {
             Response::error('Failed to fetch pending withdrawal', 500);
@@ -188,6 +214,15 @@ class WithdrawService
         if(!$pending_withdrawal) {
             Response::error('Pending withdrawal does not exist', 400);
         };
+
+        // Automated PayPal Payout API (Method 2)
+        if (($pending_withdrawal['branch'] ?? '') === 'paypal' || ($pending_withdrawal['bank_name'] ?? '') === 'PayPal') {
+            require_once __DIR__ . '/PayPalService.php';
+            $payoutResult = PayPalService::initiatePayout($pending_withdrawal);
+            if (!$payoutResult['success']) {
+                Response::error('PayPal payout failed: ' . ($payoutResult['message'] ?? 'Unknown error'), 400);
+            }
+        }
 
         $amount = $pending_withdrawal['amount'];
         $user_id = $pending_withdrawal['user_id'];
