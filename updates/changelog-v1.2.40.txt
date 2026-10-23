@@ -1,0 +1,2 @@
+*Added new payment methods.
+*Fixed UI bug in admin payment methods
