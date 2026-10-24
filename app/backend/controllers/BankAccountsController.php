@@ -27,7 +27,7 @@ class BankAccountsController {
         $paypalAvailable = (!empty($paypalClientId) && !empty($paypalClientSecret));
 
         Response::success([
-            'accounts' => $accounts,
+            'allBankAccounts' => $accounts,
             'upi_available' => $upiAvailable,
             'paypal_available' => $paypalAvailable
         ]);
